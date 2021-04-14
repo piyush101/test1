@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "391265643895",
+    "project_id": "finbox-55d7a",
+    "storage_bucket": "finbox-55d7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391265643895:android:8e21f5f3c3e641b60e0572",
+        "android_client_info": {
+          "package_name": "com.example.finbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391265643895-9q4kloakp8i5n5m66orp1ui4uak7uumj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.finbox",
+            "certificate_hash": "0098ec7dc7c53d35c8e9315f7ec20dbcafb848d1"
+          }
+        },
+        {
+          "client_id": "391265643895-v9noq0oc2cnhi7tcg7oorm3rmlnui2tg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEXm1FOOFhnwpFyrlQ-Nn-GyaypqdktU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391265643895-v9noq0oc2cnhi7tcg7oorm3rmlnui2tg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
