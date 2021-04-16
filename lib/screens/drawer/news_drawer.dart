@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../components/provider/dark_theme_provider.dart';
 import '../../constants.dart';
 
-class Drawer extends StatelessWidget {
+class NewsDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DarkThemeProvider darkThemeProvider =
