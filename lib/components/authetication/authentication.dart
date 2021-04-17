@@ -26,9 +26,10 @@ class Authentication {
 
   Future<void> signOut() async
   {
+    await _firebaseAuth.signOut().then((value) {});
     final googleSignIn=GoogleSignIn();
     await googleSignIn.signOut();
-    await _firebaseAuth.signOut();
+
   }
 
 }
