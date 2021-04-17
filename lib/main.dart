@@ -10,6 +10,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
   return runApp(ChangeNotifierProvider(
     child: MyApp(),
     create: (BuildContext context) =>
