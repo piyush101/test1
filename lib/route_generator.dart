@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/screens/news/news.dart';
-import 'package:flutter_app_news/screens/signup/signup.dart';
+import 'package:flutter_app_news/service/widget_tree/widget_tree.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -9,7 +8,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => Signup());
+        return MaterialPageRoute(builder: (_) => WidgetTree());
       // case Home.routeHomePage:
       //   return MaterialPageRoute(builder: (_) => Home());
     }

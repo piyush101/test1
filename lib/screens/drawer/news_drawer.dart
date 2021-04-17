@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_news/components/authetication/authentication.dart';
 import 'package:flutter_app_news/components/drawer/follow_us_images.dart';
 import 'package:flutter_app_news/constants.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +12,9 @@ import '../../constants.dart';
 class NewsDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     DarkThemeProvider darkThemeProvider =
-    Provider.of<DarkThemeProvider>(context, listen: false);
+        Provider.of<DarkThemeProvider>(context, listen: false);
 
     return Column(
       children: [
@@ -21,7 +24,7 @@ class NewsDrawer extends StatelessWidget {
             shrinkWrap: true,
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text("News Portal App"),
+                accountName: Text(user.displayName),
                 accountEmail: null,
                 decoration: BoxDecoration(color: kPrimaryColor),
               ),
@@ -70,9 +73,14 @@ class NewsDrawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: Text(
-                  "LogOut",
-                  style: TextStyle(fontSize: 17),
+                title: InkWell(
+                  onTap: () {
+                    signOut();
+                  },
+                  child: Text(
+                    "LogOut",
+                    style: TextStyle(fontSize: 17),
+                  ),
                 ),
                 leading: Icon(
                   Icons.logout,
@@ -84,58 +92,62 @@ class NewsDrawer extends StatelessWidget {
         ),
         Expanded(
             child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Follow us on",
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
                   children: [
-                    Text(
-                      "Follow us on",
-                      style: TextStyle(fontSize: 18),
+                    FollowUsImages(
+                      image_path: 'assets/icons/facebook.svg',
                     ),
                     SizedBox(
-                      height: 15,
+                      width: 33,
                     ),
-                    Row(
-                      children: [
-                        FollowUsImages(
-                          image_path: 'assets/icons/facebook.svg',
-                        ),
-                        SizedBox(
-                          width: 33,
-                        ),
-                        FollowUsImages(
-                          image_path: "assets/icons/linkedin.svg",
-                        ),
-                        SizedBox(
-                          width: 33,
-                        ),
-                        FollowUsImages(
-                          image_path: "assets/icons/instagram.svg",
-                        ),
-                        SizedBox(
-                          width: 33,
-                        ),
-                        FollowUsImages(
-                          image_path: "assets/icons/telegram.svg",
-                        ),
-                        SizedBox(
-                          width: 33,
-                        ),
-                        FollowUsImages(
-                          image_path: "assets/icons/twitter.svg",
-                        )
-                      ],
+                    FollowUsImages(
+                      image_path: "assets/icons/linkedin.svg",
                     ),
                     SizedBox(
-                      height: 20,
+                      width: 33,
                     ),
-                    Text("Finbox v1.0.1")
+                    FollowUsImages(
+                      image_path: "assets/icons/instagram.svg",
+                    ),
+                    SizedBox(
+                      width: 33,
+                    ),
+                    FollowUsImages(
+                      image_path: "assets/icons/telegram.svg",
+                    ),
+                    SizedBox(
+                      width: 33,
+                    ),
+                    FollowUsImages(
+                      image_path: "assets/icons/twitter.svg",
+                    )
                   ],
                 ),
-              ),
-            ))
+                SizedBox(
+                  height: 20,
+                ),
+                Text("Finbox v1.0.1")
+              ],
+            ),
+          ),
+        ))
       ],
     );
+  }
+
+  Future<void> signOut() async {
+    await Authentication().signOut();
   }
 }

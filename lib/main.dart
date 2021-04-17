@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/route_generator.dart';
@@ -23,11 +25,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DarkThemeProvider>(
         builder: (context, DarkThemeProvider darkThemeProvider, child) {
-      return MaterialApp(
-        theme: darkThemeProvider.getTheme,
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        onGenerateRoute: RouteGenerator.generateRoute,
+      return MultiProvider(
+        providers: [StreamProvider.value(value: FirebaseAuth.instance.authStateChanges())],
+        child: MaterialApp(
+          theme: darkThemeProvider.getTheme,  
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          onGenerateRoute: RouteGenerator.generateRoute,
+        ),
       );
     });
   }
