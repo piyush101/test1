@@ -26,16 +26,9 @@ Future<void> main() async {
   ));
 }
 
-getToken() async {
-  String token = await FirebaseMessaging.instance.getToken();
-  print(token);
-}
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-  print('Title is '+message.notification.title);
-  print('Body is '+message.notification.body);
+  print("message is "+ message.data['url']);
 
 }
 
@@ -58,6 +51,29 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    // flutterLocalNotificationsPlugin.initialize(InitializationSettings(),onSelectNotification: Uri.parse(message));
+
+    //   // a terminated state.
+    //   RemoteMessage initialMessage =
+    //       await FirebaseMessaging.instance.getInitialMessage();
+    //
+
+    //   // If the message also contains a data property with a "type" of "chat",
+    //   // navigate to a chat screen
+    //   if (initialMessage?.data['type'] == 'chat') {
+    //     Navigator.pushNamed(context, '/chat',
+    //         arguments: ChatArguments(initialMessage));
+    //   }
+    //
+    //   // Also handle any interaction when the app is in the background via a
+    //   // Stream listener
+    //   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //     if (message.data['type'] == 'chat') {
+    //       Navigator.pushNamed(context, '/chat',
+    //           arguments: ChatArguments(message));
+    //     }
+    //   });
+    // }
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
@@ -79,7 +95,6 @@ class _MyAppState extends State<MyApp> {
             ));
       }
     });
-    getToken();
   }
 
   @override
