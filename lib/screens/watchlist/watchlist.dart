@@ -37,7 +37,8 @@ class _WatchlistState extends State<Watchlist> {
           });
         }
       });
-    };
+    }
+    ;
     if (tempSearchStore.length == 0 && value.length > 1) {
       setState(() {});
     }
@@ -72,32 +73,27 @@ class _WatchlistState extends State<Watchlist> {
             ),
           ),
           SizedBox(height: 10.0),
-          GridView.count(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              crossAxisCount: 4,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
-              primary: false,
+          ListView.builder(
               shrinkWrap: true,
-              children: tempSearchStore.map((element) {
-                return buildResultCard(element);
-              }).toList())
+              itemCount: tempSearchStore.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 10),
+                  child: Container(
+                    color: Colors.white60,
+                    child: GestureDetector(
+                      onTap: () {
+                        print(tempSearchStore[index]['name']);
+                      },
+                      child: Text(
+                        tempSearchStore[index]['name'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 20),
+                      ),
+                    ),
+                  ),
+                );
+              })
         ]));
   }
-}
-
-Widget buildResultCard(data) {
-  return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      elevation: 2.0,
-      child: Container(
-          child: Center(
-              child: Text(
-        data['name'],
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 20.0,
-        ),
-      ))));
 }

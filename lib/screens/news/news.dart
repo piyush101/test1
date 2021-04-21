@@ -4,6 +4,7 @@ import 'package:flutter_app_news/screens/advice/advice.dart';
 import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
 import 'package:flutter_app_news/screens/insights/insights_home/insights_home.dart';
 import 'package:flutter_app_news/screens/news/news_body/news_body.dart';
+import 'package:flutter_app_news/screens/watchlist/watchlist.dart';
 
 class News extends StatefulWidget {
   @override
@@ -26,7 +27,13 @@ class _NewsState extends State<News> {
         ),
       ),
       drawer: Drawer(child: NewsDrawer()),
-      body: [NewsBody(), Container(), InsightsHome(), Advice()][_currentIndex],
+      body: [
+        NewsBody(),
+        Container(),
+        InsightsHome(),
+        Advice(),
+        Watchlist()
+      ][_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
@@ -52,6 +59,8 @@ class _NewsState extends State<News> {
               icon: (Icon(Icons.vpn_key)), label: "Insights"),
           BottomNavigationBarItem(
               icon: (Icon(Icons.lightbulb)), label: "Advice"),
+          BottomNavigationBarItem(
+              icon: (Icon(Icons.lightbulb)), label: "WatchList"),
         ],
       ),
     );

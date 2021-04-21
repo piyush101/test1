@@ -9,10 +9,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/provider/dark_theme_provider.dart';
 
+const bool kReleaseMode =
+    bool.fromEnvironment('dart.vm.product', defaultValue: false);
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  if (kReleaseMode) {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
@@ -28,8 +33,7 @@ Future<void> main() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("message is "+ message.data['url']);
-
+  print("message is " + message.data['url']);
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(

@@ -107,31 +107,31 @@ class NewsDrawer extends StatelessWidget {
                 Row(
                   children: [
                     FollowUsImages(
-                      image_path: 'assets/icons/facebook.svg',
+                      Image_Path: 'assets/icons/facebook.svg',
                     ),
                     SizedBox(
                       width: 33,
                     ),
                     FollowUsImages(
-                      image_path: "assets/icons/linkedin.svg",
+                      Image_Path: "assets/icons/linkedin.svg",
                     ),
                     SizedBox(
                       width: 33,
                     ),
                     FollowUsImages(
-                      image_path: "assets/icons/instagram.svg",
+                      Image_Path: "assets/icons/instagram.svg",
                     ),
                     SizedBox(
                       width: 33,
                     ),
                     FollowUsImages(
-                      image_path: "assets/icons/telegram.svg",
+                      Image_Path: "assets/icons/telegram.svg",
                     ),
                     SizedBox(
                       width: 33,
                     ),
                     FollowUsImages(
-                      image_path: "assets/icons/twitter.svg",
+                      Image_Path: "assets/icons/twitter.svg",
                     )
                   ],
                 ),

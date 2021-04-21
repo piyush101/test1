@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class FollowUsImages extends StatelessWidget {
-  final String image_path;
-  final Function onTap;
+  final String Image_Path;
+  final Function OnTap;
 
   const FollowUsImages({
-    this.onTap,
+    this.OnTap,
     Key key,
-    this.image_path,
+    this.Image_Path,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: OnTap,
       // handle your image tap here
       child: SvgPicture.asset(
-        image_path,
+        Image_Path,
         fit: BoxFit.cover,
         // this is the solution for border
         width: 23,
