@@ -17,16 +17,16 @@ class _NewsState extends State<News> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        title: Text(
-          "Finbox",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      drawer: Drawer(child: NewsDrawer()),
+      // extendBodyBehindAppBar: true,
+      // appBar: AppBar(
+      //   iconTheme: IconThemeData(color: Colors.black),
+      //   backgroundColor: Colors.white,
+      //   title: Text(
+      //     "Finbox",
+      //     style: TextStyle(color: Colors.black),
+      //   ),
+      // ),
+      // drawer: Drawer(child: NewsDrawer()),
       body: [
         NewsBody(),
         Container(),

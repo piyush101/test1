@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -132,6 +133,13 @@ class _LoginState extends State<Login> {
                 accessToken: googleAuth.accessToken))
             .catchError((onError) {
           print("credential error $onError");
+        });
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(_firebaseAuth.currentUser.uid)
+            .set({
+          "userID": _firebaseAuth.currentUser.uid,
+          "subscribeTopic": []
         });
         return userCredential.user;
       } else {
