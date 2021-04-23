@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
 import 'package:flutter_app_news/service/search_service/search_service.dart';
@@ -82,9 +81,7 @@ class _WatchlistState extends State<Watchlist> {
                     icon: Icon(Icons.arrow_back),
                     iconSize: 20.0,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return Watchlist();
-                      }));
+                      Navigator.of(context, rootNavigator: true).pop(context);
                     },
                   ),
                   contentPadding: EdgeInsets.only(left: 25.0),
@@ -98,29 +95,15 @@ class _WatchlistState extends State<Watchlist> {
               shrinkWrap: true,
               itemCount: tempSearchStore.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 10),
-                  child: Container(
-                    color: Colors.white60,
-                    child: GestureDetector(
-                      onTap: () async {
-                        users.doc(_firebaseAuth.currentUser.uid).update({
-                          "subscribeTopic": FieldValue.arrayUnion(
-                              [tempSearchStore[index]['name']])
-                        });
-                        await FirebaseMessaging.instance
-                            .subscribeToTopic(tempSearchStore[index]['name']);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Watchlist()));
-                        ;
-                      },
-                      child: Text(
-                        tempSearchStore[index]['name'],
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 20),
-                      ),
-                    ),
-                  ),
+                return ListTile(
+                  title: Text(tempSearchStore[index]['name']),
+                  onTap: () {
+                    users.doc(_firebaseAuth.currentUser.uid).update({
+                      "subscribeTopic": FieldValue.arrayUnion(
+                          [tempSearchStore[index]['name']])
+                    });
+                    Navigator.pop(context);
+                  },
                 );
               }),
           SizedBox(
@@ -184,7 +167,7 @@ class _WatchlistState extends State<Watchlist> {
     Widget yesButton = ElevatedButton(
       child: Text("Yes"),
       onPressed: () async {
-        await FirebaseMessaging.instance.unsubscribeFromTopic(value);
+        // await FirebaseMessaging.instance.unsubscribeFromTopic(value);
         users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribeTopic": FieldValue.arrayRemove([value])
         });

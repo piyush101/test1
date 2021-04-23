@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
 import 'package:flutter_app_news/screens/insights/insights_post_details/insights_post_details.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -16,16 +15,6 @@ class _InsightsHomeState extends State<InsightsHome> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        title: Text(
-          "Finbox",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      drawer: Drawer(child: NewsDrawer()),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("Insights")

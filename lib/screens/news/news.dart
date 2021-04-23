@@ -4,7 +4,7 @@ import 'package:flutter_app_news/screens/advice/advice.dart';
 import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
 import 'package:flutter_app_news/screens/insights/insights_home/insights_home.dart';
 import 'package:flutter_app_news/screens/news/news_body/news_body.dart';
-import 'package:flutter_app_news/screens/watchlist/watchlist.dart';
+import 'package:flutter_app_news/screens/watchlist/test.dart';
 
 class News extends StatefulWidget {
   @override
@@ -16,23 +16,27 @@ class _NewsState extends State<News> {
 
   @override
   Widget build(BuildContext context) {
+    return buildScaffold();
+  }
+
+  Scaffold buildScaffold() {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   iconTheme: IconThemeData(color: Colors.black),
-      //   backgroundColor: Colors.white,
-      //   title: Text(
-      //     "Finbox",
-      //     style: TextStyle(color: Colors.black),
-      //   ),
-      // ),
-      // drawer: Drawer(child: NewsDrawer()),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text(
+          "Finbox",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      drawer: Drawer(child: NewsDrawer()),
       body: [
         NewsBody(),
         Container(),
         InsightsHome(),
         Advice(),
-        Watchlist()
+        Test()
       ][_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
