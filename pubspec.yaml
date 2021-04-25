@@ -72,7 +72,7 @@ flutter:
     - assets/icons/instagram.svg
     - assets/icons/telegram.svg
     - assets/icons/twitter.svg
-
+    - assets/images/image.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

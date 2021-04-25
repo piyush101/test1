@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_news/screens/bookmark/bookmark_home.dart';
 import 'package:flutter_app_news/service/widget_tree/widget_tree.dart';
 
 class RouteGenerator {
@@ -8,8 +9,8 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => WidgetTree());
-      // case '/Watchlist':
-      //   return MaterialPageRoute(builder: (_) => Watchlist());
+      case BookmarkHome.bookmark_home:
+        return MaterialPageRoute(builder: (_) => BookmarkHome());
     }
   }
 }

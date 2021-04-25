@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/screens/advice/advice.dart';
+import 'package:flutter_app_news/screens/bookmark/bookmark_home.dart';
 import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
 import 'package:flutter_app_news/screens/insights/insights_home/insights_home.dart';
 import 'package:flutter_app_news/screens/news/news_body/news_body.dart';
@@ -29,6 +30,15 @@ class _NewsState extends State<News> {
           "Finbox",
           style: TextStyle(color: Colors.black),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return BookmarkHome();
+                }));
+              },
+              icon: Icon(Icons.bookmark_border_outlined))
+        ],
       ),
       drawer: Drawer(child: NewsDrawer()),
       body: [

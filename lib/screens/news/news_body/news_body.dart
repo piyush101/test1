@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,9 @@ class NewsBody extends StatefulWidget {
 }
 
 class _NewsBodyState extends State<NewsBody> {
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -27,7 +31,7 @@ class _NewsBodyState extends State<NewsBody> {
                 return Center(
                     child: CircularProgressIndicator(
                         valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.black)));
+                        AlwaysStoppedAnimation<Color>(Colors.black)));
               default:
                 return ListView.builder(
                     physics: BouncingScrollPhysics(
@@ -54,7 +58,7 @@ class _NewsBodyState extends State<NewsBody> {
                               Container(
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadiusDirectional.circular(15),
+                                    BorderRadiusDirectional.circular(15),
                                     boxShadow: [
                                       BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
@@ -103,11 +107,19 @@ class _NewsBodyState extends State<NewsBody> {
                                         ),
                                         Spacer(),
                                         IconButton(
-                                            icon: Icon(
-                                              Icons.bookmark,
-                                              size: 30,
-                                            ),
-                                            onPressed: () {}),
+                                            icon: isBookmarked(
+                                                    snapshot.data.docs[index])
+                                                ? Icon(Icons.bookmark)
+                                                : Icon(Icons
+                                                    .bookmark_border_outlined),
+                                            onPressed: () {
+                                              isBookmarked(
+                                                      snapshot.data.docs[index])
+                                                  ? deleteBookMarkData(
+                                                      snapshot.data.docs[index])
+                                                  : addBookMarkData(snapshot
+                                                      .data.docs[index]);
+                                            }),
                                         SizedBox(
                                           width: 10,
                                         ),
@@ -124,12 +136,12 @@ class _NewsBodyState extends State<NewsBody> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
+                                const EdgeInsets.only(left: 10, right: 10),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         snapshot.data.docs[index]['Title'],
@@ -149,12 +161,12 @@ class _NewsBodyState extends State<NewsBody> {
                                           snapshot.data.docs[index]['Last'],
                                           style: GoogleFonts.robotoSlab(
                                               decoration:
-                                                  TextDecoration.underline,
+                                              TextDecoration.underline,
                                               fontSize: 15),
                                         ),
                                         onTap: () {
                                           launch(snapshot.data.docs[index]
-                                              ['Link']);
+                                          ['Link']);
                                         },
                                       ),
                                       SizedBox(
@@ -178,5 +190,48 @@ class _NewsBodyState extends State<NewsBody> {
     DateTime dateTime = t.toDate();
     String formatDate = DateFormat.yMMMd().add_jm().format(dateTime);
     return formatDate;
+  }
+
+  bool isBookmarked(QueryDocumentSnapshot data) {
+    if (data['Bookmark'].contains(FirebaseAuth.instance.currentUser.uid)) {
+      return true;
+    }
+    return false;
+  }
+
+  addBookMarkData(DocumentSnapshot doc) {
+    doc.reference.update(<String, dynamic>{
+      'Bookmark': FieldValue.arrayUnion([_firebaseAuth.currentUser.uid])
+    });
+    Map<dynamic, dynamic> dataBookmark = {
+      "Content": doc['Content'],
+      "Title": doc['Title'],
+      "Time": doc['Time'],
+      "Image": doc['Image'],
+      "Tag": doc['Tag']
+    };
+    users.doc(_firebaseAuth.currentUser.uid).update({
+      "bookmarks": FieldValue.arrayUnion([dataBookmark])
+    });
+  }
+
+  deleteBookMarkData(DocumentSnapshot doc) {
+    doc.reference.update(<String, dynamic>{
+      "Bookmark": FieldValue.arrayRemove([_firebaseAuth.currentUser.uid])
+    });
+    List<Map> _bookmarksList = [];
+
+    users.doc(_firebaseAuth.currentUser.uid).snapshots().map((doc) {
+      List<dynamic> bookmarkMap = doc.data()['bookmarks'];
+      bookmarkMap.forEach((element) {
+        _bookmarksList.remove(element);
+      });
+    });
+
+    _bookmarksList.removeWhere((bookmark) => bookmark['Title'] == doc['Title']);
+
+    users
+        .doc(_firebaseAuth.currentUser.uid)
+        .update({"bookmarks": _bookmarksList});
   }
 }
