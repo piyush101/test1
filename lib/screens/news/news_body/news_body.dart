@@ -31,7 +31,7 @@ class _NewsBodyState extends State<NewsBody> {
                 return Center(
                     child: CircularProgressIndicator(
                         valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.black)));
+                            AlwaysStoppedAnimation<Color>(Colors.black)));
               default:
                 return ListView.builder(
                     physics: BouncingScrollPhysics(
@@ -58,7 +58,7 @@ class _NewsBodyState extends State<NewsBody> {
                               Container(
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadiusDirectional.circular(15),
+                                        BorderRadiusDirectional.circular(15),
                                     boxShadow: [
                                       BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
@@ -136,12 +136,12 @@ class _NewsBodyState extends State<NewsBody> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(left: 10, right: 10),
+                                    const EdgeInsets.only(left: 10, right: 10),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         snapshot.data.docs[index]['Title'],
@@ -161,12 +161,12 @@ class _NewsBodyState extends State<NewsBody> {
                                           snapshot.data.docs[index]['Last'],
                                           style: GoogleFonts.robotoSlab(
                                               decoration:
-                                              TextDecoration.underline,
+                                                  TextDecoration.underline,
                                               fontSize: 15),
                                         ),
                                         onTap: () {
                                           launch(snapshot.data.docs[index]
-                                          ['Link']);
+                                              ['Link']);
                                         },
                                       ),
                                       SizedBox(
@@ -220,14 +220,6 @@ class _NewsBodyState extends State<NewsBody> {
       "Bookmark": FieldValue.arrayRemove([_firebaseAuth.currentUser.uid])
     });
     List<Map> _bookmarksList = [];
-
-    users.doc(_firebaseAuth.currentUser.uid).snapshots().map((doc) {
-      List<dynamic> bookmarkMap = doc.data()['bookmarks'];
-      bookmarkMap.forEach((element) {
-        _bookmarksList.remove(element);
-      });
-    });
-
     _bookmarksList.removeWhere((bookmark) => bookmark['Title'] == doc['Title']);
 
     users
