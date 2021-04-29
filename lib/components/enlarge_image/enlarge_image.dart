@@ -37,7 +37,7 @@ class _EnlargeImageState extends State<EnlargeImage> {
               child: Image.network(
                 widget.image_url,
                 height: size.height * 0.5,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
           ],

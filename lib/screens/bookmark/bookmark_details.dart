@@ -5,16 +5,16 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class InsightsPostDetails extends StatefulWidget {
+class BookmarkDetails extends StatefulWidget {
   DocumentSnapshot snapshot;
 
-  InsightsPostDetails(this.snapshot);
+  BookmarkDetails(this.snapshot);
 
   @override
-  _InsightsPostDetailsState createState() => _InsightsPostDetailsState();
+  _BookmarkDetailsState createState() => _BookmarkDetailsState();
 }
 
-class _InsightsPostDetailsState extends State<InsightsPostDetails> {
+class _BookmarkDetailsState extends State<BookmarkDetails> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -39,7 +39,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                       }),
                   Flexible(
                     child: Text(
-                      widget.snapshot['Title'],
+                      widget.snapshot.get('bookmarks')[0]['Title'],
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -50,7 +50,8 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return EnlargeImage(widget.snapshot['Image']);
+                    return EnlargeImage(
+                        widget.snapshot.get("bookmarks")[0]['Image']);
                   }));
                 },
                 child: Container(
@@ -59,59 +60,57 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                   height: size.height * 0.3,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(widget.snapshot['Image']))),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text(
-                      timeStampConversion(widget.snapshot['Time']),
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    Spacer(),
-                    Text(widget.snapshot['ReadTime'] + " Min Read")
-                  ],
+                          fit: BoxFit.fill,
+                          image: NetworkImage(
+                              widget.snapshot.get("bookmarks")[0]['Image']))),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                child: Text(
-                  widget.snapshot['Tag'],
-                  style: TextStyle(
-                      fontSize: 16,
-                      background: Paint()
-                        ..strokeWidth = 22
-                        ..color = Color(0xFFdff5ef)
-                        ..style = PaintingStyle.stroke
-                        ..strokeJoin = StrokeJoin.round),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      width: size.width * .6,
-                      child: Divider(
-                        color: Colors.grey,
-                      )),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.snapshot.get("bookmarks")[0]['Tag'],
+                      style: TextStyle(
+                          fontSize: 16,
+                          background: Paint()
+                            ..strokeWidth = 22
+                            ..color = Color(0xFFdff5ef)
+                            ..style = PaintingStyle.stroke
+                            ..strokeJoin = StrokeJoin.round),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          child: Text(timeStampConversion(
+                              widget.snapshot.get('bookmarks')[0]['Time']))),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
                 height: 8,
               ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                    width: size.width * .6,
+                    child: Divider(
+                      color: Colors.grey,
+                    )),
+              ),
+              SizedBox(
+                height: 8,
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Html(
-                  data: widget.snapshot['Content'],
-                  onLinkTap: (url) {
-                    launch(Uri.parse(url).toString());
-                  },
-                ),
-              )
+                  padding: const EdgeInsets.all(8.0),
+                  child: Html(
+                    data: widget.snapshot.get("bookmarks")[0]['Content'],
+                    onLinkTap: (url) {
+                      launch(Uri.parse(url).toString());
+                    },
+                  ))
             ],
           ),
         ),
