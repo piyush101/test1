@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_details.dart';
-import 'package:flutter_app_news/screens/news/news.dart';
+import 'package:flutter_app_news/screens/home/home.dart';
 import 'package:intl/intl.dart';
 
 class BookmarkHome extends StatefulWidget {
@@ -141,7 +141,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
                                                       width: 100,
                                                       decoration: BoxDecoration(
                                                           image: DecorationImage(
-                                                              fit: BoxFit.fill,
+                                                              fit: BoxFit.cover,
                                                               image: NetworkImage(
                                                                   snapshot.data.get(
                                                                               'bookmarks')[
@@ -221,7 +221,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
         GestureDetector(
           onTap: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => News()));
+                .push(MaterialPageRoute(builder: (context) => Home()));
           },
           child: Text(
             "Start Exploring",

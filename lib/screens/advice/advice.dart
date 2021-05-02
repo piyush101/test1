@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_news/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class Advice extends StatefulWidget {
@@ -14,92 +16,123 @@ class _AdviceState extends State<Advice> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("Advice").snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(
-                      child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black)));
-                default:
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 2.4),
-                          crossAxisCount: 2),
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: 150,
-                          margin: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: backgroundColor(
-                                snapshot.data.docs[index]['Advice']),
-                            borderRadius: BorderRadiusDirectional.circular(15),
-                          ),
-                          child: Container(
-                            margin: EdgeInsets.all(8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data.docs[index]['Advice'],
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: textColor(
-                                          snapshot.data.docs[index]['Advice'])),
+        body: Stack(children: [
+          _getStockRecommendationTitle(),
+          // SizedBox(
+          //   height: 50,
+          // ),
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: StreamBuilder(
+                stream:
+                    FirebaseFirestore.instance.collection("Advice").snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(
+                          child: Constants.getCircularProgressBarIndicator());
+                    default:
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          await Future<void>.delayed(Duration(seconds: 1));
+                        },
+                        child: GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: MediaQuery.of(context)
+                                            .size
+                                            .width /
+                                        (MediaQuery.of(context).size.height /
+                                            2.45),
+                                    crossAxisCount: 2),
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                    color: _getbackgroundColor(
+                                        snapshot.data.docs[index]['Advice']),
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Container(
+                                  margin: EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        snapshot.data.docs[index]['Advice'],
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: _gettextColor(snapshot
+                                                .data.docs[index]['Advice'])),
+                                      ),
+                                      SizedBox(
+                                        height: size.height * .002,
+                                      ),
+                                      Text(
+                                        snapshot.data.docs[index]["Company"],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        'Target: ' +
+                                            '\u{20B9}' +
+                                            ' ' +
+                                            snapshot.data.docs[index]['Target'],
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        "By: " +
+                                            snapshot.data.docs[index]
+                                                ['AdviceBy'],
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Text(
+                                        timeStampConversion(
+                                            snapshot.data.docs[index]['Time']),
+                                        style: TextStyle(fontSize: 11),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  snapshot.data.docs[index]["Company"],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  'Target: ' +
-                                      '\u{20B9}' +
-                                      ' ' +
-                                      snapshot.data.docs[index]['Target'],
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  "By: " +
-                                      snapshot.data.docs[index]['AdviceBy'],
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  timeStampConversion(
-                                      snapshot.data.docs[index]['Time']),
-                                  style: TextStyle(fontSize: 11),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-              }
-            }),
+                              );
+                            }),
+                      );
+                  }
+                }),
+          ),
+        ]),
       ),
+    );
+  }
+
+  Padding _getStockRecommendationTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Stock Recommendations",
+            style: GoogleFonts.sourceSansPro(
+                fontSize: 20, fontWeight: FontWeight.w600),
+          )),
     );
   }
 
@@ -109,10 +142,10 @@ class _AdviceState extends State<Advice> {
     return formatDate;
   }
 
-  Color textColor(String val) {
+  Color _gettextColor(String val) {
     switch (val) {
       case "Buy":
-        return Color(0xFF41c47a);
+        return Color(0xFF468750);
       case "Sell":
         return Color(0xFFc92634);
       case "Hold":
@@ -122,12 +155,12 @@ class _AdviceState extends State<Advice> {
     }
   }
 
-  Color backgroundColor(String val) {
+  Color _getbackgroundColor(String val) {
     switch (val) {
       case "Buy":
-        return Color(0xFFbadebf);
+        return Color(0xFFCADBD1);
       case "Sell":
-        return Color(0xFFeda8a8);
+        return Color(0xFFEF0B6B7);
       case "Hold":
         return Color(0xFFd9cccc);
       default:

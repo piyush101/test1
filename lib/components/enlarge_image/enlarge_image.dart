@@ -10,9 +10,6 @@ class EnlargeImage extends StatefulWidget {
 }
 
 class _EnlargeImageState extends State<EnlargeImage> {
-  double _scaleFactor = 1.0;
-  double _previousScaleFactor = 1.0;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -36,8 +33,8 @@ class _EnlargeImageState extends State<EnlargeImage> {
             Container(
               child: Image.network(
                 widget.image_url,
-                height: size.height * 0.5,
-                fit: BoxFit.fill,
+                height: size.height * 0.4,
+                fit: BoxFit.cover,
               ),
             ),
           ],

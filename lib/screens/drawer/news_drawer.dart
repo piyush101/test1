@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/components/authetication/authentication.dart';
 import 'package:flutter_app_news/components/drawer/follow_us_images.dart';
 import 'package:flutter_app_news/constants.dart';
+import 'package:flutter_app_news/service/authentication/authentication_sign_out.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/provider/dark_theme_provider.dart';
@@ -26,7 +26,7 @@ class NewsDrawer extends StatelessWidget {
               UserAccountsDrawerHeader(
                 accountName: Text(user.displayName),
                 accountEmail: null,
-                decoration: BoxDecoration(color: kPrimaryColor),
+                decoration: BoxDecoration(color: Constants.primaryLightColor),
               ),
               ListTile(
                 title: Text(
@@ -148,6 +148,6 @@ class NewsDrawer extends StatelessWidget {
   }
 
   Future<void> signOut() async {
-    await Authentication().signOut();
+    await AuthenticationSignOut().signOut();
   }
 }
