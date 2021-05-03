@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/components/shared/shared.dart';
-import 'package:flutter_app_news/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants.dart';
@@ -13,7 +12,6 @@ class NewsBody extends StatefulWidget {
 }
 
 class _NewsBodyState extends State<NewsBody> {
-  DynamicLinkService _dynamicLinkService = DynamicLinkService();
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   Shared _shared = Shared();
 
@@ -51,7 +49,7 @@ class _NewsBodyState extends State<NewsBody> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Constants.primaryLightColor
-                                        .withOpacity(0.3),
+                                        .withOpacity(0.5),
                                   ),
                                 ],
                               ),

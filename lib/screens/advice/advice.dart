@@ -44,7 +44,7 @@ class _AdviceState extends State<Advice> {
                                             .size
                                             .width /
                                         (MediaQuery.of(context).size.height /
-                                            2.45),
+                                            2),
                                     crossAxisCount: 2),
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
@@ -76,7 +76,7 @@ class _AdviceState extends State<Advice> {
                                         snapshot.data.docs[index]["Company"],
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 15),
+                                            fontSize: 12),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -87,7 +87,7 @@ class _AdviceState extends State<Advice> {
                                             ' ' +
                                             snapshot.data.docs[index]['Target'],
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
@@ -98,7 +98,7 @@ class _AdviceState extends State<Advice> {
                                             snapshot.data.docs[index]
                                                 ['AdviceBy'],
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.w500),
                                       ),
                                       SizedBox(

@@ -16,10 +16,24 @@ class BookmarkShared {
     doc.reference.update(<String, dynamic>{
       "Bookmark": FieldValue.arrayRemove([_currentUser])
     });
-    List<Map> _bookmarksList = [];
-    _bookmarksList.removeWhere((bookmark) => bookmark['Title'] == doc['Title']);
 
-    users.doc(_currentUser).update({"bookmarks": _bookmarksList});
+    List<dynamic> _getbookmarkList() {
+      List<dynamic> _bookmarkData = [];
+      FirebaseFirestore.instance
+          .doc("Users/${_currentUser}")
+          .get()
+          .then((value) {
+        List<dynamic> _data = value.data()['bookmarks'];
+        _data.forEach((element) {
+          _bookmarkData.add(element);
+        });
+        _bookmarkData
+            .removeWhere((bookmark) => bookmark['Title'] == doc['Title']);
+        users.doc(_currentUser).update({"bookmarks": _bookmarkData});
+      });
+    }
+
+    _getbookmarkList();
   }
 
   addBookMarkData(DocumentSnapshot doc) {

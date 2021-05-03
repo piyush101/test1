@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/service/search_service/search_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 class Watchlist extends StatefulWidget {
@@ -14,7 +17,7 @@ class _WatchlistState extends State<Watchlist> {
   var tempSearchStore = [];
   var queryResult = [];
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference _users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
@@ -23,72 +26,90 @@ class _WatchlistState extends State<Watchlist> {
       child: new Scaffold(
         resizeToAvoidBottomInset: false,
         body: Stack(
-          fit: StackFit.expand,
+          fit: StackFit.passthrough,
           children: [
-            Text(
-              "Your Watchlist",
-              style: TextStyle(fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                "Your Watchlist",
+                style: GoogleFonts.sourceSansPro(
+                    fontSize: 20, fontWeight: FontWeight.w600),
+              ),
             ),
-            buildStreamBuilder(),
-            searchbarUi()
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 35, 8, 5),
+              child: Text(
+                "Tap and Hold to delete stock",
+                style: TextStyle(color: Color(0xFF788079)),
+              ),
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            _buildStreamBuilder(),
+            _floatingSearchBar()
           ],
         ),
       ),
     );
   }
 
-  StreamBuilder<DocumentSnapshot> buildStreamBuilder() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("Users")
-            .doc(_firebaseAuth.currentUser.uid)
-            .snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                  child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black)));
-            default:
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 5),
-                          crossAxisCount: 2),
-                      itemCount: snapshot.data.get('subscribeTopic').length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onLongPress: () {
-                            showAlertDialog(context,
-                                snapshot.data.get('subscribeTopic')[index]);
-                            print(snapshot.data.get('subscribeTopic')[index]);
-                          },
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                snapshot.data.get('subscribeTopic')[index],
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
+  Padding _buildStreamBuilder() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 50, 8, 8),
+      child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("Users")
+              .doc(_firebaseAuth.currentUser.uid)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                    child: Constants.getCircularProgressBarIndicator());
+              default:
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 80),
+                    child: GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 4),
+                            crossAxisCount: 2),
+                        itemCount: snapshot.data.get('subscribeTopic').length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onLongPress: () {
+                              showAlertDialog(context,
+                                  snapshot.data.get('subscribeTopic')[index]);
+                              print(snapshot.data.get('subscribeTopic')[index]);
+                            },
+                            child: Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  snapshot.data.get('subscribeTopic')[index],
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              margin: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(10),
+                                color: Color(0xFF92f7bb),
                               ),
                             ),
-                            margin: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFF92f7bb),
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              );
-          }
-        });
+                          );
+                        }),
+                  ),
+                );
+            }
+          }),
+    );
   }
 
   showAlertDialog(BuildContext context, value) {
@@ -97,7 +118,7 @@ class _WatchlistState extends State<Watchlist> {
       child: Text("Yes"),
       onPressed: () async {
         // await FirebaseMessaging.instance.unsubscribeFromTopic(value);
-        users.doc(_firebaseAuth.currentUser.uid).update({
+        _users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribeTopic": FieldValue.arrayRemove([value])
         });
         Navigator.maybePop(context);
@@ -129,14 +150,12 @@ class _WatchlistState extends State<Watchlist> {
     );
   }
 
-  searchbarUi() {
+  Padding _floatingSearchBar() {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 60),
       child: FloatingSearchBar(
-          hint: "Search stock",
+          hint: "Search Stock",
           physics: BouncingScrollPhysics(),
-          openAxisAlignment: 0.0,
-          axisAlignment: 0.0,
           scrollPadding: EdgeInsets.only(top: 16, bottom: 20),
           elevation: 4.0,
           onQueryChanged: (value) {
@@ -144,21 +163,13 @@ class _WatchlistState extends State<Watchlist> {
           },
           automaticallyImplyDrawerHamburger: false,
           transition: CircularFloatingSearchBarTransition(),
-          // actions: [
-          //   FloatingSearchBarAction.icon(icon: Icon(Icons.search), onTap: () {}),
-          //   FloatingSearchBarAction.back(
-          //     showIfClosed: false,
-          //   )
-          // ],
           builder: (context, transition) {
-            return ClipRRect(
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                    children: tempSearchStore.map((element) {
-                  return buildResultCard(element);
-                }).toList()),
-              ),
+            return Container(
+              color: Colors.white,
+              child: Column(
+                  children: tempSearchStore.map((element) {
+                return buildResultCard(element);
+              }).toList()),
             );
           }),
     );
@@ -199,10 +210,12 @@ class _WatchlistState extends State<Watchlist> {
 
   Widget buildResultCard(data) {
     return GestureDetector(
-      onTap: () {
-        users.doc(_firebaseAuth.currentUser.uid).update({
+      onTap: () async {
+        _users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribeTopic": FieldValue.arrayUnion([data['name']])
         });
+        await FirebaseMessaging.instance
+            .subscribeToTopic(tempSearchStore[data['name']]);
         Navigator.maybePop(context);
       },
       child: Padding(

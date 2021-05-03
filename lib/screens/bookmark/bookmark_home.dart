@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_details.dart';
 import 'package:flutter_app_news/screens/home/home.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +29,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.white,
           title: Text(
-            "Finbox",
+            "FinXpress",
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -44,9 +45,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
                         return Center(
-                            child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.black)));
+                            child: Constants.getCircularProgressBarIndicator());
                       default:
                         if (snapshot.data.get('bookmarks').length != 0) {
                           return SafeArea(
@@ -68,130 +67,126 @@ class _BookmarkHomeState extends State<BookmarkHome> {
                                     alignment: Alignment.topLeft,
                                     child: Text("Tap and hold to delete")),
                                 SizedBox(height: 10),
-                                SingleChildScrollView(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        snapshot.data.get('bookmarks').length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BookmarkDetails(
-                                                            snapshot.data)));
-                                          },
-                                          onLongPress: () {
-                                            print("tap");
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text("Finbox"),
-                                                    content: Text(
-                                                        "Do you want to remove article from bookmark?"),
-                                                    actions: [
-                                                      ElevatedButton(
-                                                        child: Text("Yes"),
-                                                        onPressed: () {
-                                                          users
-                                                              .doc(_currentUser)
-                                                              .update({
-                                                            "bookmarks":
-                                                                FieldValue
-                                                                    .arrayRemove([
-                                                              snapshot.data.get(
-                                                                      'bookmarks')[
-                                                                  index]
-                                                            ])
-                                                          });
-                                                          Navigator.maybePop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                      ElevatedButton(
-                                                        child: Text("No"),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      )
-                                                    ],
-                                                  );
-                                                });
-                                            // showAlertDialog(
-                                            //     context,
-                                            //     snapshot.data
-                                            //         .get('bookmarks')[index]);
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Color(0xFFcaedd7),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              height: 110,
-                                              width: double.infinity,
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                          image: DecorationImage(
-                                                              fit: BoxFit.cover,
-                                                              image: NetworkImage(
-                                                                  snapshot.data.get(
-                                                                              'bookmarks')[
-                                                                          index]
-                                                                      [
-                                                                      'Image'])))),
-                                                  Expanded(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              6.0),
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        child: Column(
-                                                          children: [
-                                                            Text(
-                                                              snapshot.data.get(
-                                                                      'bookmarks')[
-                                                                  index]['Title'],
-                                                              style: TextStyle(
-                                                                  fontSize: 17,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 6,
-                                                            ),
-                                                            Align(
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(timeStampConversion(
-                                                                  snapshot.data.get(
-                                                                              'bookmarks')[
-                                                                          index]
-                                                                      [
-                                                                      'Time'])),
-                                                            )
-                                                          ],
-                                                        ),
+                                ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      snapshot.data.get('bookmarks').length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BookmarkDetails(
+                                                          snapshot.data)));
+                                        },
+                                        onLongPress: () {
+                                          print("tap");
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text("Finbox"),
+                                                  content: Text(
+                                                      "Do you want to remove article from bookmark?"),
+                                                  actions: [
+                                                    ElevatedButton(
+                                                      child: Text("Yes"),
+                                                      onPressed: () {
+                                                        users
+                                                            .doc(_currentUser)
+                                                            .update({
+                                                          "bookmarks":
+                                                              FieldValue
+                                                                  .arrayRemove([
+                                                            snapshot.data.get(
+                                                                    'bookmarks')[
+                                                                index]
+                                                          ])
+                                                        });
+                                                        Navigator.maybePop(
+                                                            context);
+                                                      },
+                                                    ),
+                                                    ElevatedButton(
+                                                      child: Text("No"),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    )
+                                                  ],
+                                                );
+                                              });
+                                          // showAlertDialog(
+                                          //     context,
+                                          //     snapshot.data
+                                          //         .get('bookmarks')[index]);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Color(0xFFcaedd7),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            height: 125,
+                                            width: double.infinity,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                    width: 100,
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            fit: BoxFit.fill,
+                                                            image: NetworkImage(
+                                                                snapshot.data.get(
+                                                                            'bookmarks')[
+                                                                        index][
+                                                                    'Image'])))),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            snapshot.data.get(
+                                                                    'bookmarks')[
+                                                                index]['Title'],
+                                                            style: TextStyle(
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 6,
+                                                          ),
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child: Text(timeStampConversion(
+                                                                snapshot.data.get(
+                                                                            'bookmarks')[
+                                                                        index]
+                                                                    ['Time'])),
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
-                                                  )
-                                                ],
-                                              ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                          ));
-                                    },
-                                  ),
+                                          ),
+                                        ));
+                                  },
                                 ),
                               ],
                             ),

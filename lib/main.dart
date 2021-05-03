@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'components/provider/dark_theme_provider.dart';
 
 const bool kReleaseMode =
-bool.fromEnvironment('dart.vm.product', defaultValue: false);
+    bool.fromEnvironment('dart.vm.product', defaultValue: false);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,7 @@ Future<void> main() async {
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -37,7 +37,6 @@ Future<void> main() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("message is " + message.data['url']);
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -48,7 +47,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 class MyApp extends StatefulWidget {
   @override
@@ -115,9 +114,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Consumer<DarkThemeProvider>(
         builder: (context, DarkThemeProvider darkThemeProvider, child) {
-          return MultiProvider(
-            providers: [
-              StreamProvider.value(value: FirebaseAuth.instance.authStateChanges())
+      return MultiProvider(
+        providers: [
+          StreamProvider.value(value: FirebaseAuth.instance.authStateChanges())
         ],
         child: MaterialApp(
           theme: darkThemeProvider.getTheme,
