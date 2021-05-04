@@ -18,9 +18,6 @@ class _AdviceState extends State<Advice> {
       child: Scaffold(
         body: Stack(children: [
           _getStockRecommendationTitle(),
-          // SizedBox(
-          //   height: 50,
-          // ),
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: StreamBuilder(
@@ -44,7 +41,7 @@ class _AdviceState extends State<Advice> {
                                             .size
                                             .width /
                                         (MediaQuery.of(context).size.height /
-                                            2),
+                                            2.1),
                                     crossAxisCount: 2),
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {

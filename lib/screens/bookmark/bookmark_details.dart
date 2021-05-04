@@ -1,12 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/components/enlarge_image/enlarge_image.dart';
+import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_html/style.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookmarkDetails extends StatefulWidget {
-  DocumentSnapshot snapshot;
+  Map snapshot;
 
   BookmarkDetails(this.snapshot);
 
@@ -22,55 +23,20 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
         body: SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          // decoration: BoxDecoration(color: Color(0xFFedfcf8)),
           child: Wrap(
             children: [
               Container(
                 margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(),
-                child: Row(children: <Widget>[
-                  IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                  Flexible(
-                    child: Text(
-                      widget.snapshot.get('bookmarks')[0]['Title'],
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  )
-                ]),
+                child: _getTopRow(context),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return EnlargeImage(
-                        widget.snapshot.get("bookmarks")[0]['Image']);
-                  }));
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
-                  height: size.height * 0.3,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(
-                              widget.snapshot.get("bookmarks")[0]['Image']))),
-                ),
-              ),
+              _getImage(context, size),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
                 child: Row(
                   children: [
                     Text(
-                      widget.snapshot.get("bookmarks")[0]['Tag'],
+                      widget.snapshot['Tag'],
                       style: TextStyle(
                           fontSize: 16,
                           background: Paint()
@@ -83,8 +49,8 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                          child: Text(timeStampConversion(
-                              widget.snapshot.get('bookmarks')[0]['Time']))),
+                          child:
+                              Text(Constants.getdate(widget.snapshot['Time']))),
                     ),
                   ],
                 ),
@@ -106,7 +72,8 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Html(
-                    data: widget.snapshot.get("bookmarks")[0]['Content'],
+                    style: {"body": Style(fontSize: FontSize(18))},
+                    data: widget.snapshot['Content'],
                     onLinkTap: (url) {
                       launch(Uri.parse(url).toString());
                     },
@@ -118,9 +85,44 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
     ));
   }
 
-  String timeStampConversion(Timestamp t) {
-    DateTime dateTime = t.toDate();
-    String formatDate = DateFormat.yMMMMd('en_US').format(dateTime);
-    return formatDate;
+  GestureDetector _getImage(BuildContext context, Size size) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return EnlargeImage(widget.snapshot['Image']);
+        }));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(10),
+        height: size.height * 0.3,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(widget.snapshot['Image']))),
+      ),
+    );
+  }
+
+  Row _getTopRow(BuildContext context) {
+    return Row(children: <Widget>[
+      IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          }),
+      Flexible(
+        child: Text(
+          widget.snapshot['Title'],
+          style: GoogleFonts.sourceSansPro(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      )
+    ]);
   }
 }

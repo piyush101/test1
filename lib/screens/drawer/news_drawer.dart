@@ -1,15 +1,25 @@
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/components/drawer/follow_us_images.dart';
 import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/service/authentication/authentication_sign_out.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/provider/dark_theme_provider.dart';
 import '../../constants.dart';
 
-class NewsDrawer extends StatelessWidget {
+class NewsDrawer extends StatefulWidget {
+  @override
+  _NewsDrawerState createState() => _NewsDrawerState();
+}
+
+class _NewsDrawerState extends State<NewsDrawer> {
+  bool isSwitched = false;
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -24,67 +34,56 @@ class NewsDrawer extends StatelessWidget {
             shrinkWrap: true,
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text(user.displayName),
+                accountName: Text(
+                  user.displayName,
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
                 accountEmail: null,
-                decoration: BoxDecoration(color: Constants.primaryLightColor),
+                decoration: BoxDecoration(color: Constants.primaryColor),
               ),
-              ListTile(
-                title: Text(
-                  "Dark Theme",
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(Icons.brightness_6_rounded, color: Colors.black),
-                onTap: () {
-                  darkThemeProvider.swapTheme();
-                  Navigator.of(context).pop();
-                },
-                onLongPress: () {
-                  darkThemeProvider.swapTheme();
-                },
+              Center(
+                child: _getDayNightSwitcherButton(darkThemeProvider, context),
               ),
-              ListTile(
-                title: Text(
-                  "Share us with Friends",
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(
-                  Icons.share,
-                  color: Colors.black,
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "Any Feedback?",
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(
-                  Icons.mail,
-                  color: Colors.black,
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "Rate us on play store",
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(
-                  Icons.play_arrow_rounded,
-                  color: Colors.black,
-                ),
-              ),
-              ListTile(
-                title: InkWell(
-                  onTap: () {
-                    signOut();
-                  },
-                  child: Text(
-                    "LogOut",
-                    style: TextStyle(fontSize: 17),
+              // _getListTileObject(
+              //     "Share us with Friends", Icons.share, _signOut()),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                  title: Text("Share us with Friends",
+                      style: GoogleFonts.sourceSansPro(
+                          fontSize: 17, fontWeight: FontWeight.w600)),
+                  leading: Icon(
+                    Icons.share_outlined,
+                    color: Colors.black,
                   ),
                 ),
-                leading: Icon(
-                  Icons.logout,
-                  color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                    title: Text(
+                      "Rate us on Play Store",
+                      style: GoogleFonts.sourceSansPro(
+                          fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                    leading: SvgPicture.asset("assets/icons/play_store.svg",
+                        height: 23, width: 20)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                  title: InkWell(
+                    onTap: () {
+                      _signOut();
+                    },
+                    child: Text("LogOut",
+                        style: GoogleFonts.sourceSansPro(
+                            fontSize: 17, fontWeight: FontWeight.w600)),
+                  ),
+                  leading: Icon(
+                    Icons.logout,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ],
@@ -99,7 +98,10 @@ class NewsDrawer extends StatelessWidget {
               children: [
                 Text(
                   "Follow us on",
-                  style: TextStyle(fontSize: 18),
+                  style: GoogleFonts.sourceSansPro(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF3c4d47)),
                 ),
                 SizedBox(
                   height: 15,
@@ -147,7 +149,40 @@ class NewsDrawer extends StatelessWidget {
     );
   }
 
-  Future<void> signOut() async {
+  ListTile _getListTileObject(String text, icon, onTap) {
+    return ListTile(
+      title: InkWell(
+        onTap: onTap,
+        child: Text(
+          text,
+          style: GoogleFonts.sourceSansPro(
+              fontSize: 17, fontWeight: FontWeight.w600),
+        ),
+      ),
+      leading: Icon(
+        Icons.share,
+        color: Colors.black,
+      ),
+    );
+  }
+
+  DayNightSwitcher _getDayNightSwitcherButton(
+      DarkThemeProvider darkThemeProvider, BuildContext context) {
+    return DayNightSwitcher(
+      dayBackgroundColor: Constants.primaryColor,
+      isDarkModeEnabled: isSwitched,
+      onStateChanged: (value) {
+        setState(() {
+          isSwitched = value;
+          print(isSwitched);
+        });
+        darkThemeProvider.swapTheme();
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  Future<void> _signOut() async {
     await AuthenticationSignOut().signOut();
   }
 }

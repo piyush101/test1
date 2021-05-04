@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Constants {
   static const primaryLightColor = Color(0xFFCAE0DB);
@@ -8,5 +10,11 @@ class Constants {
   static CircularProgressIndicator getCircularProgressBarIndicator() {
     return CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(primaryColor));
+  }
+
+  static String getdate(Timestamp t) {
+    DateTime dateTime = t.toDate();
+    String formatDate = DateFormat.yMMMMd('en_US').format(dateTime);
+    return formatDate;
   }
 }

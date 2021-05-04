@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_details.dart';
 import 'package:flutter_app_news/screens/home/home.dart';
-import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BookmarkHome extends StatefulWidget {
   static const String bookmark_home = '/bookmarkHome';
@@ -16,8 +16,7 @@ class BookmarkHome extends StatefulWidget {
 
 class _BookmarkHomeState extends State<BookmarkHome> {
   var _currentUser = FirebaseAuth.instance.currentUser.uid;
-
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference _users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
@@ -25,183 +24,216 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white,
-          title: Text(
-            "FinXpress",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
+        appBar: _getAppBar(),
         body: SafeArea(
-          child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("Users")
-                      .doc(_currentUser)
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Center(
-                            child: Constants.getCircularProgressBarIndicator());
-                      default:
-                        if (snapshot.data.get('bookmarks').length != 0) {
-                          return SafeArea(
-                            child: Column(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Your Bookmarks",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text("Tap and hold to delete")),
-                                SizedBox(height: 10),
-                                ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      snapshot.data.get('bookmarks').length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BookmarkDetails(
-                                                          snapshot.data)));
-                                        },
-                                        onLongPress: () {
-                                          print("tap");
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text("Finbox"),
-                                                  content: Text(
-                                                      "Do you want to remove article from bookmark?"),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      child: Text("Yes"),
-                                                      onPressed: () {
-                                                        users
-                                                            .doc(_currentUser)
-                                                            .update({
-                                                          "bookmarks":
-                                                              FieldValue
-                                                                  .arrayRemove([
-                                                            snapshot.data.get(
-                                                                    'bookmarks')[
-                                                                index]
-                                                          ])
-                                                        });
-                                                        Navigator.maybePop(
-                                                            context);
-                                                      },
-                                                    ),
-                                                    ElevatedButton(
-                                                      child: Text("No"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    )
-                                                  ],
-                                                );
-                                              });
-                                          // showAlertDialog(
-                                          //     context,
-                                          //     snapshot.data
-                                          //         .get('bookmarks')[index]);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: Color(0xFFcaedd7),
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            height: 125,
-                                            width: double.infinity,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                    width: 100,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            fit: BoxFit.fill,
-                                                            image: NetworkImage(
-                                                                snapshot.data.get(
-                                                                            'bookmarks')[
-                                                                        index][
-                                                                    'Image'])))),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            6.0),
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      child: Column(
-                                                        children: [
-                                                          Text(
-                                                            snapshot.data.get(
-                                                                    'bookmarks')[
-                                                                index]['Title'],
-                                                            style: TextStyle(
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 6,
-                                                          ),
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(timeStampConversion(
-                                                                snapshot.data.get(
-                                                                            'bookmarks')[
-                                                                        index]
-                                                                    ['Time'])),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ));
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return buildWheBookmarkEmpty(context);
-                        }
-                    }
-                  })),
+          child: _getBookmarkStream(),
         ),
       ),
     );
   }
 
-  Column buildWheBookmarkEmpty(BuildContext context) {
+  Padding _getBookmarkStream() {
+    return Padding(
+        padding: const EdgeInsets.all(8),
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("Users")
+                .doc(_currentUser)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                      child: Constants.getCircularProgressBarIndicator());
+                default:
+                  if (snapshot.data.get('bookmarks').length != 0) {
+                    return Stack(
+                      children: [
+                        _getBookMarkTitle(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        _getTapHeading(),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 50, 8, 8),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: RefreshIndicator(
+                                  onRefresh: () async {
+                                    await Future<void>.delayed(
+                                        Duration(seconds: 1));
+                                  },
+                                  child: ListView.builder(
+                                    physics: BouncingScrollPhysics(
+                                        parent:
+                                            AlwaysScrollableScrollPhysics()),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        snapshot.data.get('bookmarks').length,
+                                    itemBuilder: (context, index) {
+                                      return _getBookmarkContainer(
+                                          context, snapshot, index);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return _buildWheBookmarkEmpty(context);
+                  }
+              }
+            }));
+  }
+
+  GestureDetector _getBookmarkContainer(BuildContext context,
+      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+    return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  BookmarkDetails(snapshot.data.get('bookmarks')[index])));
+        },
+        onLongPress: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return _alertBoxOnLongPress(snapshot, index, context);
+              });
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Color(0xFFcaedd7),
+                borderRadius: BorderRadius.circular(5)),
+            height: 140,
+            width: double.infinity,
+            child: Row(
+              children: [
+                _getBookmarkImage(snapshot, index),
+                Expanded(
+                  child: _getBookmarkData(snapshot, index),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Padding _getBookmarkData(
+      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Column(
+          children: [
+            Text(
+              snapshot.data.get('bookmarks')[index]['Title'],
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(Constants.getdate(
+                  snapshot.data.get('bookmarks')[index]['Time'])),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _getBookmarkImage(
+      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+    return Container(
+        width: 125,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                    snapshot.data.get('bookmarks')[index]['Image']))));
+  }
+
+  Padding _getTapHeading() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
+      child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Tap and hold to delete",
+            style: GoogleFonts.sourceSansPro(
+                color: Color(0xFF7b8582), fontSize: 15),
+          )),
+    );
+  }
+
+  Padding _getBookMarkTitle() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text("Your Bookmarks",
+            style: GoogleFonts.sourceSansPro(
+                fontSize: 20, fontWeight: FontWeight.w600)),
+      ),
+    );
+  }
+
+  AppBar _getAppBar() {
+    return AppBar(
+      iconTheme: IconThemeData(color: Colors.black),
+      backgroundColor: Colors.white,
+      title: Text(
+        "FinXpress",
+        style: TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  AlertDialog _alertBoxOnLongPress(AsyncSnapshot<DocumentSnapshot> snapshot,
+      int index, BuildContext context) {
+    return AlertDialog(
+      title: Text("Finbox"),
+      content: Text("Do you want to remove article from bookmark?"),
+      actions: [
+        dialogYesButton(snapshot, index, context),
+        dialogNoButton(context)
+      ],
+    );
+  }
+
+  ElevatedButton dialogNoButton(BuildContext context) {
+    return ElevatedButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  ElevatedButton dialogYesButton(AsyncSnapshot<DocumentSnapshot> snapshot,
+      int index, BuildContext context) {
+    return ElevatedButton(
+      child: Text("Yes"),
+      onPressed: () {
+        _users.doc(_currentUser).update({
+          "bookmarks":
+              FieldValue.arrayRemove([snapshot.data.get('bookmarks')[index]])
+        });
+        Navigator.maybePop(context);
+      },
+    );
+  }
+
+  Column _buildWheBookmarkEmpty(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -219,45 +251,13 @@ class _BookmarkHomeState extends State<BookmarkHome> {
                 .push(MaterialPageRoute(builder: (context) => Home()));
           },
           child: Text(
-            "Start Exploring",
-            style: TextStyle(fontSize: 27, fontWeight: FontWeight.w500),
+            "Simplied Investing",
+            style: GoogleFonts.sourceSansPro(
+                fontSize: 30,
+                color: Color(0xFF3b7d68),
+                fontWeight: FontWeight.bold),
           ),
         )
-      ],
-    );
-  }
-
-  String timeStampConversion(Timestamp t) {
-    DateTime dateTime = t.toDate();
-    String formatDate = DateFormat.yMMMMd('en_US').format(dateTime);
-    return formatDate;
-  }
-
-  showAlertDialog(BuildContext context, value) {
-    // set up the buttons
-    Widget yesButton = ElevatedButton(
-      child: Text("Yes"),
-      onPressed: () {
-        users.doc(_currentUser).update({
-          "bookmarks": FieldValue.arrayRemove([value])
-        });
-        Navigator.maybePop(context);
-      },
-    );
-    Widget noButton = ElevatedButton(
-      child: Text("No"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Finbox"),
-      content: Text("Do you want to remove article from bookmark?"),
-      actions: [
-        yesButton,
-        noButton,
       ],
     );
   }
