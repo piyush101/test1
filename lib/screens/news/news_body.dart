@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/components/shared/shared.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants.dart';
 
@@ -46,12 +45,6 @@ class _NewsBodyState extends State<NewsBody> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadiusDirectional.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Constants.primaryLightColor
-                                        .withOpacity(0.5),
-                                  ),
-                                ],
                               ),
                               // height: size.height * 0.72,
                               child: Column(
@@ -92,16 +85,19 @@ class _NewsBodyState extends State<NewsBody> {
                                         children: [
                                           Text(
                                             snapshot.data.docs[index]['Title'],
-                                            style: GoogleFonts.sourceSansPro(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
+                                            style: TextStyle(
+                                                fontFamily: 'SourceSansPro',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700),
                                           ),
                                           SizedBox(height: size.height * .005),
                                           Text(
                                             snapshot.data.docs[index]
                                                 ['Content'],
-                                            style: GoogleFonts.sourceSansPro(
-                                                fontSize: 18),
+                                            style: TextStyle(
+                                                fontFamily: 'SourceSansPro',
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
                                           ),
                                           SizedBox(
                                             height: size.height * .02,

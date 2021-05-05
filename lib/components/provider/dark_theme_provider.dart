@@ -27,6 +27,5 @@ class DarkThemeProvider extends ChangeNotifier {
       sharedPreferences.setBool("isDarkTheme", true);
     }
     notifyListeners();
-    // notifyListeners();
   }
 }

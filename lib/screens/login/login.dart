@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
@@ -21,7 +20,6 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Constants.primaryLightColor,
         body: isLoading
             ? Center(
                 child: getWaitWidgetWhileLoading(),
@@ -42,7 +40,7 @@ class _LoginState extends State<Login> {
               height: size.height * .1,
             ),
             Image.asset(
-              "assets/images/login_logo.png",
+              "assets/images/logo_transparent.png",
               width: double.infinity,
               height: 300,
             ),
@@ -63,7 +61,7 @@ class _LoginState extends State<Login> {
       width: size.width * .9,
       height: size.height * .05,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: Constants.primaryColor),
+        style: ElevatedButton.styleFrom(primary: Color(0xFFEBD1D1)),
         onPressed: () {
           _signInWithGoogle().then((value) => this.setState(() {
                 isLoading = false;
@@ -80,8 +78,11 @@ class _LoginState extends State<Login> {
             ),
             Text(
               "Sign In with Google",
-              style: GoogleFonts.sourceSansPro(
-                  fontSize: 20, color: Constants.blackLightColor),
+              style: TextStyle(
+                  color: Color(0xFF4D5054),
+                  fontFamily: 'SourceSansPro',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
             )
           ],
         ),
@@ -94,7 +95,7 @@ class _LoginState extends State<Login> {
       width: size.width * .9,
       height: size.height * .05,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: Constants.primaryColor),
+        style: ElevatedButton.styleFrom(primary: Color(0xFFD1E2EB)),
         onPressed: () {
           _handleFacebookLogin().then((value) => this.setState(() {
                 isLoading = false;
@@ -111,8 +112,11 @@ class _LoginState extends State<Login> {
             ),
             Text(
               "Sign In with Facebook",
-              style: GoogleFonts.sourceSansPro(
-                  fontSize: 20, color: Constants.blackLightColor),
+              style: TextStyle(
+                  color: Color(0xFF4D5054),
+                  fontFamily: 'SourceSansPro',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
             )
           ],
         ),
@@ -129,7 +133,7 @@ class _LoginState extends State<Login> {
           color: Colors.transparent,
         ),
         Text(
-          "Please wait...",
+          "Please Wait...",
           style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
         ),
       ],

@@ -15,11 +15,9 @@ class FollowUsImages extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: OnTap,
-      // handle your image tap here
       child: SvgPicture.asset(
         Image_Path,
         fit: BoxFit.cover,
-        // this is the solution for border
         width: 23,
         height: 23,
       ),

@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/components/enlarge_image/enlarge_image.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,7 +46,13 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Html(
-                  style: {"body": Style(fontSize: FontSize(18))},
+                  defaultTextStyle:
+                      TextStyle(fontSize: 17, fontFamily: "SourceSansPro"),
+                  linkStyle: TextStyle(
+                      fontSize: 17,
+                      fontFamily: "SpurceSansPro",
+                      color: Colors.blueGrey,
+                      decoration: TextDecoration.underline),
                   data: widget.snapshot['Content'],
                   onLinkTap: (url) {
                     launch(Uri.parse(url).toString());
@@ -70,8 +74,10 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
         backArrow(context),
         Flexible(
           child: Text(widget.snapshot['Title'],
-              style: GoogleFonts.sourceSansPro(
-                  fontSize: 20, fontWeight: FontWeight.w600)),
+              style: TextStyle(
+                  fontFamily: 'SourceSansPro',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600)),
         )
       ]),
     );

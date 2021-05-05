@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_news/route_generator.dart';
 import 'package:flutter_app_news/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -17,7 +18,17 @@ const bool kReleaseMode =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
+
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    await Firebase.initializeApp();
+  }
+
   if (kReleaseMode) {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
@@ -27,16 +38,11 @@ Future<void> main() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   return runApp(ChangeNotifierProvider(
     child: MyApp(),
     create: (BuildContext context) =>
         DarkThemeProvider(sharedPreferences.getBool("isDarkTheme") ?? false),
   ));
-}
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -127,28 +133,4 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       );
     });
   }
-
-// void initDynamicLinks() async {
-//   FirebaseDynamicLinks.instance.onLink(
-//       onSuccess: (PendingDynamicLinkData dynamicLink) async {
-//     final Uri deepLink = dynamicLink?.link;
-//
-//     if (deepLink != null) {
-//       // Navigator.pushNamed(context, deepLink.path);
-//       print(deepLink.queryParameters['page']);
-//     }
-//   }, onError: (OnLinkErrorException e) async {
-//     print('onLinkError');
-//     print(e.message);
-//   });
-//
-//   final PendingDynamicLinkData data =
-//       await FirebaseDynamicLinks.instance.getInitialLink();
-//   final Uri deepLink = data?.link;
-//
-//   if (deepLink != null) {
-//     // Navigator.pushNamed(context, deepLink.path);
-//     print(deepLink.queryParameters['page'].toString());
-//   }
-// }
 }

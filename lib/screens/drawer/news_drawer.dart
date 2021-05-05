@@ -6,7 +6,6 @@ import 'package:flutter_app_news/components/drawer/follow_us_images.dart';
 import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/service/authentication/authentication_sign_out.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/provider/dark_theme_provider.dart';
@@ -39,7 +38,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
                 accountEmail: null,
-                decoration: BoxDecoration(color: Constants.primaryColor),
+                decoration: BoxDecoration(color: Color(0xFFccced2)),
               ),
               Center(
                 child: _getDayNightSwitcherButton(darkThemeProvider, context),
@@ -50,8 +49,10 @@ class _NewsDrawerState extends State<NewsDrawer> {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
                   title: Text("Share us with Friends",
-                      style: GoogleFonts.sourceSansPro(
-                          fontSize: 17, fontWeight: FontWeight.w600)),
+                      style: TextStyle(
+                          fontFamily: 'SourceSansPro',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600)),
                   leading: Icon(
                     Icons.share_outlined,
                     color: Colors.black,
@@ -63,8 +64,10 @@ class _NewsDrawerState extends State<NewsDrawer> {
                 child: ListTile(
                     title: Text(
                       "Rate us on Play Store",
-                      style: GoogleFonts.sourceSansPro(
-                          fontSize: 17, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          fontFamily: 'SourceSansPro',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
                     ),
                     leading: SvgPicture.asset("assets/icons/play_store.svg",
                         height: 23, width: 20)),
@@ -76,9 +79,11 @@ class _NewsDrawerState extends State<NewsDrawer> {
                     onTap: () {
                       _signOut();
                     },
-                    child: Text("LogOut",
-                        style: GoogleFonts.sourceSansPro(
-                            fontSize: 17, fontWeight: FontWeight.w600)),
+                    child: Text("Log Out",
+                        style: TextStyle(
+                            fontFamily: 'SourceSansPro',
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600)),
                   ),
                   leading: Icon(
                     Icons.logout,
@@ -98,7 +103,8 @@ class _NewsDrawerState extends State<NewsDrawer> {
               children: [
                 Text(
                   "Follow us on",
-                  style: GoogleFonts.sourceSansPro(
+                  style: TextStyle(
+                      fontFamily: 'SourceSansPro',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF3c4d47)),
@@ -149,27 +155,10 @@ class _NewsDrawerState extends State<NewsDrawer> {
     );
   }
 
-  ListTile _getListTileObject(String text, icon, onTap) {
-    return ListTile(
-      title: InkWell(
-        onTap: onTap,
-        child: Text(
-          text,
-          style: GoogleFonts.sourceSansPro(
-              fontSize: 17, fontWeight: FontWeight.w600),
-        ),
-      ),
-      leading: Icon(
-        Icons.share,
-        color: Colors.black,
-      ),
-    );
-  }
-
   DayNightSwitcher _getDayNightSwitcherButton(
       DarkThemeProvider darkThemeProvider, BuildContext context) {
     return DayNightSwitcher(
-      dayBackgroundColor: Constants.primaryColor,
+      dayBackgroundColor: Constants.primaryLightColor,
       isDarkModeEnabled: isSwitched,
       onStateChanged: (value) {
         setState(() {

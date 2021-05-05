@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
+import 'package:flutter_app_news/screens/home/home.dart';
 import 'package:flutter_app_news/service/search_service/search_service.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 class Watchlist extends StatefulWidget {
@@ -30,15 +30,18 @@ class _WatchlistState extends State<Watchlist> {
               padding: const EdgeInsets.all(8),
               child: Text(
                 "Your Watchlist",
-                style: GoogleFonts.sourceSansPro(
-                    fontSize: 20, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontFamily: 'SourceSansPro',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.blueGrey),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 35, 8, 5),
               child: Text(
                 "Tap and Hold to delete stock",
-                style: TextStyle(color: Color(0xFF788079)),
+                style: TextStyle(color: Colors.blueGrey),
               ),
             ),
             _buildStreamBuilder(),
@@ -105,15 +108,17 @@ class _WatchlistState extends State<Watchlist> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             snapshot.data.get('subscribeTopic')[index].toString(),
-            style: GoogleFonts.sourceSansPro(
-                fontSize: 18, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 18,
+                fontWeight: FontWeight.w500),
           ),
         ),
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFF86888a)),
+          // border: Border.all(color: Color(0xFF86888a)),
           borderRadius: BorderRadius.circular(5),
-          color: Color(0xFFe1e5eb),
+          color: Colors.blueGrey.withOpacity(0.2),
         ),
       ),
     );
@@ -225,7 +230,8 @@ class _WatchlistState extends State<Watchlist> {
         users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribeTopic": FieldValue.arrayUnion([data['name']])
         });
-        Navigator.maybePop(context);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Home(pageIndex: 3)));
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
@@ -233,8 +239,10 @@ class _WatchlistState extends State<Watchlist> {
           alignment: Alignment.centerLeft,
           child: Text(
             data['name'],
-            style: GoogleFonts.sourceSansPro(
-                fontSize: 20, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 20,
+                fontWeight: FontWeight.w500),
           ),
         ),
       ),

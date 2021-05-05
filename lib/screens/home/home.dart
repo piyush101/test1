@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/screens/advice/advice.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_home.dart';
 import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
 import 'package:flutter_app_news/screens/insights/insights_home/insights_home.dart';
 import 'package:flutter_app_news/screens/news/news_body.dart';
 import 'package:flutter_app_news/screens/watchlist/watchlist.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
   int pageIndex;
@@ -18,6 +18,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  DateTime backbuttonpressedTime;
+
   @override
   Widget build(BuildContext context) {
     return buildScaffold();
@@ -29,10 +31,14 @@ class _HomeState extends State<Home> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Constants.primaryLightColor,
+          backgroundColor: Color(0xFFb1c5c5),
           title: Text(
             "FinXpress",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 23,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87),
           ),
           actions: [
             IconButton(
@@ -41,14 +47,19 @@ class _HomeState extends State<Home> {
                     return BookmarkHome();
                   }));
                 },
-                icon: Icon(Icons.bookmark))
+                icon: Icon(
+                  Icons.bookmark,
+                  color: Color(0xFF3c4d47),
+                ))
           ],
         ),
         drawer: Drawer(child: NewsDrawer()),
-        body: _getPage(widget.pageIndex),
+        body: WillPopScope(
+            onWillPop: onWillPop, child: _getPage(widget.pageIndex)),
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
+          backgroundColor: Color(0xFFDCDCDC),
+          selectedItemColor: Colors.black87,
+          unselectedItemColor: Color(0xFF6C7180),
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             setState(() {
@@ -63,10 +74,10 @@ class _HomeState extends State<Home> {
                 )),
                 label: "Home",
                 backgroundColor: Colors.grey),
-            BottomNavigationBarItem(
-                icon: (Icon(CupertinoIcons.book)),
-                label: "Learnings",
-                backgroundColor: Colors.grey),
+            // BottomNavigationBarItem(
+            //     icon: (Icon(CupertinoIcons.book)),
+            //     label: "Learnings",
+            //     backgroundColor: Colors.grey),
             BottomNavigationBarItem(
                 icon: (Icon(Icons.vpn_key)), label: "Insights"),
             BottomNavigationBarItem(
@@ -83,16 +94,32 @@ class _HomeState extends State<Home> {
     switch (pageIndex) {
       case 0:
         return NewsBody();
+      // case 1:
+      //   return LearningsHomepage();
       case 1:
-        return Container();
-      case 2:
         return InsightsHome();
-      case 3:
+      case 2:
         return Advice();
-      case 4:
+      case 3:
         return Watchlist();
       default:
         return NewsBody();
     }
+  }
+
+  Future<bool> onWillPop() async {
+    DateTime currentTime = DateTime.now();
+    //Statement 1 Or statement2
+    bool backButton = backbuttonpressedTime == null ||
+        currentTime.difference(backbuttonpressedTime) > Duration(seconds: 3);
+    if (backButton) {
+      backbuttonpressedTime = currentTime;
+      Fluttertoast.showToast(
+          msg: "Double Tap to exit FinXpress",
+          backgroundColor: Colors.black,
+          textColor: Colors.white);
+      return false;
+    }
+    return true;
   }
 }

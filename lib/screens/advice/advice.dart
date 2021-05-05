@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class Advice extends StatefulWidget {
@@ -127,8 +126,11 @@ class _AdviceState extends State<Advice> {
           alignment: Alignment.topLeft,
           child: Text(
             "Stock Recommendations",
-            style: GoogleFonts.sourceSansPro(
-                fontSize: 20, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.blueGrey),
           )),
     );
   }

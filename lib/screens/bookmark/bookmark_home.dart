@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_details.dart';
 import 'package:flutter_app_news/screens/home/home.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BookmarkHome extends StatefulWidget {
   static const String bookmark_home = '/bookmarkHome';
@@ -157,7 +156,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
         width: 125,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 image: NetworkImage(
                     snapshot.data.get('bookmarks')[index]['Image']))));
   }
@@ -169,8 +168,11 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           alignment: Alignment.topLeft,
           child: Text(
             "Tap and hold to delete",
-            style: GoogleFonts.sourceSansPro(
-                color: Color(0xFF7b8582), fontSize: 15),
+            style: TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Colors.blueGrey),
           )),
     );
   }
@@ -181,8 +183,11 @@ class _BookmarkHomeState extends State<BookmarkHome> {
       child: Align(
         alignment: Alignment.topLeft,
         child: Text("Your Bookmarks",
-            style: GoogleFonts.sourceSansPro(
-                fontSize: 20, fontWeight: FontWeight.w600)),
+            style: TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.blueGrey)),
       ),
     );
   }
@@ -190,7 +195,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
   AppBar _getAppBar() {
     return AppBar(
       iconTheme: IconThemeData(color: Colors.black),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFb1c5c5),
       title: Text(
         "FinXpress",
         style: TextStyle(color: Colors.black),
@@ -239,25 +244,18 @@ class _BookmarkHomeState extends State<BookmarkHome> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 100.0),
-          child: Image.asset(
-            "assets/images/image.jpg",
-            width: double.infinity,
-            height: 350,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Home()));
+            },
+            child: Image.asset(
+              "assets/images/image.jpg",
+              width: double.infinity,
+              height: 350,
+            ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Home()));
-          },
-          child: Text(
-            "Simplied Investing",
-            style: GoogleFonts.sourceSansPro(
-                fontSize: 30,
-                color: Color(0xFF3b7d68),
-                fontWeight: FontWeight.bold),
-          ),
-        )
       ],
     );
   }

@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_shared.dart';
 import 'package:flutter_app_news/service/dynamic_link_service/dynamic_link_service.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-
-import '../../constants.dart';
 
 class Shared {
   BookmarkShared _bookmarkShared = BookmarkShared();
@@ -18,6 +15,7 @@ class Shared {
           Icons.share_rounded,
           size: 30,
         ),
+        color: Color(0xFF4B5557),
         onPressed: () async {
           Share.share(
               await _dynamicLinkService.createDynamicLink(pageIndex, snapShot));
@@ -29,22 +27,25 @@ class Shared {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadiusDirectional.circular(15),
-          boxShadow: [
-            BoxShadow(color: Constants.primaryLightColor),
-          ],
           image: DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(snapshot.data.docs[index]['Image']))),
       height: size.height * 0.21,
-      margin: EdgeInsets.all(10),
+      // margin: EdgeInsets.all(10),
     );
   }
 
   IconButton getBookMark(AsyncSnapshot<QuerySnapshot> snapshot, int index) {
     return IconButton(
         icon: _bookmarkShared.isBookmarked(snapshot.data.docs[index])
-            ? Icon(Icons.bookmark)
-            : Icon(Icons.bookmark_border_outlined),
+            ? Icon(
+                Icons.bookmark,
+                color: Color(0xFF4B5557),
+              )
+            : Icon(
+                Icons.bookmark_border_outlined,
+                color: Color(0xFF4B5557),
+              ),
         onPressed: () {
           _bookmarkShared.isBookmarked(snapshot.data.docs[index])
               ? _bookmarkShared.deleteBookMarkData(snapshot.data.docs[index])
@@ -57,10 +58,11 @@ class Shared {
       fit: BoxFit.cover,
       child: Text(
         snapshot.data.docs[index]['Tag'],
-        style: GoogleFonts.sourceSansPro(
+        style: TextStyle(
+            fontFamily: 'SourceSansPro',
             fontSize: 18,
-            fontWeight: FontWeight.w700,
-            backgroundColor: Color(0xFFB2D9CF)),
+            fontWeight: FontWeight.w600,
+            backgroundColor: Color(0xFF404A35).withOpacity(.2)),
       ),
     );
   }

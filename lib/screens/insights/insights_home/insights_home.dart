@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/components/shared/shared.dart';
-import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_app_news/screens/insights/insights_post_details/insights_post_details.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class InsightsHome extends StatefulWidget {
   @override
@@ -56,8 +54,8 @@ class _InsightsHomeState extends State<InsightsHome> {
                                       BorderRadiusDirectional.circular(15),
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Constants.primaryLightColor
-                                            .withOpacity(0.3)),
+                                        color:
+                                            Color(0xFFecedea).withOpacity(0.4)),
                                   ],
                                 ),
                                 child: Column(
@@ -87,14 +85,17 @@ class _InsightsHomeState extends State<InsightsHome> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(8),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           snapshot.data.docs[index]['Title'],
-                                          style: GoogleFonts.sourceSansPro(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 22),
+                                          style: TextStyle(
+                                            fontFamily: 'SourceSansPro',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                     ),
