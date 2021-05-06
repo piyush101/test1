@@ -50,10 +50,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                       TextStyle(fontSize: 17, fontFamily: "SourceSansPro"),
                   linkStyle: TextStyle(
                       fontSize: 17,
-                      fontFamily: "SpurceSansPro",
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "SourceSansPro",
                       color: Colors.blueGrey,
                       decoration: TextDecoration.underline),
-                  data: widget.snapshot['Content'],
+                  data: widget.snapshot['content'],
                   onLinkTap: (url) {
                     launch(Uri.parse(url).toString());
                   },
@@ -73,7 +74,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Row(children: <Widget>[
         backArrow(context),
         Flexible(
-          child: Text(widget.snapshot['Title'],
+          child: Text(widget.snapshot['title'],
               style: TextStyle(
                   fontFamily: 'SourceSansPro',
                   fontSize: 20,
@@ -87,13 +88,13 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
       child: Text(
-        widget.snapshot['Tag'],
+        widget.snapshot['tag'],
         style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
             background: Paint()
               ..strokeWidth = 22
-              ..color = Color(0xFFdff5ef)
+              ..color = Color(0xFF84ADAD).withOpacity(0.4)
               ..style = PaintingStyle.stroke
               ..strokeJoin = StrokeJoin.round),
       ),
@@ -106,11 +107,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Row(
         children: [
           Text(
-            _dateConversion(widget.snapshot['Time']),
+            _dateConversion(widget.snapshot['time']),
             style: TextStyle(fontSize: 15),
           ),
           Spacer(),
-          Text(widget.snapshot['ReadTime'] + " Min Read")
+          Text(widget.snapshot['readtime'] + " Min Read")
         ],
       ),
     );
@@ -120,7 +121,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return EnlargeImage(widget.snapshot['Image']);
+          return EnlargeImage(widget.snapshot['imageurl']);
         }));
       },
       child: Container(
@@ -130,7 +131,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(widget.snapshot['Image']))),
+                image: NetworkImage(widget.snapshot['imageurl']))),
       ),
     );
   }

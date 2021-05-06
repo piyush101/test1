@@ -20,7 +20,7 @@ class _InsightsHomeState extends State<InsightsHome> {
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("Insights")
-                .orderBy("Time", descending: true)
+                .orderBy("time", descending: true)
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               switch (snapshot.connectionState) {
@@ -78,7 +78,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                               _shared.getShareButton(
                                                   2,
                                                   snapshot.data.docs[index]
-                                                      ['Title'])
+                                                      ['title'])
                                             ],
                                           ),
                                         ],
@@ -90,7 +90,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          snapshot.data.docs[index]['Title'],
+                                          snapshot.data.docs[index]['title'],
                                           style: TextStyle(
                                             fontFamily: 'SourceSansPro',
                                             fontSize: 20,

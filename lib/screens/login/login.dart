@@ -209,7 +209,7 @@ class _LoginState extends State<Login> {
         .doc(_firebaseAuth.currentUser.uid)
         .set({
       "userID": _firebaseAuth.currentUser.uid,
-      "subscribeTopic": [],
+      "subscribetopic": [],
       "bookmarks": []
     });
   }

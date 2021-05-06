@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
@@ -83,7 +84,7 @@ class _WatchlistState extends State<Watchlist> {
                                             5),
                                     crossAxisCount: 2),
                             itemCount:
-                                snapshot.data.get('subscribeTopic').length,
+                                snapshot.data.get('subscribetopic').length,
                             itemBuilder: (context, index) {
                               return _getCompanyContainer(
                                   context, snapshot, index);
@@ -101,13 +102,13 @@ class _WatchlistState extends State<Watchlist> {
       AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
     return GestureDetector(
       onLongPress: () {
-        _showAlertDialog(context, snapshot.data.get('subscribeTopic')[index]);
+        _showAlertDialog(context, snapshot.data.get('subscribetopic')[index]);
       },
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            snapshot.data.get('subscribeTopic')[index].toString(),
+            snapshot.data.get('subscribetopic')[index].toString(),
             style: TextStyle(
                 fontFamily: 'SourceSansPro',
                 fontSize: 18,
@@ -129,9 +130,9 @@ class _WatchlistState extends State<Watchlist> {
     Widget yesButton = ElevatedButton(
       child: Text("Yes"),
       onPressed: () async {
-        // await FirebaseMessaging.instance.unsubscribeFromTopic(value);
+        await FirebaseMessaging.instance.unsubscribeFromTopic(value);
         users.doc(_firebaseAuth.currentUser.uid).update({
-          "subscribeTopic": FieldValue.arrayRemove([value])
+          "subscribetopic": FieldValue.arrayRemove([value])
         });
         Navigator.maybePop(context);
       },
@@ -175,7 +176,7 @@ class _WatchlistState extends State<Watchlist> {
           onQueryChanged: (value) {
             initiateSearch(value);
           },
-          automaticallyImplyDrawerHamburger: false,
+          // automaticallyImplyDrawerHamburger: false,
           transition: CircularFloatingSearchBarTransition(),
           builder: (context, transition) {
             return ClipRRect(
@@ -226,10 +227,11 @@ class _WatchlistState extends State<Watchlist> {
 
   Widget _buildResultCard(data) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         users.doc(_firebaseAuth.currentUser.uid).update({
-          "subscribeTopic": FieldValue.arrayUnion([data['name']])
+          "subscribetopic": FieldValue.arrayUnion([data['name']])
         });
+        await FirebaseMessaging.instance.subscribeToTopic(data['name']);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Home(pageIndex: 3)));
       },

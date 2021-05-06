@@ -6,7 +6,7 @@ class BookmarkShared {
   var _currentUser = FirebaseAuth.instance.currentUser.uid;
 
   bool isBookmarked(QueryDocumentSnapshot data) {
-    if (data['Bookmark'].contains(_currentUser)) {
+    if (data['bookmarkuid'].contains(_currentUser)) {
       return true;
     }
     return false;
@@ -14,7 +14,7 @@ class BookmarkShared {
 
   deleteBookMarkData(DocumentSnapshot doc) {
     doc.reference.update(<String, dynamic>{
-      "Bookmark": FieldValue.arrayRemove([_currentUser])
+      "bookmarkuid": FieldValue.arrayRemove([_currentUser])
     });
 
     List<dynamic> _getbookmarkList() {
@@ -28,7 +28,7 @@ class BookmarkShared {
           _bookmarkData.add(element);
         });
         _bookmarkData
-            .removeWhere((bookmark) => bookmark['Title'] == doc['Title']);
+            .removeWhere((bookmark) => bookmark['title'] == doc['title']);
         users.doc(_currentUser).update({"bookmarks": _bookmarkData});
       });
     }
@@ -38,14 +38,14 @@ class BookmarkShared {
 
   addBookMarkData(DocumentSnapshot doc) {
     doc.reference.update(<String, dynamic>{
-      'Bookmark': FieldValue.arrayUnion([_currentUser])
+      'bookmarkuid': FieldValue.arrayUnion([_currentUser])
     });
     Map<dynamic, dynamic> dataBookmark = {
-      "Content": doc['Content'],
-      "Title": doc['Title'],
-      "Time": doc['Time'],
-      "Image": doc['Image'],
-      "Tag": doc['Tag']
+      "content": doc['content'],
+      "title": doc['title'],
+      "time": doc['time'],
+      "imageurl": doc['imageurl'],
+      "tag": doc['tag']
     };
     users.doc(_currentUser).update({
       "bookmarks": FieldValue.arrayUnion([dataBookmark])

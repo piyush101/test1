@@ -133,7 +133,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
         child: Column(
           children: [
             Text(
-              snapshot.data.get('bookmarks')[index]['Title'],
+              snapshot.data.get('bookmarks')[index]['title'],
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
             SizedBox(
@@ -142,7 +142,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(Constants.getdate(
-                  snapshot.data.get('bookmarks')[index]['Time'])),
+                  snapshot.data.get('bookmarks')[index]['time'])),
             )
           ],
         ),
@@ -158,7 +158,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: NetworkImage(
-                    snapshot.data.get('bookmarks')[index]['Image']))));
+                    snapshot.data.get('bookmarks')[index]['imageurl']))));
   }
 
   Padding _getTapHeading() {

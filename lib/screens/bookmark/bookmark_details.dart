@@ -34,7 +34,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                 child: Row(
                   children: [
                     Text(
-                      widget.snapshot['Tag'],
+                      widget.snapshot['tag'],
                       style: TextStyle(
                           fontSize: 16,
                           background: Paint()
@@ -48,7 +48,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                           child:
-                              Text(Constants.getdate(widget.snapshot['Time']))),
+                              Text(Constants.getdate(widget.snapshot['time']))),
                     ),
                   ],
                 ),
@@ -74,10 +74,11 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                         TextStyle(fontSize: 17, fontFamily: "SourceSansPro"),
                     linkStyle: TextStyle(
                         fontSize: 17,
-                        fontFamily: "SpurceSansPro",
+                        fontFamily: "SourceSansPro",
                         color: Colors.blueGrey,
+                        fontWeight: FontWeight.w600,
                         decoration: TextDecoration.underline),
-                    data: widget.snapshot['Content'],
+                    data: widget.snapshot['content'],
                     onLinkTap: (url) {
                       launch(Uri.parse(url).toString());
                     },
@@ -93,7 +94,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return EnlargeImage(widget.snapshot['Image']);
+          return EnlargeImage(widget.snapshot['imageurl']);
         }));
       },
       child: Container(
@@ -103,7 +104,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill,
-                image: NetworkImage(widget.snapshot['Image']))),
+                image: NetworkImage(widget.snapshot['imageurl']))),
       ),
     );
   }
@@ -120,7 +121,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
           }),
       Flexible(
         child: Text(
-          widget.snapshot['Title'],
+          widget.snapshot['title'],
           style: TextStyle(
             fontFamily: 'SourceSansPro',
             fontSize: 20,

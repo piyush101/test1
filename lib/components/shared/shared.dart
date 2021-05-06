@@ -29,7 +29,7 @@ class Shared {
           borderRadius: BorderRadiusDirectional.circular(15),
           image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(snapshot.data.docs[index]['Image']))),
+              image: NetworkImage(snapshot.data.docs[index]['imageurl']))),
       height: size.height * 0.21,
       // margin: EdgeInsets.all(10),
     );
@@ -53,17 +53,17 @@ class Shared {
         });
   }
 
-  FittedBox getTag(AsyncSnapshot<QuerySnapshot> snapshot, int index) {
-    return FittedBox(
-      fit: BoxFit.cover,
-      child: Text(
-        snapshot.data.docs[index]['Tag'],
-        style: TextStyle(
-            fontFamily: 'SourceSansPro',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            backgroundColor: Color(0xFF404A35).withOpacity(.2)),
-      ),
+  Text getTag(AsyncSnapshot<QuerySnapshot> snapshot, int index) {
+    return Text(
+      snapshot.data.docs[index]['tag'],
+      style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          background: Paint()
+            ..strokeWidth = 22
+            ..color = Color(0xFF404A35).withOpacity(.2)
+            ..style = PaintingStyle.stroke
+            ..strokeJoin = StrokeJoin.round),
     );
   }
 
@@ -75,7 +75,7 @@ class Shared {
           color: Color(0xFF616967),
         ),
         Text(
-          datetimeStampConversion(snapshot.data.docs[index]['Time']),
+          datetimeStampConversion(snapshot.data.docs[index]['time']),
           style: TextStyle(color: Color(0xFF616967)),
         ),
       ],
