@@ -13,6 +13,9 @@ class Watchlist extends StatefulWidget {
 }
 
 class _WatchlistState extends State<Watchlist> {
+  static const bool kReleaseMode =
+      bool.fromEnvironment('dart.vm.product', defaultValue: false);
+
   var tempSearchStore = [];
   var queryResult = [];
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -75,15 +78,15 @@ class _WatchlistState extends State<Watchlist> {
                         child: GridView.builder(
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                        (MediaQuery.of(context).size.height /
-                                            5),
-                                    crossAxisCount: 2),
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio: MediaQuery.of(context)
+                                    .size
+                                    .width /
+                                    (MediaQuery.of(context).size.height /
+                                        5),
+                                crossAxisCount: 2),
                             itemCount:
-                                snapshot.data.get('subscribetopic').length,
+                            snapshot.data.get('subscribetopic').length,
                             itemBuilder: (context, index) {
                               return _getCompanyContainer(
                                   context, snapshot, index);
@@ -129,12 +132,12 @@ class _WatchlistState extends State<Watchlist> {
     Widget yesButton = ElevatedButton(
       child: Text("Yes"),
       onPressed: () async {
-        print(value);
         users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribetopic": FieldValue.arrayRemove([value])
         });
-        print(value);
+        // if (kReleaseMode) {
         await FirebaseMessaging.instance.unsubscribeFromTopic(value);
+        // }
 
         Navigator.maybePop(context);
       },
@@ -186,8 +189,8 @@ class _WatchlistState extends State<Watchlist> {
                 color: Colors.white,
                 child: Column(
                     children: tempSearchStore.map((element) {
-                  return _buildResultCard(element);
-                }).toList()),
+                      return _buildResultCard(element);
+                    }).toList()),
               ),
             );
           }),
@@ -234,7 +237,9 @@ class _WatchlistState extends State<Watchlist> {
           "subscribetopic": FieldValue.arrayUnion([data['name']])
         });
         print(data['name']);
+        // if (kReleaseMode) {
         await FirebaseMessaging.instance.subscribeToTopic(data['name']);
+        // }
         Navigator.maybePop(context);
       },
       child: Padding(

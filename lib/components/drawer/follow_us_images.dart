@@ -18,8 +18,8 @@ class FollowUsImages extends StatelessWidget {
       child: SvgPicture.asset(
         Image_Path,
         fit: BoxFit.cover,
-        width: 23,
-        height: 23,
+        width: 23.0,
+        height: 23.0,
       ),
     );
   }

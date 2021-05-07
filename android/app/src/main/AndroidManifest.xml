@@ -2,11 +2,11 @@
     package="com.example.finbox">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="FinBox"
+        android:label="FinXpress"
         android:icon="@mipmap/launcher_icon">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/launcher_icon" />
+            android:resource="@mipmap/ic_launcher_foreground" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

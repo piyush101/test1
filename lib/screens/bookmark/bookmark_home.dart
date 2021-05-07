@@ -108,7 +108,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           padding: const EdgeInsets.all(5.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Color(0xFFcaedd7),
+                color: Color(0xFFcaedd7).withOpacity(0.4),
                 borderRadius: BorderRadius.circular(5)),
             height: 140,
             width: double.infinity,
