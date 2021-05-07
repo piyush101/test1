@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/screens/bookmark/bookmark_home.dart';
+import 'package:flutter_app_news/screens/login/login.dart';
 import 'package:flutter_app_news/service/widget_tree/widget_tree.dart';
 
 class RouteGenerator {
@@ -11,6 +12,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => WidgetTree());
       case BookmarkHome.bookmark_home:
         return MaterialPageRoute(builder: (_) => BookmarkHome());
+      // case Watchlist.watchlist:
+      //   return MaterialPageRoute(
+      //       builder: (_) => Home(
+      //             pageIndex: 3,
+      //           ));
+      case Login.login:
+        return MaterialPageRoute(builder: (_) => Login());
     }
   }
 }

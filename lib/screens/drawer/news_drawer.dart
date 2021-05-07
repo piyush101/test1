@@ -78,6 +78,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                   title: InkWell(
                     onTap: () {
                       _signOut();
+                      // Navigator.of(context).popAndPushNamed(Login.login);
                     },
                     child: Text("Log Out",
                         style: TextStyle(

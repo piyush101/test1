@@ -1,3 +1,4 @@
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/screens/advice/advice.dart';
@@ -54,8 +55,12 @@ class _HomeState extends State<Home> {
           ],
         ),
         drawer: Drawer(child: NewsDrawer()),
-        body: WillPopScope(
-            onWillPop: onWillPop, child: _getPage(widget.pageIndex)),
+        body: DoubleBackToCloseApp(
+          child: _getPage(widget.pageIndex),
+          snackBar: const SnackBar(
+            content: Text('Tap back again to Leave'),
+          ),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Color(0xFFDCDCDC),
           selectedItemColor: Colors.black87,

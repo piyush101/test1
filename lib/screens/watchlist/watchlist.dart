@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_news/constants.dart';
-import 'package:flutter_app_news/screens/home/home.dart';
 import 'package:flutter_app_news/service/search_service/search_service.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
@@ -42,7 +41,7 @@ class _WatchlistState extends State<Watchlist> {
               padding: const EdgeInsets.fromLTRB(8, 35, 8, 5),
               child: Text(
                 "Tap and Hold to delete stock",
-                style: TextStyle(color: Colors.blueGrey),
+                style: TextStyle(color: Color(0xFF788079)),
               ),
             ),
             _buildStreamBuilder(),
@@ -130,10 +129,13 @@ class _WatchlistState extends State<Watchlist> {
     Widget yesButton = ElevatedButton(
       child: Text("Yes"),
       onPressed: () async {
-        await FirebaseMessaging.instance.unsubscribeFromTopic(value);
+        print(value);
         users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribetopic": FieldValue.arrayRemove([value])
         });
+        print(value);
+        await FirebaseMessaging.instance.unsubscribeFromTopic(value);
+
         Navigator.maybePop(context);
       },
     );
@@ -176,7 +178,7 @@ class _WatchlistState extends State<Watchlist> {
           onQueryChanged: (value) {
             initiateSearch(value);
           },
-          // automaticallyImplyDrawerHamburger: false,
+          automaticallyImplyDrawerHamburger: false,
           transition: CircularFloatingSearchBarTransition(),
           builder: (context, transition) {
             return ClipRRect(
@@ -231,9 +233,9 @@ class _WatchlistState extends State<Watchlist> {
         users.doc(_firebaseAuth.currentUser.uid).update({
           "subscribetopic": FieldValue.arrayUnion([data['name']])
         });
+        print(data['name']);
         await FirebaseMessaging.instance.subscribeToTopic(data['name']);
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Home(pageIndex: 3)));
+        Navigator.maybePop(context);
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
