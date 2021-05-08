@@ -1,7 +1,8 @@
+import 'package:FinXpress/components/enlarge_image/enlarge_image.dart';
+import 'package:FinXpress/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/components/enlarge_image/enlarge_image.dart';
-import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookmarkDetails extends StatefulWidget {
@@ -19,62 +20,64 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: SafeArea(
-      child: SingleChildScrollView(
-        child: Container(
-          child: Wrap(
-            children: [
-              Container(
-                margin: EdgeInsets.all(8),
-                decoration: BoxDecoration(),
-                child: _getTopRow(context),
-              ),
-              _getImage(context, size),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                child: Row(
-                  children: [
-                    Text(
-                      widget.snapshot['tag'],
-                      style: TextStyle(
-                          fontSize: 16,
-                          background: Paint()
-                            ..strokeWidth = 22
-                            ..color = Color(0xFFdff5ef)
-                            ..style = PaintingStyle.stroke
-                            ..strokeJoin = StrokeJoin.round),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                          child:
+          child: SingleChildScrollView(
+            child: Container(
+              child: Wrap(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    decoration: BoxDecoration(),
+                    child: _getTopRow(context),
+                  ),
+                  _getImage(context, size),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.snapshot['tag'],
+                          style: TextStyle(
+                              fontSize: 16,
+                              background: Paint()
+                                ..strokeWidth = 22
+                                ..color = Color(0xFFdff5ef)
+                                ..style = PaintingStyle.stroke
+                                ..strokeJoin = StrokeJoin.round),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              child:
                               Text(Constants.getdate(widget.snapshot['time']))),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                    width: size.width * .6,
-                    child: Divider(
-                      color: Colors.grey,
-                    )),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Html(
-                    defaultTextStyle:
-                        TextStyle(fontSize: 17, fontFamily: "SourceSansPro"),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                        width: size.width * .6,
+                        child: Divider(
+                          color: Colors.grey,
+                        )),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Html(
+                    defaultTextStyle: TextStyle(
+                      fontFamily: "SourceSansPro",
+                      fontSize: 18,
+                    ),
                     linkStyle: TextStyle(
-                        fontSize: 17,
                         fontFamily: "SourceSansPro",
+                        fontSize: 18,
                         color: Colors.blueGrey,
                         fontWeight: FontWeight.w600,
                         decoration: TextDecoration.underline),
@@ -83,11 +86,11 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                       launch(Uri.parse(url).toString());
                     },
                   ))
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 
   GestureDetector _getImage(BuildContext context, Size size) {
@@ -122,11 +125,8 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
       Flexible(
         child: Text(
           widget.snapshot['title'],
-          style: TextStyle(
-            fontFamily: 'SourceSansPro',
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          style: GoogleFonts.sourceSansPro(
+              fontSize: 21, fontWeight: FontWeight.w600),
         ),
       )
     ]);

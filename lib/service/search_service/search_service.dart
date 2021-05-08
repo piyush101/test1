@@ -4,7 +4,8 @@ class SearchService {
   searchByName(String searchField) {
     return FirebaseFirestore.instance
         .collection("Companies")
-        .where("searchIndex", isEqualTo: searchField.substring(0, 1).toLowerCase())
+        .where("searchindex",
+            isEqualTo: searchField.substring(0, 1).toLowerCase())
         .get();
   }
 }

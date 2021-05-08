@@ -1,7 +1,8 @@
+import 'package:FinXpress/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class Advice extends StatefulWidget {
@@ -20,8 +21,9 @@ class _AdviceState extends State<Advice> {
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: StreamBuilder(
-                stream:
-                    FirebaseFirestore.instance.collection("Advice").snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection("Advices")
+                    .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -35,44 +37,44 @@ class _AdviceState extends State<Advice> {
                         child: GridView.builder(
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                        (MediaQuery.of(context).size.height /
-                                            2.1),
-                                    crossAxisCount: 2),
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio: MediaQuery.of(context)
+                                    .size
+                                    .width /
+                                    (MediaQuery.of(context).size.height /
+                                        2.1),
+                                crossAxisCount: 2),
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                     color: _getbackgroundColor(
-                                        snapshot.data.docs[index]['Advice']),
+                                        snapshot.data.docs[index]['advice']),
                                     borderRadius: BorderRadius.circular(8)),
                                 child: Container(
                                   margin: EdgeInsets.all(8),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        snapshot.data.docs[index]['Advice'],
+                                        snapshot.data.docs[index]['advice'],
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: _gettextColor(snapshot
-                                                .data.docs[index]['Advice'])),
+                                                .data.docs[index]['advice'])),
                                       ),
                                       SizedBox(
                                         height: size.height * .002,
                                       ),
                                       Text(
-                                        snapshot.data.docs[index]["Company"],
+                                        snapshot.data.docs[index]["advicefor"],
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 12),
+                                            fontSize: 14),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -81,7 +83,7 @@ class _AdviceState extends State<Advice> {
                                         'Target: ' +
                                             '\u{20B9}' +
                                             ' ' +
-                                            snapshot.data.docs[index]['Target'],
+                                            snapshot.data.docs[index]['target'],
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold),
@@ -92,7 +94,7 @@ class _AdviceState extends State<Advice> {
                                       Text(
                                         "By: " +
                                             snapshot.data.docs[index]
-                                                ['AdviceBy'],
+                                                ['adviceby'],
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w500),
@@ -102,7 +104,7 @@ class _AdviceState extends State<Advice> {
                                       ),
                                       Text(
                                         timeStampConversion(
-                                            snapshot.data.docs[index]['Time']),
+                                            snapshot.data.docs[index]['time']),
                                         style: TextStyle(fontSize: 11),
                                       )
                                     ],
@@ -126,8 +128,7 @@ class _AdviceState extends State<Advice> {
           alignment: Alignment.topLeft,
           child: Text(
             "Stock Recommendations",
-            style: TextStyle(
-                fontFamily: 'SourceSansPro',
+            style: GoogleFonts.sourceSansPro(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 color: Colors.blueGrey),

@@ -1,8 +1,9 @@
+import 'package:FinXpress/components/shared/shared.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/components/shared/shared.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants.dart';
@@ -46,7 +47,7 @@ class _NewsBodyState extends State<NewsBody> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadiusDirectional.circular(15),
+                                BorderRadiusDirectional.circular(15),
                               ),
                               // height: size.height * 0.72,
                               child: Column(
@@ -70,7 +71,7 @@ class _NewsBodyState extends State<NewsBody> {
                                             _shared.getShareButton(
                                                 0,
                                                 snapshot.data.docs[index]
-                                                    ['title']),
+                                                ['title']),
                                           ],
                                         ),
                                       ],
@@ -83,42 +84,33 @@ class _NewsBodyState extends State<NewsBody> {
                                       alignment: Alignment.centerLeft,
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            snapshot.data.docs[index]['title'],
-                                            style: TextStyle(
-                                                fontFamily: 'SourceSansPro',
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700),
-                                          ),
+                                              snapshot.data.docs[index]
+                                                  ['title'],
+                                              style: GoogleFonts.sourceSansPro(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600)),
                                           SizedBox(height: size.height * .005),
                                           Html(
                                             defaultTextStyle: TextStyle(
-                                                fontSize: 18,
                                                 fontFamily: "SourceSansPro",
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.w500),
                                             linkStyle: TextStyle(
+                                                color: Colors.blueGrey,
                                                 fontSize: 18,
                                                 fontFamily: "SourceSansPro",
-                                                color: Colors.blueGrey,
                                                 fontWeight: FontWeight.w600,
                                                 decoration:
                                                     TextDecoration.underline),
                                             data: snapshot.data.docs[index]
-                                                ['content'],
+                                            ['content'],
                                             onLinkTap: (url) {
                                               launch(Uri.parse(url).toString());
                                             },
                                           ),
-                                          // Text(
-                                          //   snapshot.data.docs[index]
-                                          //       ['content'],
-                                          //   style: TextStyle(
-                                          //       fontFamily: 'SourceSansPro',
-                                          //       fontSize: 18,
-                                          //       fontWeight: FontWeight.w500),
-                                          // ),
                                           SizedBox(
                                             height: size.height * .02,
                                           )

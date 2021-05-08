@@ -1,12 +1,12 @@
+import 'package:FinXpress/screens/home/home.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/screens/home/home.dart';
 
 class DynamicLinkService {
   Future<void> retrieveDynamicLink(BuildContext context) async {
     try {
       final PendingDynamicLinkData data =
-          await FirebaseDynamicLinks.instance.getInitialLink();
+      await FirebaseDynamicLinks.instance.getInitialLink();
       final Uri deepLink = data?.link;
 
       if (deepLink != null) {
@@ -18,12 +18,12 @@ class DynamicLinkService {
       }
       FirebaseDynamicLinks.instance.onLink(
           onSuccess: (PendingDynamicLinkData dynamicLink) async {
-        if (deepLink.queryParameters.containsKey('id')) {
-          int id = deepLink.queryParameters['id'] as int;
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Home(pageIndex: id)));
-        }
-      });
+            if (deepLink.queryParameters.containsKey('id')) {
+              int id = deepLink.queryParameters['id'] as int;
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => Home(pageIndex: id)));
+            }
+          });
     } catch (e) {
       print(e.toString());
     }
@@ -36,7 +36,7 @@ class DynamicLinkService {
       link: Uri.parse(
           'https://finbox.page.link.com/?id=$pageId&title=$title_substring'),
       androidParameters: AndroidParameters(
-        packageName: 'com.example.finbox',
+        packageName: 'com.finexpress',
         //   minimumVersion: 1,
       ),
       //TODO uncomment these for IOS

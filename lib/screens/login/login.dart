@@ -1,9 +1,10 @@
+import 'package:FinXpress/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/constants.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
@@ -24,8 +25,8 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         body: isLoading
             ? Center(
-                child: getWaitWidgetWhileLoading(),
-              )
+          child: getWaitWidgetWhileLoading(),
+        )
             : getLoginPageBody(size),
       ),
     );
@@ -66,8 +67,8 @@ class _LoginState extends State<Login> {
         style: ElevatedButton.styleFrom(primary: Color(0xFFEBD1D1)),
         onPressed: () {
           _signInWithGoogle().then((value) => this.setState(() {
-                isLoading = false;
-              }));
+            isLoading = false;
+          }));
         },
         child: Row(
           children: [
@@ -80,10 +81,9 @@ class _LoginState extends State<Login> {
             ),
             Text(
               "Sign In with Google",
-              style: TextStyle(
+              style: GoogleFonts.sourceSansPro(
                   color: Color(0xFF4D5054),
-                  fontFamily: 'SourceSansPro',
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.w600),
             )
           ],
@@ -100,8 +100,8 @@ class _LoginState extends State<Login> {
         style: ElevatedButton.styleFrom(primary: Color(0xFFD1E2EB)),
         onPressed: () {
           _handleFacebookLogin().then((value) => this.setState(() {
-                isLoading = false;
-              }));
+            isLoading = false;
+          }));
         },
         child: Row(
           children: [
@@ -114,10 +114,9 @@ class _LoginState extends State<Login> {
             ),
             Text(
               "Sign In with Facebook",
-              style: TextStyle(
+              style: GoogleFonts.sourceSansPro(
                   color: Color(0xFF4D5054),
-                  fontFamily: 'SourceSansPro',
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.w600),
             )
           ],
@@ -149,7 +148,7 @@ class _LoginState extends State<Login> {
     });
     FacebookLogin _facebookLogin = FacebookLogin();
     FacebookLoginResult _facebookLoginResult =
-        await _facebookLogin.logIn(['email']);
+    await _facebookLogin.logIn(['email']);
     switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
         print("Cancelled by user");
@@ -166,9 +165,9 @@ class _LoginState extends State<Login> {
   Future _signInWithFacebook(FacebookLoginResult _result) async {
     FacebookAccessToken _facebookAccessToken = _result.accessToken;
     AuthCredential _authCredential =
-        FacebookAuthProvider.credential(_facebookAccessToken.token);
+    FacebookAuthProvider.credential(_facebookAccessToken.token);
     var _facebookUser =
-        await _firebaseAuth.signInWithCredential(_authCredential);
+    await _firebaseAuth.signInWithCredential(_authCredential);
     // setState(() {
     //   isLoading = true;
     // });
@@ -191,8 +190,8 @@ class _LoginState extends State<Login> {
       if (googleAuth.idToken != null) {
         final userCredential = await _firebaseAuth
             .signInWithCredential(GoogleAuthProvider.credential(
-                idToken: googleAuth.idToken,
-                accessToken: googleAuth.accessToken))
+            idToken: googleAuth.idToken,
+            accessToken: googleAuth.accessToken))
             .catchError((onError) {
           print("credential error $onError");
         });

@@ -1,7 +1,8 @@
+import 'package:FinXpress/components/enlarge_image/enlarge_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/components/enlarge_image/enlarge_image.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,37 +22,37 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
-        child: Container(
-          // decoration: BoxDecoration(color: Color(0xFFedfcf8)),
-          child: Wrap(
-            children: [
-              getTitleContainer(context),
-              buildImageContainer(context, size),
-              getDateTimeReadRow(),
-              getTagRow(),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      width: size.width * .6,
-                      child: Divider(
-                        color: Colors.grey,
-                      )),
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Html(
-                  defaultTextStyle:
-                      TextStyle(fontSize: 17, fontFamily: "SourceSansPro"),
+            child: Container(
+              // decoration: BoxDecoration(color: Color(0xFFedfcf8)),
+              child: Wrap(
+                children: [
+                  getTitleContainer(context),
+                  buildImageContainer(context, size),
+                  getDateTimeReadRow(),
+                  getTagRow(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          width: size.width * .6,
+                          child: Divider(
+                            color: Colors.grey,
+                          )),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Html(
+                      defaultTextStyle:
+                      TextStyle(fontSize: 18, fontFamily: "SourceSansPro"),
                   linkStyle: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
                       fontFamily: "SourceSansPro",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                       color: Colors.blueGrey,
                       decoration: TextDecoration.underline),
                   data: widget.snapshot['content'],
@@ -59,11 +60,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                     launch(Uri.parse(url).toString());
                   },
                 ),
-              )
-            ],
-          ),
-        ),
-      )),
+                  )
+                ],
+              ),
+            ),
+          )),
     );
   }
 
@@ -75,10 +76,10 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
         backArrow(context),
         Flexible(
           child: Text(widget.snapshot['title'],
-              style: TextStyle(
-                  fontFamily: 'SourceSansPro',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600)),
+              style: GoogleFonts.sourceSansPro(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              )),
         )
       ]),
     );

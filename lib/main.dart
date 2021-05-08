@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:FinXpress/route_generator.dart';
+import 'package:FinXpress/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_news/route_generator.dart';
-import 'package:flutter_app_news/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -107,9 +107,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 channel.id,
                 channel.name,
                 channel.description,
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
-                icon: 'launch_background',
+                icon: '@drawable/launcher_icon',
               ),
             ));
       }

@@ -1,13 +1,14 @@
+import 'package:FinXpress/screens/advice/advice.dart';
+import 'package:FinXpress/screens/bookmark/bookmark_home.dart';
+import 'package:FinXpress/screens/drawer/news_drawer.dart';
+import 'package:FinXpress/screens/insights/insights_home/insights_home.dart';
+import 'package:FinXpress/screens/news/news_body.dart';
+import 'package:FinXpress/screens/watchlist/watchlist.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/screens/advice/advice.dart';
-import 'package:flutter_app_news/screens/bookmark/bookmark_home.dart';
-import 'package:flutter_app_news/screens/drawer/news_drawer.dart';
-import 'package:flutter_app_news/screens/insights/insights_home/insights_home.dart';
-import 'package:flutter_app_news/screens/news/news_body.dart';
-import 'package:flutter_app_news/screens/watchlist/watchlist.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   int pageIndex;
@@ -33,14 +34,11 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Color(0xFFb1c5c5),
-          title: Text(
-            "FinXpress",
-            style: TextStyle(
-                fontFamily: 'SourceSansPro',
-                fontSize: 23,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87),
-          ),
+          title: Text("FinXpress",
+              style: GoogleFonts.sourceSansPro(
+                  fontSize: 23,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87)),
           actions: [
             IconButton(
                 onPressed: () {
@@ -62,7 +60,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color(0xFFDCDCDC),
+          // backgroundColor: Color(0xFFDCDCDC),
           selectedItemColor: Colors.black87,
           unselectedItemColor: Color(0xFF6C7180),
           type: BottomNavigationBarType.fixed,
@@ -74,11 +72,11 @@ class _HomeState extends State<Home> {
           currentIndex: widget.pageIndex,
           items: [
             BottomNavigationBarItem(
-                icon: (Icon(
-                  CupertinoIcons.news_solid,
-                )),
-                label: "Home",
-                backgroundColor: Colors.grey),
+              icon: (Icon(
+                CupertinoIcons.news_solid,
+              )),
+              label: "News",
+            ),
             // BottomNavigationBarItem(
             //     icon: (Icon(CupertinoIcons.book)),
             //     label: "Learnings",
@@ -99,8 +97,8 @@ class _HomeState extends State<Home> {
     switch (pageIndex) {
       case 0:
         return NewsBody();
-      // case 1:
-      //   return LearningsHomepage();
+    // case 1:
+    //   return LearningsHomepage();
       case 1:
         return InsightsHome();
       case 2:

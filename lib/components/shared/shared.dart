@@ -1,7 +1,7 @@
+import 'package:FinXpress/screens/bookmark/bookmark_shared.dart';
+import 'package:FinXpress/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/screens/bookmark/bookmark_shared.dart';
-import 'package:flutter_app_news/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 
@@ -22,8 +22,7 @@ class Shared {
         });
   }
 
-  Container getImage(
-      AsyncSnapshot<QuerySnapshot> snapshot, int index, Size size) {
+  Container getImage(AsyncSnapshot<QuerySnapshot> snapshot, int index, Size size) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadiusDirectional.circular(15),
@@ -39,13 +38,13 @@ class Shared {
     return IconButton(
         icon: _bookmarkShared.isBookmarked(snapshot.data.docs[index])
             ? Icon(
-                Icons.bookmark,
-                color: Color(0xFF4B5557),
-              )
+          Icons.bookmark,
+          color: Color(0xFF4B5557),
+        )
             : Icon(
-                Icons.bookmark_border_outlined,
-                color: Color(0xFF4B5557),
-              ),
+          Icons.bookmark_border_outlined,
+          color: Color(0xFF4B5557),
+        ),
         onPressed: () {
           _bookmarkShared.isBookmarked(snapshot.data.docs[index])
               ? _bookmarkShared.deleteBookMarkData(snapshot.data.docs[index])

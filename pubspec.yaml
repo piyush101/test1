@@ -1,9 +1,9 @@
-name: flutter_app_news
-description: A new Flutter application.
+name: FinXpress
+description: Making India Financial literate
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -35,17 +35,11 @@ dependencies:
   fluttertoast: ^8.0.6
   double_back_to_close_app: ^2.0.1
   cupertino_icons: ^1.0.2
+  google_fonts: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_launcher_icons: ^0.9.0
-
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/images/logo_transparent.png"
 
 flutter:
   uses-material-design: true
@@ -64,3 +58,4 @@ flutter:
     - family: SourceSansPro
       fonts:
         - asset: assets/fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf
+        - asset: assets/fonts/Source_Sans_Pro/SourceSansPro-SemiBold.ttf

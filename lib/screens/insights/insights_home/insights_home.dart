@@ -1,8 +1,9 @@
+import 'package:FinXpress/components/shared/shared.dart';
+import 'package:FinXpress/screens/insights/insights_post_details/insights_post_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/components/shared/shared.dart';
-import 'package:flutter_app_news/screens/insights/insights_post_details/insights_post_details.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class InsightsHome extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                   return Center(
                       child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black)));
+                          AlwaysStoppedAnimation<Color>(Colors.black)));
                   break;
                 default:
                   return RefreshIndicator(
@@ -51,11 +52,11 @@ class _InsightsHomeState extends State<InsightsHome> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadiusDirectional.circular(15),
+                                  BorderRadiusDirectional.circular(15),
                                   boxShadow: [
                                     BoxShadow(
                                         color:
-                                            Color(0xFFecedea).withOpacity(0.4)),
+                                        Color(0xFFecedea).withOpacity(0.4)),
                                   ],
                                 ),
                                 child: Column(
@@ -78,7 +79,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                               _shared.getShareButton(
                                                   2,
                                                   snapshot.data.docs[index]
-                                                      ['title'])
+                                                  ['title'])
                                             ],
                                           ),
                                         ],
@@ -86,17 +87,14 @@ class _InsightsHomeState extends State<InsightsHome> {
                                     ),
                                     Padding(
                                       padding:
-                                          const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                      const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          snapshot.data.docs[index]['title'],
-                                          style: TextStyle(
-                                            fontFamily: 'SourceSansPro',
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
+                                            snapshot.data.docs[index]['title'],
+                                            style: GoogleFonts.sourceSansPro(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600)),
                                       ),
                                     ),
                                     SizedBox(

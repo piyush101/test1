@@ -1,10 +1,11 @@
+import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/screens/bookmark/bookmark_details.dart';
+import 'package:FinXpress/screens/home/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_news/constants.dart';
-import 'package:flutter_app_news/screens/bookmark/bookmark_details.dart';
-import 'package:flutter_app_news/screens/home/home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BookmarkHome extends StatefulWidget {
   static const String bookmark_home = '/bookmarkHome';
@@ -66,10 +67,10 @@ class _BookmarkHomeState extends State<BookmarkHome> {
                                   child: ListView.builder(
                                     physics: BouncingScrollPhysics(
                                         parent:
-                                            AlwaysScrollableScrollPhysics()),
+                                        AlwaysScrollableScrollPhysics()),
                                     shrinkWrap: true,
                                     itemCount:
-                                        snapshot.data.get('bookmarks').length,
+                                    snapshot.data.get('bookmarks').length,
                                     itemBuilder: (context, index) {
                                       return _getBookmarkContainer(
                                           context, snapshot, index);
@@ -124,8 +125,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
         ));
   }
 
-  Padding _getBookmarkData(
-      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+  Padding _getBookmarkData(AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Align(
@@ -150,8 +150,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  Container _getBookmarkImage(
-      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+  Container _getBookmarkImage(AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
     return Container(
         width: 125,
         decoration: BoxDecoration(
@@ -168,11 +167,10 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           alignment: Alignment.topLeft,
           child: Text(
             "Tap and hold to delete",
-            style: TextStyle(
-                fontFamily: 'SourceSansPro',
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.blueGrey),
+            style: GoogleFonts.sourceSansPro(
+                color: Colors.blueGrey,
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
           )),
     );
   }
@@ -181,14 +179,14 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
       child: Align(
-        alignment: Alignment.topLeft,
-        child: Text("Your Bookmarks",
-            style: TextStyle(
-                fontFamily: 'SourceSansPro',
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Your Bookmarks",
+            style: GoogleFonts.sourceSansPro(
+                color: Colors.blueGrey,
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.blueGrey)),
-      ),
+                fontWeight: FontWeight.w600),
+          )),
     );
   }
 
@@ -206,17 +204,19 @@ class _BookmarkHomeState extends State<BookmarkHome> {
   AlertDialog _alertBoxOnLongPress(AsyncSnapshot<DocumentSnapshot> snapshot,
       int index, BuildContext context) {
     return AlertDialog(
-      title: Text("Finbox"),
+      title: Text("FinXpress"),
       content: Text("Do you want to remove article from bookmark?"),
       actions: [
-        dialogYesButton(snapshot, index, context),
-        dialogNoButton(context)
+        _dialogYesButton(snapshot, index, context),
+        _dialogNoButton(context)
       ],
     );
   }
 
-  ElevatedButton dialogNoButton(BuildContext context) {
+  ElevatedButton _dialogNoButton(BuildContext context) {
     return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
       child: Text("No"),
       onPressed: () {
         Navigator.of(context).pop();
@@ -224,9 +224,11 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  ElevatedButton dialogYesButton(AsyncSnapshot<DocumentSnapshot> snapshot,
+  ElevatedButton _dialogYesButton(AsyncSnapshot<DocumentSnapshot> snapshot,
       int index, BuildContext context) {
     return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
       child: Text("Yes"),
       onPressed: () {
         _users.doc(_currentUser).update({
