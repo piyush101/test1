@@ -37,13 +37,13 @@ class _AdviceState extends State<Advice> {
                         child: GridView.builder(
                             shrinkWrap: true,
                             gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: MediaQuery.of(context)
-                                    .size
-                                    .width /
-                                    (MediaQuery.of(context).size.height /
-                                        2.1),
-                                crossAxisCount: 2),
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: MediaQuery.of(context)
+                                            .size
+                                            .width /
+                                        (MediaQuery.of(context).size.height /
+                                            2.1),
+                                    crossAxisCount: 2),
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               return Container(
@@ -57,7 +57,7 @@ class _AdviceState extends State<Advice> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         snapshot.data.docs[index]['advice'],

@@ -97,8 +97,8 @@ class _HomeState extends State<Home> {
     switch (pageIndex) {
       case 0:
         return NewsBody();
-    // case 1:
-    //   return LearningsHomepage();
+      // case 1:
+      //   return LearningsHomepage();
       case 1:
         return InsightsHome();
       case 2:

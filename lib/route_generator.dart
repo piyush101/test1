@@ -12,11 +12,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => WidgetTree());
       case BookmarkHome.bookmark_home:
         return MaterialPageRoute(builder: (_) => BookmarkHome());
-    // case Watchlist.watchlist:
-    //   return MaterialPageRoute(
-    //       builder: (_) => Home(
-    //             pageIndex: 3,
-    //           ));
+      // case Watchlist.watchlist:
+      //   return MaterialPageRoute(
+      //       builder: (_) => Home(
+      //             pageIndex: 3,
+      //           ));
       case Login.login:
         return MaterialPageRoute(builder: (_) => Login());
     }

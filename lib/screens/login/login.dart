@@ -25,8 +25,8 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         body: isLoading
             ? Center(
-          child: getWaitWidgetWhileLoading(),
-        )
+                child: getWaitWidgetWhileLoading(),
+              )
             : getLoginPageBody(size),
       ),
     );
@@ -67,8 +67,8 @@ class _LoginState extends State<Login> {
         style: ElevatedButton.styleFrom(primary: Color(0xFFEBD1D1)),
         onPressed: () {
           _signInWithGoogle().then((value) => this.setState(() {
-            isLoading = false;
-          }));
+                isLoading = false;
+              }));
         },
         child: Row(
           children: [
@@ -100,8 +100,8 @@ class _LoginState extends State<Login> {
         style: ElevatedButton.styleFrom(primary: Color(0xFFD1E2EB)),
         onPressed: () {
           _handleFacebookLogin().then((value) => this.setState(() {
-            isLoading = false;
-          }));
+                isLoading = false;
+              }));
         },
         child: Row(
           children: [
@@ -148,7 +148,7 @@ class _LoginState extends State<Login> {
     });
     FacebookLogin _facebookLogin = FacebookLogin();
     FacebookLoginResult _facebookLoginResult =
-    await _facebookLogin.logIn(['email']);
+        await _facebookLogin.logIn(['email']);
     switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
         print("Cancelled by user");
@@ -165,9 +165,9 @@ class _LoginState extends State<Login> {
   Future _signInWithFacebook(FacebookLoginResult _result) async {
     FacebookAccessToken _facebookAccessToken = _result.accessToken;
     AuthCredential _authCredential =
-    FacebookAuthProvider.credential(_facebookAccessToken.token);
+        FacebookAuthProvider.credential(_facebookAccessToken.token);
     var _facebookUser =
-    await _firebaseAuth.signInWithCredential(_authCredential);
+        await _firebaseAuth.signInWithCredential(_authCredential);
     // setState(() {
     //   isLoading = true;
     // });
@@ -190,8 +190,8 @@ class _LoginState extends State<Login> {
       if (googleAuth.idToken != null) {
         final userCredential = await _firebaseAuth
             .signInWithCredential(GoogleAuthProvider.credential(
-            idToken: googleAuth.idToken,
-            accessToken: googleAuth.accessToken))
+                idToken: googleAuth.idToken,
+                accessToken: googleAuth.accessToken))
             .catchError((onError) {
           print("credential error $onError");
         });

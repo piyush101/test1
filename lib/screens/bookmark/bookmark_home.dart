@@ -67,10 +67,10 @@ class _BookmarkHomeState extends State<BookmarkHome> {
                                   child: ListView.builder(
                                     physics: BouncingScrollPhysics(
                                         parent:
-                                        AlwaysScrollableScrollPhysics()),
+                                            AlwaysScrollableScrollPhysics()),
                                     shrinkWrap: true,
                                     itemCount:
-                                    snapshot.data.get('bookmarks').length,
+                                        snapshot.data.get('bookmarks').length,
                                     itemBuilder: (context, index) {
                                       return _getBookmarkContainer(
                                           context, snapshot, index);
@@ -125,7 +125,8 @@ class _BookmarkHomeState extends State<BookmarkHome> {
         ));
   }
 
-  Padding _getBookmarkData(AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+  Padding _getBookmarkData(
+      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Align(
@@ -150,7 +151,8 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  Container _getBookmarkImage(AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+  Container _getBookmarkImage(
+      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
     return Container(
         width: 125,
         decoration: BoxDecoration(

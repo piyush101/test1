@@ -24,7 +24,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     DarkThemeProvider darkThemeProvider =
-    Provider.of<DarkThemeProvider>(context, listen: false);
+        Provider.of<DarkThemeProvider>(context, listen: false);
 
     return Column(
       children: [
@@ -211,12 +211,13 @@ class _NewsDrawerState extends State<NewsDrawer> {
               )
             ],
           ),
-            ))
+        ))
       ],
     );
   }
 
-  DayNightSwitcher _getDayNightSwitcherButton(DarkThemeProvider darkThemeProvider, BuildContext context) {
+  DayNightSwitcher _getDayNightSwitcherButton(
+      DarkThemeProvider darkThemeProvider, BuildContext context) {
     return DayNightSwitcher(
       dayBackgroundColor: Constants.primaryLightColor,
       isDarkModeEnabled: isSwitched,

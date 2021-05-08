@@ -29,7 +29,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                   return Center(
                       child: CircularProgressIndicator(
                           valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.black)));
+                              AlwaysStoppedAnimation<Color>(Colors.black)));
                   break;
                 default:
                   return RefreshIndicator(
@@ -52,11 +52,11 @@ class _InsightsHomeState extends State<InsightsHome> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadiusDirectional.circular(15),
+                                      BorderRadiusDirectional.circular(15),
                                   boxShadow: [
                                     BoxShadow(
                                         color:
-                                        Color(0xFFecedea).withOpacity(0.4)),
+                                            Color(0xFFecedea).withOpacity(0.4)),
                                   ],
                                 ),
                                 child: Column(
@@ -79,7 +79,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                               _shared.getShareButton(
                                                   2,
                                                   snapshot.data.docs[index]
-                                                  ['title'])
+                                                      ['title'])
                                             ],
                                           ),
                                         ],
@@ -87,7 +87,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                     ),
                                     Padding(
                                       padding:
-                                      const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                          const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(

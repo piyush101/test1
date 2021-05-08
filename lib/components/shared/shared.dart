@@ -22,7 +22,8 @@ class Shared {
         });
   }
 
-  Container getImage(AsyncSnapshot<QuerySnapshot> snapshot, int index, Size size) {
+  Container getImage(
+      AsyncSnapshot<QuerySnapshot> snapshot, int index, Size size) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadiusDirectional.circular(15),
@@ -38,13 +39,13 @@ class Shared {
     return IconButton(
         icon: _bookmarkShared.isBookmarked(snapshot.data.docs[index])
             ? Icon(
-          Icons.bookmark,
-          color: Color(0xFF4B5557),
-        )
+                Icons.bookmark,
+                color: Color(0xFF4B5557),
+              )
             : Icon(
-          Icons.bookmark_border_outlined,
-          color: Color(0xFF4B5557),
-        ),
+                Icons.bookmark_border_outlined,
+                color: Color(0xFF4B5557),
+              ),
         onPressed: () {
           _bookmarkShared.isBookmarked(snapshot.data.docs[index])
               ? _bookmarkShared.deleteBookMarkData(snapshot.data.docs[index])

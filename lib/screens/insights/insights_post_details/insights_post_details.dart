@@ -22,32 +22,32 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
-            child: Container(
-              // decoration: BoxDecoration(color: Color(0xFFedfcf8)),
-              child: Wrap(
-                children: [
-                  getTitleContainer(context),
-                  buildImageContainer(context, size),
-                  getDateTimeReadRow(),
-                  getTagRow(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                          width: size.width * .6,
-                          child: Divider(
-                            color: Colors.grey,
-                          )),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Html(
-                      defaultTextStyle:
+        child: Container(
+          // decoration: BoxDecoration(color: Color(0xFFedfcf8)),
+          child: Wrap(
+            children: [
+              getTitleContainer(context),
+              buildImageContainer(context, size),
+              getDateTimeReadRow(),
+              getTagRow(),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                      width: size.width * .6,
+                      child: Divider(
+                        color: Colors.grey,
+                      )),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Html(
+                  defaultTextStyle:
                       TextStyle(fontSize: 18, fontFamily: "SourceSansPro"),
                   linkStyle: TextStyle(
                       fontFamily: "SourceSansPro",
@@ -60,11 +60,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                     launch(Uri.parse(url).toString());
                   },
                 ),
-                  )
-                ],
-              ),
-            ),
-          )),
+              )
+            ],
+          ),
+        ),
+      )),
     );
   }
 

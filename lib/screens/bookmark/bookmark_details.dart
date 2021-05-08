@@ -20,57 +20,57 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              child: Wrap(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    decoration: BoxDecoration(),
-                    child: _getTopRow(context),
-                  ),
-                  _getImage(context, size),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                    child: Row(
-                      children: [
-                        Text(
-                          widget.snapshot['tag'],
-                          style: TextStyle(
-                              fontSize: 16,
-                              background: Paint()
-                                ..strokeWidth = 22
-                                ..color = Color(0xFFdff5ef)
-                                ..style = PaintingStyle.stroke
-                                ..strokeJoin = StrokeJoin.round),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              child:
-                              Text(Constants.getdate(widget.snapshot['time']))),
-                        ),
-                      ],
+      child: SingleChildScrollView(
+        child: Container(
+          child: Wrap(
+            children: [
+              Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(),
+                child: _getTopRow(context),
+              ),
+              _getImage(context, size),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.snapshot['tag'],
+                      style: TextStyle(
+                          fontSize: 16,
+                          background: Paint()
+                            ..strokeWidth = 22
+                            ..color = Color(0xFFdff5ef)
+                            ..style = PaintingStyle.stroke
+                            ..strokeJoin = StrokeJoin.round),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        width: size.width * .6,
-                        child: Divider(
-                          color: Colors.grey,
-                        )),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
+                    Spacer(),
+                    Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Html(
+                      child: Container(
+                          child:
+                              Text(Constants.getdate(widget.snapshot['time']))),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                    width: size.width * .6,
+                    child: Divider(
+                      color: Colors.grey,
+                    )),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Html(
                     defaultTextStyle: TextStyle(
                       fontFamily: "SourceSansPro",
                       fontSize: 18,
@@ -86,11 +86,11 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                       launch(Uri.parse(url).toString());
                     },
                   ))
-                ],
-              ),
-            ),
+            ],
           ),
-        ));
+        ),
+      ),
+    ));
   }
 
   GestureDetector _getImage(BuildContext context, Size size) {

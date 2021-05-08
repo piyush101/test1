@@ -47,7 +47,7 @@ class _NewsBodyState extends State<NewsBody> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius:
-                                BorderRadiusDirectional.circular(15),
+                                    BorderRadiusDirectional.circular(15),
                               ),
                               // height: size.height * 0.72,
                               child: Column(
@@ -71,7 +71,7 @@ class _NewsBodyState extends State<NewsBody> {
                                             _shared.getShareButton(
                                                 0,
                                                 snapshot.data.docs[index]
-                                                ['title']),
+                                                    ['title']),
                                           ],
                                         ),
                                       ],
@@ -84,7 +84,7 @@ class _NewsBodyState extends State<NewsBody> {
                                       alignment: Alignment.centerLeft,
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                               snapshot.data.docs[index]
@@ -106,7 +106,7 @@ class _NewsBodyState extends State<NewsBody> {
                                                 decoration:
                                                     TextDecoration.underline),
                                             data: snapshot.data.docs[index]
-                                            ['content'],
+                                                ['content'],
                                             onLinkTap: (url) {
                                               launch(Uri.parse(url).toString());
                                             },
