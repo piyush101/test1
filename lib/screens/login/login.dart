@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
               width: double.infinity,
               height: 300,
             ),
-            SizedBox(height: size.height * .1),
+            SizedBox(height: size.height * .20),
             googleElevatedButton(size),
             SizedBox(
               height: 15,
@@ -168,9 +168,6 @@ class _LoginState extends State<Login> {
         FacebookAuthProvider.credential(_facebookAccessToken.token);
     var _facebookUser =
         await _firebaseAuth.signInWithCredential(_authCredential);
-    // setState(() {
-    //   isLoading = true;
-    // });
     createCurrentUserDocument();
     return _facebookUser.user;
   }

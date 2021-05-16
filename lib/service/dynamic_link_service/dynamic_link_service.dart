@@ -32,7 +32,7 @@ class DynamicLinkService {
   Future<String> createDynamicLink(int pageId, String title) async {
     String title_substring = title.substring(0, 10);
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: 'https://finbox.page.link',
+      uriPrefix: 'https://app.finxpress.co',
       link: Uri.parse(
           'https://finbox.page.link.com/?id=$pageId&title=$title_substring'),
       androidParameters: AndroidParameters(
@@ -46,8 +46,8 @@ class DynamicLinkService {
       //   appStoreId: 'your_app_store_id',
       // ),
     );
-    var dynamicUrl = await parameters.buildUrl();
-    // final Uri shortUrl = dynamicUrl.shortUrl;
-    return dynamicUrl.toString();
+    var dynamicUrl = await parameters.buildShortLink();
+    final Uri shortUrl = dynamicUrl.shortUrl;
+    return shortUrl.toString();
   }
 }

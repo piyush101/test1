@@ -112,7 +112,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
             style: TextStyle(fontSize: 15),
           ),
           Spacer(),
-          Text(widget.snapshot['readtime'] + " Min Read")
+          Text(widget.snapshot['readtime'])
         ],
       ),
     );
@@ -128,7 +128,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
-        height: size.height * 0.3,
+        height: size.height * 0.35,
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,

@@ -4,7 +4,6 @@ import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,40 +43,47 @@ class _NewsDrawerState extends State<NewsDrawer> {
               Center(
                 child: _getDayNightSwitcherButton(darkThemeProvider, context),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 8.0),
+              //   child: ListTile(
+              //     title: Text(
+              //       "Share us with Friends",
+              //       style: GoogleFonts.sourceSansPro(
+              //           fontSize: 18, fontWeight: FontWeight.w600),
+              //     ),
+              //     leading: Icon(
+              //       Icons.share_outlined,
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 8.0),
+              //   child: ListTile(
+              //       title: InkWell(
+              //         child: Text(
+              //           "Rate us on Play Store",
+              //           style: GoogleFonts.sourceSansPro(
+              //               fontSize: 18, fontWeight: FontWeight.w600),
+              //         ),
+              //       ),
+              //       leading: SvgPicture.asset("assets/icons/play_store.svg",
+              //           height: 23.0, width: 20.0)),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
-                  title: Text(
-                    "Share us with Friends",
-                    style: GoogleFonts.sourceSansPro(
-                        fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                  leading: Icon(
-                    Icons.share_outlined,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: ListTile(
-                    title: InkWell(
-                      child: Text(
-                        "Rate us on Play Store",
-                        style: GoogleFonts.sourceSansPro(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
+                  title: InkWell(
+                    onTap: () {
+                      launch(
+                          Uri.parse("https://www.finxpress.co/Privacy-policy")
+                              .toString());
+                    },
+                    child: Text(
+                      "Privacy Policy",
+                      style: GoogleFonts.sourceSansPro(
+                          fontSize: 18, fontWeight: FontWeight.w600),
                     ),
-                    leading: SvgPicture.asset("assets/icons/play_store.svg",
-                        height: 23.0, width: 20.0)),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: ListTile(
-                  title: Text(
-                    "Privacy Policy",
-                    style: GoogleFonts.sourceSansPro(
-                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   leading: Icon(
                     Icons.topic,
@@ -173,8 +179,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                   ),
                   FollowUsImages(
                     onTap: () {
-                      launch(Uri.parse(
-                              "https://www.instagram.com/invites/contact/?i=issfy0rz6ie1&utm_content=m1u8xk3")
+                      launch(Uri.parse("https://www.instagram.com/fin_xpress")
                           .toString());
                     },
                     imagePath: "assets/icons/instagram.svg",
@@ -206,7 +211,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                 height: 20,
               ),
               Text(
-                "FinXpress v1.0.1",
+                "FinXpress v1.0.0",
                 style: TextStyle(fontFamily: "SourceSansPro"),
               )
             ],

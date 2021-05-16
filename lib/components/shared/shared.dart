@@ -53,17 +53,20 @@ class Shared {
         });
   }
 
-  Text getTag(AsyncSnapshot<QuerySnapshot> snapshot, int index) {
-    return Text(
-      snapshot.data.docs[index]['tag'],
-      style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-          background: Paint()
-            ..strokeWidth = 22
-            ..color = Color(0xFF404A35).withOpacity(.2)
-            ..style = PaintingStyle.stroke
-            ..strokeJoin = StrokeJoin.round),
+  Padding getTag(AsyncSnapshot<QuerySnapshot> snapshot, int index) {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Text(
+        snapshot.data.docs[index]['tag'],
+        style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            background: Paint()
+              ..strokeWidth = 22
+              ..color = Color(0xFF404A35).withOpacity(.15)
+              ..style = PaintingStyle.stroke
+              ..strokeJoin = StrokeJoin.round),
+      ),
     );
   }
 

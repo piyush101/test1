@@ -23,6 +23,7 @@ class _AdviceState extends State<Advice> {
             child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("Advices")
+                    .orderBy("time", descending: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   switch (snapshot.connectionState) {
