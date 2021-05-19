@@ -2,6 +2,7 @@ import 'package:FinXpress/screens/advice/advice.dart';
 import 'package:FinXpress/screens/bookmark/bookmark_home.dart';
 import 'package:FinXpress/screens/drawer/news_drawer.dart';
 import 'package:FinXpress/screens/insights/insights_home/insights_home.dart';
+import 'package:FinXpress/screens/learnings/learnings_home.dart';
 import 'package:FinXpress/screens/news/news_body.dart';
 import 'package:FinXpress/screens/watchlist/watchlist.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
@@ -77,10 +78,10 @@ class _HomeState extends State<Home> {
               )),
               label: "News",
             ),
-            // BottomNavigationBarItem(
-            //     icon: (Icon(CupertinoIcons.book)),
-            //     label: "Learnings",
-            //     backgroundColor: Colors.grey),
+            BottomNavigationBarItem(
+                icon: (Icon(CupertinoIcons.book)),
+                label: "Learnings",
+                backgroundColor: Colors.grey),
             BottomNavigationBarItem(
                 icon: (Icon(Icons.vpn_key)), label: "Insights"),
             BottomNavigationBarItem(
@@ -97,13 +98,13 @@ class _HomeState extends State<Home> {
     switch (pageIndex) {
       case 0:
         return NewsBody();
-      // case 1:
-      //   return LearningsHomepage();
       case 1:
-        return InsightsHome();
+        return LearningsHome();
       case 2:
-        return Advice();
+        return InsightsHome();
       case 3:
+        return Advice();
+      case 4:
         return Watchlist();
       default:
         return NewsBody();

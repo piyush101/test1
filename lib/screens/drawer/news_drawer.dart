@@ -4,8 +4,10 @@ import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/provider/dark_theme_provider.dart';
@@ -43,33 +45,46 @@ class _NewsDrawerState extends State<NewsDrawer> {
               Center(
                 child: _getDayNightSwitcherButton(darkThemeProvider, context),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 8.0),
-              //   child: ListTile(
-              //     title: Text(
-              //       "Share us with Friends",
-              //       style: GoogleFonts.sourceSansPro(
-              //           fontSize: 18, fontWeight: FontWeight.w600),
-              //     ),
-              //     leading: Icon(
-              //       Icons.share_outlined,
-              //       color: Colors.black,
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 8.0),
-              //   child: ListTile(
-              //       title: InkWell(
-              //         child: Text(
-              //           "Rate us on Play Store",
-              //           style: GoogleFonts.sourceSansPro(
-              //               fontSize: 18, fontWeight: FontWeight.w600),
-              //         ),
-              //       ),
-              //       leading: SvgPicture.asset("assets/icons/play_store.svg",
-              //           height: 23.0, width: 20.0)),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                  title: InkWell(
+                    onTap: () {
+                      Share.share(
+                        "https://play.google.com/store/apps/details?id=com.finexpress",
+                        subject:
+                            'RealTime stock news in 60 words. Download FinXpress!!',
+                      );
+                    },
+                    child: Text(
+                      "Share us with Friends",
+                      style: GoogleFonts.sourceSansPro(
+                          fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.share_outlined,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                    title: InkWell(
+                      onTap: () {
+                        launch(Uri.parse("market://details?id=com.finexpress")
+                            .toString());
+                      },
+                      child: Text(
+                        "Rate us on Play Store",
+                        style: GoogleFonts.sourceSansPro(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    leading: SvgPicture.asset("assets/icons/play_store.svg",
+                        height: 23.0, width: 20.0)),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(

@@ -47,19 +47,17 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Html(
-                  defaultTextStyle:
-                      TextStyle(fontSize: 18, fontFamily: "SourceSansPro"),
-                  linkStyle: TextStyle(
-                      fontFamily: "SourceSansPro",
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blueGrey,
-                      decoration: TextDecoration.underline),
-                  data: widget.snapshot['content'],
-                  onLinkTap: (url) {
-                    launch(Uri.parse(url).toString());
-                  },
-                ),
+                    style: {
+                      "body": Style(
+                          fontFamily: "SourceSansPro",
+                          fontSize: FontSize(17),
+                          fontWeight: FontWeight.w500),
+                    },
+                    data: widget.snapshot['content'],
+                    onLinkTap: (String url, RenderContext context,
+                        Map<String, String> attributes, element) {
+                      launch(Uri.parse(url).toString());
+                    }),
               )
             ],
           ),

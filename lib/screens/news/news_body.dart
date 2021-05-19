@@ -83,36 +83,40 @@ class _NewsBodyState extends State<NewsBody> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        // crossAxisAlignment:
+                                        //     CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                               snapshot.data.docs[index]
                                                   ['title'],
                                               style: GoogleFonts.sourceSansPro(
-                                                  fontSize: 20,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w600)),
-                                          SizedBox(height: size.height * .005),
-                                          Html(
-                                            defaultTextStyle: TextStyle(
-                                                fontFamily: "SourceSansPro",
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                            linkStyle: TextStyle(
-                                                color: Colors.blueGrey,
-                                                fontSize: 18,
-                                                fontFamily: "SourceSansPro",
-                                                fontWeight: FontWeight.w600,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                            data: snapshot.data.docs[index]
-                                                ['content'],
-                                            onLinkTap: (url) {
-                                              launch(Uri.parse(url).toString());
-                                            },
+                                          // SizedBox(height: size.height * .001),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Html(
+                                                style: {
+                                                  "body": Style(
+                                                      fontFamily:
+                                                          "SourceSansPro",
+                                                      fontSize: FontSize(17),
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                },
+                                                data: snapshot.data.docs[index]
+                                                    ['content'],
+                                                onLinkTap: (String url,
+                                                    RenderContext context,
+                                                    Map<String, String>
+                                                        attributes,
+                                                    element) {
+                                                  launch(Uri.parse(url)
+                                                      .toString());
+                                                }),
                                           ),
                                           SizedBox(
-                                            height: size.height * .02,
+                                            height: size.height * .002,
                                           )
                                         ],
                                       ),

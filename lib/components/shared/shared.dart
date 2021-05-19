@@ -79,7 +79,7 @@ class Shared {
         ),
         Text(
           datetimeStampConversion(snapshot.data.docs[index]['time']),
-          style: TextStyle(color: Color(0xFF616967)),
+          style: TextStyle(color: Color(0xFF616967), fontSize: 13),
         ),
       ],
     );

@@ -69,23 +69,20 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                 height: 8,
               ),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Html(
-                    defaultTextStyle: TextStyle(
-                      fontFamily: "SourceSansPro",
-                      fontSize: 18,
-                    ),
-                    linkStyle: TextStyle(
-                        fontFamily: "SourceSansPro",
-                        fontSize: 18,
-                        color: Colors.blueGrey,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline),
-                    data: widget.snapshot['content'],
-                    onLinkTap: (url) {
-                      launch(Uri.parse(url).toString());
+                padding: const EdgeInsets.all(8.0),
+                child: Html(
+                    style: {
+                      "body": Style(
+                          fontFamily: "SourceSansPro",
+                          fontSize: FontSize(16),
+                          fontWeight: FontWeight.w500),
                     },
-                  ))
+                    data: widget.snapshot['content'],
+                    onLinkTap: (String url, RenderContext context,
+                        Map<String, String> attributes, element) {
+                      launch(Uri.parse(url).toString());
+                    }),
+              )
             ],
           ),
         ),

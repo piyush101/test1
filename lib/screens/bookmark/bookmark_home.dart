@@ -111,15 +111,17 @@ class _BookmarkHomeState extends State<BookmarkHome> {
             decoration: BoxDecoration(
                 color: Color(0xFFcaedd7).withOpacity(0.4),
                 borderRadius: BorderRadius.circular(5)),
-            height: 140,
+            // height: 140,
             width: double.infinity,
-            child: Row(
-              children: [
-                _getBookmarkImage(snapshot, index),
-                Expanded(
-                  child: _getBookmarkData(snapshot, index),
-                )
-              ],
+            child: Container(
+              child: Row(
+                children: [
+                  // _getBookmarkImage(snapshot, index),
+                  Expanded(
+                    child: _getBookmarkData(snapshot, index),
+                  )
+                ],
+              ),
             ),
           ),
         ));
@@ -151,16 +153,16 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  Container _getBookmarkImage(
-      AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
-    return Container(
-        width: 125,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    snapshot.data.get('bookmarks')[index]['imageurl']))));
-  }
+  // Container _getBookmarkImage(
+  //     AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
+  //   return Container(
+  //       width: 125,
+  //       decoration: BoxDecoration(
+  //           image: DecorationImage(
+  //               fit: BoxFit.fitWidth,
+  //               image: NetworkImage(
+  //                   snapshot.data.get('bookmarks')[index]['imageurl']))));
+  // }
 
   Padding _getTapHeading() {
     return Padding(

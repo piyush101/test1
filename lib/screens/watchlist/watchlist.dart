@@ -236,12 +236,11 @@ class _WatchlistState extends State<Watchlist> {
     return GestureDetector(
       onTap: () async {
         users.doc(_firebaseAuth.currentUser.uid).update({
-          "subscribetopic": FieldValue.arrayUnion([data['name'].toString()])
+          "subscribetopic": FieldValue.arrayUnion([data['symbol'].toString()])
         });
         // if (kReleaseMode) {
-        print(data['name'].toString().split(" ")[0]);
-        await FirebaseMessaging.instance
-            .subscribeToTopic(data['name'].toString().split(" ")[0]);
+        // print(data['name'].toString().split(" ")[0]);
+        await FirebaseMessaging.instance.subscribeToTopic(data['symbol']);
         // }
         Navigator.maybePop(context);
       },
