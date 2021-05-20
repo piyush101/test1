@@ -28,9 +28,10 @@ dependencies:
   firebase_analytics: ^8.0.0
   material_floating_search_bar: ^0.3.4
   share: ^2.0.1
+#  firebase_image: ^1.0.1
   day_night_switcher: ^0.2.0+1
   firebase_dynamic_links: ^2.0.2
-  #  firebase_storage: ^8.1.0
+  firebase_storage: ^8.1.0
   fluttertoast: ^8.0.7
   double_back_to_close_app: ^2.0.1
   cupertino_icons: ^1.0.2
@@ -51,7 +52,7 @@ flutter:
     - assets/icons/telegram.svg
     - assets/icons/twitter.svg
     - assets/icons/play_store.svg
-    - assets/images/image.jpg
+    - assets/images/image.png
     - assets/images/logo_transparent.png
   fonts:
     - family: SourceSansPro

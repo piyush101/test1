@@ -153,17 +153,6 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  // Container _getBookmarkImage(
-  //     AsyncSnapshot<DocumentSnapshot> snapshot, int index) {
-  //   return Container(
-  //       width: 125,
-  //       decoration: BoxDecoration(
-  //           image: DecorationImage(
-  //               fit: BoxFit.fitWidth,
-  //               image: NetworkImage(
-  //                   snapshot.data.get('bookmarks')[index]['imageurl']))));
-  // }
-
   Padding _getTapHeading() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
@@ -244,25 +233,31 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  Column _buildWheBookmarkEmpty(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 100.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Home()));
-            },
-            child: Image.asset(
-              "assets/images/image.jpg",
-              width: double.infinity,
-              height: 350,
+  Center _buildWheBookmarkEmpty(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Home()));
+              },
+              child: Image.asset(
+                "assets/images/image.png",
+                // width: double.infinity,
+                height: 200,
+              ),
             ),
           ),
-        ),
-      ],
+          Text(
+            "Keep Investing!!",
+            style: GoogleFonts.sourceSansPro(fontSize: 30),
+          )
+        ],
+      ),
     );
   }
 }

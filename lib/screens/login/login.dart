@@ -32,28 +32,36 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Center getLoginPageBody(Size size) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: size.height * .1,
-            ),
-            Image.asset(
-              "assets/images/logo_transparent.png",
-              width: double.infinity,
-              height: 300,
-            ),
-            SizedBox(height: size.height * .20),
-            googleElevatedButton(size),
-            SizedBox(
-              height: 15,
-            ),
-            facebookElevatedButton(size)
-          ],
+  Container getLoginPageBody(Size size) {
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+        image: NetworkImage(
+            "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/login_2.png?alt=media&token=e0465010-49c2-4c20-8f1a-506b3467488f"),
+        fit: BoxFit.cover,
+      )),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: size.height * .05,
+              ),
+              Image.asset(
+                "assets/images/logo_transparent.png",
+                // width: double.infinity,
+                height: 200,
+              ),
+              SizedBox(height: size.height * .45),
+              googleElevatedButton(size),
+              SizedBox(
+                height: 15,
+              ),
+              facebookElevatedButton(size)
+            ],
+          ),
         ),
       ),
     );
