@@ -25,8 +25,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
               physics: BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: MediaQuery.of(context).size.width /
-                      (MediaQuery.of(context).size.height / 2.1),
+                  childAspectRatio: size.width / (size.height / 2),
                   crossAxisCount: 2),
               shrinkWrap: true,
               itemCount: widget.snapshot.length,
@@ -38,7 +37,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                             LearningsPostDetails(widget.snapshot[index])));
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -72,10 +71,16 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                                   ),
                                 ))
                           ]),
-                          Text(
-                            widget.snapshot[index]['title'],
-                            style: GoogleFonts.sourceSansPro(
-                                fontSize: 18, fontWeight: FontWeight.w600),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 4),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                widget.snapshot[index]['title'],
+                                style: GoogleFonts.sourceSansPro(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           )
                         ],
                       ),

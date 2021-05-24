@@ -40,7 +40,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                           fontSize: 16,
                           background: Paint()
                             ..strokeWidth = 22
-                            ..color = Color(0xFFdff5ef)
+                            ..color = Color(0xFFa7c7b8).withOpacity(.5)
                             ..style = PaintingStyle.stroke
                             ..strokeJoin = StrokeJoin.round),
                     ),
@@ -76,6 +76,11 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                           fontFamily: "SourceSansPro",
                           fontSize: FontSize(16),
                           fontWeight: FontWeight.w500),
+                      "a": Style(
+                          color: Colors.blueGrey,
+                          fontFamily: "SourceSansPro",
+                          fontSize: FontSize(17),
+                          fontWeight: FontWeight.w600),
                     },
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,

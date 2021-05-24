@@ -52,6 +52,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                           fontFamily: "SourceSansPro",
                           fontSize: FontSize(17),
                           fontWeight: FontWeight.w500),
+                      "a": Style(
+                          color: Colors.blueGrey,
+                          fontFamily: "SourceSansPro",
+                          fontSize: FontSize(17),
+                          fontWeight: FontWeight.w600),
                     },
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,

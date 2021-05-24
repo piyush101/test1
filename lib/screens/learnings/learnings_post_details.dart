@@ -15,7 +15,6 @@ class LearningsPostDetails extends StatefulWidget {
 class _LearningsPostDetailsState extends State<LearningsPostDetails> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -59,6 +58,11 @@ class _LearningsPostDetailsState extends State<LearningsPostDetails> {
                           fontFamily: "SourceSansPro",
                           fontSize: FontSize(16),
                           fontWeight: FontWeight.w500),
+                      "a": Style(
+                          color: Colors.blueGrey,
+                          fontFamily: "SourceSansPro",
+                          fontSize: FontSize(17),
+                          fontWeight: FontWeight.w600),
                     },
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,

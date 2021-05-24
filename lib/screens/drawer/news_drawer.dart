@@ -133,7 +133,12 @@ class _NewsDrawerState extends State<NewsDrawer> {
                 child: ListTile(
                   title: InkWell(
                     onTap: () {
-                      _signOut();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return _alertBoxOnLogout(context);
+                          });
+                      // _signOut();
                     },
                     child: Text(
                       "Log Out",
@@ -194,7 +199,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                   ),
                   FollowUsImages(
                     onTap: () {
-                      launch(Uri.parse("https://www.instagram.com/fin_xpress")
+                      launch(Uri.parse("https://www.instagram.com/finxpress_")
                           .toString());
                     },
                     imagePath: "assets/icons/instagram.svg",
@@ -226,7 +231,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                 height: 20,
               ),
               Text(
-                "FinXpress v1.0.0",
+                "FinXpress v1.0.2",
                 style: TextStyle(fontFamily: "SourceSansPro"),
               )
             ],
@@ -287,8 +292,39 @@ class _NewsDrawerState extends State<NewsDrawer> {
       ],
     );
   }
+}
 
-  Future<void> _signOut() async {
-    await AuthenticationSignOut().signOut();
-  }
+Future<void> _signOut() async {
+  await AuthenticationSignOut().signOut();
+}
+
+AlertDialog _alertBoxOnLogout(BuildContext context) {
+  return AlertDialog(
+    title: Text("FinXpress"),
+    content: Text("Do you want to LogOut?"),
+    actions: [_dialogYesButton(context), _dialogNoButton(context)],
+  );
+}
+
+ElevatedButton _dialogNoButton(BuildContext context) {
+  return ElevatedButton(
+    style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
+    child: Text("No"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+}
+
+ElevatedButton _dialogYesButton(BuildContext context) {
+  return ElevatedButton(
+    style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
+    child: Text("Yes"),
+    onPressed: () {
+      Navigator.of(context).maybePop();
+      _signOut();
+    },
+  );
 }

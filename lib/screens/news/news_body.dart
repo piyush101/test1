@@ -77,32 +77,41 @@ class _NewsBodyState extends State<NewsBody> {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
+                                  Container(
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Column(
-                                        // crossAxisAlignment:
-                                        //     CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                              snapshot.data.docs[index]
-                                                  ['title'],
-                                              style: GoogleFonts.sourceSansPro(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600)),
-                                          // SizedBox(height: size.height * .001),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Container(
+                                              child: Text(
+                                                  snapshot.data.docs[index]
+                                                      ['title'],
+                                                  style:
+                                                      GoogleFonts.sourceSansPro(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                            ),
+                                          ),
+                                          Container(
                                             child: Html(
                                                 style: {
                                                   "body": Style(
+                                                      textAlign: TextAlign.left,
                                                       fontFamily:
                                                           "SourceSansPro",
                                                       fontSize: FontSize(17),
                                                       fontWeight:
                                                           FontWeight.w500),
+                                                  "a": Style(
+                                                      color: Colors.blueGrey,
+                                                      fontFamily:
+                                                          "SourceSansPro",
+                                                      fontSize: FontSize(17),
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 },
                                                 data: snapshot.data.docs[index]
                                                     ['content'],
@@ -115,9 +124,6 @@ class _NewsBodyState extends State<NewsBody> {
                                                       .toString());
                                                 }),
                                           ),
-                                          SizedBox(
-                                            height: size.height * .002,
-                                          )
                                         ],
                                       ),
                                     ),
