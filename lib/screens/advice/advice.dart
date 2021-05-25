@@ -159,11 +159,11 @@ class _AdviceState extends State<Advice> {
   Color _getbackgroundColor(String val) {
     switch (val) {
       case "Buy":
-        return Color(0xFFCADBD1);
+        return Color(0xFFCADBD1).withOpacity(0.5);
       case "Sell":
-        return Color(0xFFEF0B6B7);
+        return Color(0xFFEF0B6B7).withOpacity(0.5);
       case "Hold":
-        return Color(0xFFd9cccc);
+        return Color(0xFFd9cccc).withOpacity(0.5);
       default:
         return Colors.grey;
     }

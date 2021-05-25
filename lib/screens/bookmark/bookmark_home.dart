@@ -108,14 +108,13 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           padding: const EdgeInsets.all(5.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Color(0xFFcaedd7).withOpacity(0.3),
+                color: Color(0xFF93c7a1).withOpacity(0.3),
                 borderRadius: BorderRadius.circular(5)),
             // height: 140,
             width: double.infinity,
             child: Container(
               child: Row(
                 children: [
-                  // _getBookmarkImage(snapshot, index),
                   Expanded(
                     child: _getBookmarkData(snapshot, index),
                   )
@@ -246,7 +245,6 @@ class _BookmarkHomeState extends State<BookmarkHome> {
               },
               child: Image.asset(
                 "assets/images/image.png",
-                // width: double.infinity,
                 height: 200,
               ),
             ),

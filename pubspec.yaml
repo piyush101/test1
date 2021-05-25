@@ -1,9 +1,9 @@
 name: FinXpress
-description: Making India Financial literate
+description: Revamping Financial Literacy in India
 
 publish_to: 'none'
 
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -28,7 +28,6 @@ dependencies:
   firebase_analytics: ^8.0.0
   material_floating_search_bar: ^0.3.4
   share: ^2.0.1
-#  firebase_image: ^1.0.1
   day_night_switcher: ^0.2.0+1
   firebase_dynamic_links: ^2.0.2
   firebase_storage: ^8.1.0
@@ -36,6 +35,7 @@ dependencies:
   double_back_to_close_app: ^2.0.1
   cupertino_icons: ^1.0.2
   google_fonts: ^2.0.0
+  colorful_safe_area: ^0.3.0
 
 dev_dependencies:
   flutter_test:

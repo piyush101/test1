@@ -5,6 +5,7 @@ import 'package:FinXpress/screens/insights/insights_home/insights_home.dart';
 import 'package:FinXpress/screens/learnings/learnings_home.dart';
 import 'package:FinXpress/screens/news/news_body.dart';
 import 'package:FinXpress/screens/watchlist/watchlist.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,9 @@ class _HomeState extends State<Home> {
     return buildScaffold();
   }
 
-  SafeArea buildScaffold() {
-    return SafeArea(
+  ColorfulSafeArea buildScaffold() {
+    return ColorfulSafeArea(
+      color: Colors.black,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
