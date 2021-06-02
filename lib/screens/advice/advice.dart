@@ -94,7 +94,7 @@ class _AdviceState extends State<Advice> {
                                       Text(
                                         "By: " +
                                             snapshot.data.docs[index]
-                                            ['adviceby'],
+                                                ['adviceby'],
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w500),

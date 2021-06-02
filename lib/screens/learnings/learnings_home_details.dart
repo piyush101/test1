@@ -62,7 +62,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Container(
                                     color:
-                                    Color(widget.snapshot[index]['color']),
+                                        Color(widget.snapshot[index]['color']),
                                     child: Text(
                                       widget.snapshot[index]['number'],
                                       style: GoogleFonts.sahitya(fontSize: 25),
