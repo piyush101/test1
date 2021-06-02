@@ -1,4 +1,5 @@
 import 'package:FinXpress/components/enlarge_image/enlarge_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -29,7 +30,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
               getTitleContainer(context),
               buildImageContainer(context, size),
               getDateTimeReadRow(),
-              getTagRow(),
+              _getTag(widget.snapshot['tag']),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Align(
@@ -53,7 +54,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                           fontSize: FontSize(17),
                           fontWeight: FontWeight.w500),
                       "a": Style(
-                          color: Colors.blueGrey,
+                          color: Color(0xFF161565).withOpacity(0.8),
                           fontFamily: "SourceSansPro",
                           fontSize: FontSize(17),
                           fontWeight: FontWeight.w600),
@@ -61,7 +62,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,
                         Map<String, String> attributes, element) {
-                      launch(Uri.parse(url).toString());
+                      launch(url.toString(), forceWebView: true);
                     }),
               )
             ],
@@ -85,23 +86,6 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
               )),
         )
       ]),
-    );
-  }
-
-  Padding getTagRow() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-      child: Text(
-        widget.snapshot['tag'],
-        style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-            background: Paint()
-              ..strokeWidth = 22
-              ..color = Color(0xFF84ADAD).withOpacity(0.4)
-              ..style = PaintingStyle.stroke
-              ..strokeJoin = StrokeJoin.round),
-      ),
     );
   }
 
@@ -135,7 +119,8 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(widget.snapshot['imageurl']))),
+                image:
+                    CachedNetworkImageProvider(widget.snapshot['imageurl']))),
       ),
     );
   }
@@ -156,4 +141,26 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
     String formatDate = DateFormat.yMMMMd('en_US').format(dateTime);
     return formatDate;
   }
+}
+
+Padding _getTag(String tag) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      height: 35,
+      width: 100,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5.0, right: 5),
+        child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              tag,
+              style: GoogleFonts.sourceSansPro(fontSize: 16),
+            )),
+      ),
+      decoration: BoxDecoration(
+          color: Color(0xFFbebddf).withOpacity(0.3),
+          borderRadius: BorderRadius.circular(5)),
+    ),
+  );
 }

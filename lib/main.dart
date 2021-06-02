@@ -15,10 +15,13 @@ import 'components/provider/dark_theme_provider.dart';
 
 const bool kReleaseMode =
     bool.fromEnvironment('dart.vm.product', defaultValue: false);
+int initScreen;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  initScreen = await sharedPreferences.getInt("initScreen");
+  await sharedPreferences.setInt("initScreen", 1);
   await Firebase.initializeApp();
 
   SystemChrome.setPreferredOrientations(
@@ -125,7 +128,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         child: MaterialApp(
           theme: darkThemeProvider.getTheme,
           debugShowCheckedModeBanner: false,
-          initialRoute: '/',
+          initialRoute: initScreen == 0 || initScreen == null ? "Intro" : '/',
           onGenerateRoute: RouteGenerator.generateRoute,
         ),
       );

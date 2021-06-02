@@ -1,4 +1,6 @@
 import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/screens/home/home.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,30 +38,133 @@ class _LoginState extends State<Login> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-        image: NetworkImage(
-            "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/login_2.png?alt=media&token=e0465010-49c2-4c20-8f1a-506b3467488f"),
+        image: CachedNetworkImageProvider(
+            "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fsign_in.png?alt=media&token=4799bd21-bfa1-473f-b04f-0b5182f31d74"),
         fit: BoxFit.cover,
       )),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 30.0, right: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Sign in to",
+                style: GoogleFonts.sourceSansPro(
+                    color: Color(0xFF5f5463),
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+            SizedBox(height: 17),
+            Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Ffinal_logo-removebg-preview.png?alt=media&token=d529b98f-e496-436d-8f45-f564aa9b5895"))),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "FinXpress",
+                  style: GoogleFonts.sourceSansPro(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
+                      color: Color(0xFF5f5463)),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            googleElevatedButton(size),
+            SizedBox(
+              height: 15,
+            ),
+            facebookElevatedButton(size),
+            SizedBox(
+              height: 20,
+            ),
+            Row(children: <Widget>[
+              Expanded(
+                  child: Divider(
+                thickness: 1.5,
+              )),
+              SizedBox(
+                width: 2,
+              ),
+              Text(
+                "OR",
+                style: GoogleFonts.sourceSansPro(fontSize: 17),
+              ),
+              SizedBox(
+                width: 2,
+              ),
+              Expanded(
+                  child: Divider(
+                thickness: 1.5,
+              )),
+            ]),
+            SizedBox(height: 20),
+            GestureDetector(
+              child: Text(
+                "Join us as Guest",
+                style: GoogleFonts.sourceSansPro(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF5f5463)),
+              ),
+              onTap: () {
+                Navigator.pushAndRemoveUntil<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => Home(),
+                    ),
+                    (route) => false);
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Align googleElevatedButton(Size size) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: size.width * .85,
+        height: size.height * .05,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Color(0xFFb2bbf0)),
+          onPressed: () {
+            _signInWithGoogle(context).then((value) => this.setState(() {
+                  isLoading = false;
+                }));
+          },
+          child: Row(
             children: [
+              SvgPicture.asset(
+                "assets/icons/google.svg",
+                color: Color(0xFF9e3333),
+              ),
               SizedBox(
-                height: size.height * .05,
+                width: 7,
               ),
-              Image.asset(
-                "assets/images/logo_transparent.png",
-                // width: double.infinity,
-                height: 200,
-              ),
-              SizedBox(height: size.height * .45),
-              googleElevatedButton(size),
-              SizedBox(
-                height: 15,
-              ),
-              facebookElevatedButton(size)
+              Text(
+                "Sign In with Google",
+                style: GoogleFonts.sourceSansPro(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600),
+              )
             ],
           ),
         ),
@@ -67,67 +172,37 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Container googleElevatedButton(Size size) {
-    return Container(
-      width: size.width * .9,
-      height: size.height * .05,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: Color(0xFFEBD1D1)),
-        onPressed: () {
-          _signInWithGoogle().then((value) => this.setState(() {
-                isLoading = false;
-              }));
-        },
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/google.svg",
-              color: Color(0xFF9e3333),
-            ),
-            SizedBox(
-              width: 7,
-            ),
-            Text(
-              "Sign In with Google",
-              style: GoogleFonts.sourceSansPro(
-                  color: Color(0xFF4D5054),
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Container facebookElevatedButton(Size size) {
-    return Container(
-      width: size.width * .9,
-      height: size.height * .05,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: Color(0xFFD1E2EB)),
-        onPressed: () {
-          _handleFacebookLogin().then((value) => this.setState(() {
-                isLoading = false;
-              }));
-        },
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/facebook.svg",
-              color: Color(0xFF286699),
-            ),
-            SizedBox(
-              width: 7,
-            ),
-            Text(
-              "Sign In with Facebook",
-              style: GoogleFonts.sourceSansPro(
-                  color: Color(0xFF4D5054),
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600),
-            )
-          ],
+  Align facebookElevatedButton(Size size) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: size.width * .85,
+        height: size.height * .05,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Color(0xFFb2bbf0)),
+          onPressed: () {
+            _handleFacebookLogin().then((value) => this.setState(() {
+                  isLoading = false;
+                }));
+          },
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/facebook.svg",
+                color: Color(0xFF286699),
+              ),
+              SizedBox(
+                width: 7,
+              ),
+              Text(
+                "Sign In with Facebook",
+                style: GoogleFonts.sourceSansPro(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -166,6 +241,13 @@ class _LoginState extends State<Login> {
         break;
       case FacebookLoginStatus.loggedIn:
         await _signInWithFacebook(_facebookLoginResult);
+        Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => Home(),
+          ),
+          (route) => false, //if you want to disable back feature set to false
+        );
         break;
     }
   }
@@ -180,7 +262,7 @@ class _LoginState extends State<Login> {
     return _facebookUser.user;
   }
 
-  Future<void> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle(context) async {
     this.setState(() {
       isLoading = true;
     });
@@ -201,6 +283,13 @@ class _LoginState extends State<Login> {
           print("credential error $onError");
         });
         createCurrentUserDocument();
+        Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => Home(),
+          ),
+          (route) => false, //if you want to disable back feature set to false
+        );
         return userCredential.user;
       } else {
         throw FirebaseAuthException(

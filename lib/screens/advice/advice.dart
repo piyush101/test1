@@ -16,6 +16,7 @@ class _AdviceState extends State<Advice> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFf1f3f4),
         body: Stack(children: [
           _getStockRecommendationTitle(),
           Padding(
@@ -39,20 +40,16 @@ class _AdviceState extends State<Advice> {
                             shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                        (MediaQuery.of(context).size.height /
-                                            2.1),
-                                    crossAxisCount: 2),
+                                    childAspectRatio: 1.2, crossAxisCount: 2),
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: EdgeInsets.all(15),
+                                margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                    color: _getbackgroundColor(
-                                        snapshot.data.docs[index]['advice']),
-                                    borderRadius: BorderRadius.circular(8)),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Color(0xFF5555aa), width: 0.4),
+                                    borderRadius: BorderRadius.circular(5)),
                                 child: Container(
                                   margin: EdgeInsets.all(8),
                                   child: Column(
@@ -68,14 +65,16 @@ class _AdviceState extends State<Advice> {
                                             color: _gettextColor(snapshot
                                                 .data.docs[index]['advice'])),
                                       ),
-                                      SizedBox(
-                                        height: size.height * .002,
-                                      ),
-                                      Text(
-                                        snapshot.data.docs[index]["advicefor"],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 3.0),
+                                        child: Text(
+                                          snapshot.data.docs[index]
+                                              ["advicefor"],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14),
+                                        ),
                                       ),
                                       SizedBox(
                                         height: 3,
@@ -95,7 +94,7 @@ class _AdviceState extends State<Advice> {
                                       Text(
                                         "By: " +
                                             snapshot.data.docs[index]
-                                                ['adviceby'],
+                                            ['adviceby'],
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w500),
@@ -132,7 +131,7 @@ class _AdviceState extends State<Advice> {
             style: GoogleFonts.sourceSansPro(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Colors.blueGrey),
+                color: Color(0xFF5555aa)),
           )),
     );
   }
@@ -151,19 +150,6 @@ class _AdviceState extends State<Advice> {
         return Color(0xFFc92634);
       case "Hold":
         return Color(0xFF8a6d6d);
-      default:
-        return Colors.grey;
-    }
-  }
-
-  Color _getbackgroundColor(String val) {
-    switch (val) {
-      case "Buy":
-        return Color(0xFFCADBD1).withOpacity(0.5);
-      case "Sell":
-        return Color(0xFFEF0B6B7).withOpacity(0.5);
-      case "Hold":
-        return Color(0xFFd9cccc).withOpacity(0.5);
       default:
         return Colors.grey;
     }

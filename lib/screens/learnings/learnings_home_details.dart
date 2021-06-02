@@ -17,6 +17,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFf1f3f4),
         extendBodyBehindAppBar: true,
         appBar: _getAppBar(),
         body: Padding(
@@ -43,9 +44,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
-                              color: Color(0xFFb1c5c5).withOpacity(0.2),
-                              blurRadius: 4,
-                              offset: Offset(4, 8),
+                              color: Colors.white,
                             )
                           ]),
                       child: Column(
@@ -63,7 +62,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Container(
                                     color:
-                                        Color(widget.snapshot[index]['color']),
+                                    Color(widget.snapshot[index]['color']),
                                     child: Text(
                                       widget.snapshot[index]['number'],
                                       style: GoogleFonts.sahitya(fontSize: 25),
@@ -96,11 +95,12 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
 
 AppBar _getAppBar() {
   return AppBar(
-    iconTheme: IconThemeData(color: Colors.black),
-    backgroundColor: Color(0xFFb1c5c5),
+    iconTheme: IconThemeData(color: Color(0xFF5f5463)),
+    backgroundColor: Color(0xFFf1f3f4),
     title: Text(
       "FinXpress",
-      style: TextStyle(color: Colors.black),
+      style: GoogleFonts.sourceSansPro(
+          fontWeight: FontWeight.w600, color: Color(0xFF5f5463), fontSize: 23),
     ),
   );
 }

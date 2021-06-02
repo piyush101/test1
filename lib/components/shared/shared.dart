@@ -1,5 +1,6 @@
 import 'package:FinXpress/screens/bookmark/bookmark_shared.dart';
 import 'package:FinXpress/service/dynamic_link_service/dynamic_link_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -29,13 +30,15 @@ class Shared {
           borderRadius: BorderRadiusDirectional.circular(15),
           image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(snapshot.data.docs[index]['imageurl']))),
+              image: CachedNetworkImageProvider(
+                  snapshot.data.docs[index]['imageurl']))),
       height: size.height * 0.21,
       // margin: EdgeInsets.all(10),
     );
   }
 
-  IconButton getBookMark(AsyncSnapshot<QuerySnapshot> snapshot, int index) {
+  IconButton getBookMark(
+      AsyncSnapshot<QuerySnapshot> snapshot, int index, context) {
     return IconButton(
         icon: _bookmarkShared.isBookmarked(snapshot.data.docs[index])
             ? Icon(
@@ -48,8 +51,10 @@ class Shared {
               ),
         onPressed: () {
           _bookmarkShared.isBookmarked(snapshot.data.docs[index])
-              ? _bookmarkShared.deleteBookMarkData(snapshot.data.docs[index])
-              : _bookmarkShared.addBookMarkData(snapshot.data.docs[index]);
+              ? _bookmarkShared.deleteBookMarkData(
+                  snapshot.data.docs[index], context)
+              : _bookmarkShared.addBookMarkData(
+                  snapshot.data.docs[index], context);
         });
   }
 
@@ -75,11 +80,11 @@ class Shared {
       children: [
         Icon(
           Icons.watch_later_sharp,
-          color: Color(0xFF616967),
+          color: Color(0xFF5f5463),
         ),
         Text(
           datetimeStampConversion(snapshot.data.docs[index]['time']),
-          style: TextStyle(color: Color(0xFF616967), fontSize: 13),
+          style: TextStyle(color: Color(0xFF5f5463), fontSize: 13),
         ),
       ],
     );

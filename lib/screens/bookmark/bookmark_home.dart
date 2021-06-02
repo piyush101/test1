@@ -1,6 +1,6 @@
 import 'package:FinXpress/constants.dart';
 import 'package:FinXpress/screens/bookmark/bookmark_details.dart';
-import 'package:FinXpress/screens/home/home.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,78 +15,85 @@ class BookmarkHome extends StatefulWidget {
 }
 
 class _BookmarkHomeState extends State<BookmarkHome> {
-  var _currentUser = FirebaseAuth.instance.currentUser.uid;
+  var _currentUser = FirebaseAuth.instance.currentUser != null
+      ? FirebaseAuth.instance.currentUser.uid
+      : null;
+
   CollectionReference _users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: _getAppBar(),
         body: SafeArea(
-          child: _getBookmarkStream(),
+          child: _getBookmarkStream(size),
         ),
       ),
     );
   }
 
-  Padding _getBookmarkStream() {
-    return Padding(
-        padding: const EdgeInsets.all(8),
-        child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("Users")
-                .doc(_currentUser)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(
-                      child: Constants.getCircularProgressBarIndicator());
-                default:
-                  if (snapshot.data.get('bookmarks').length != 0) {
-                    return Stack(
-                      children: [
-                        _getBookMarkTitle(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _getTapHeading(),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 50, 8, 8),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: RefreshIndicator(
-                                  onRefresh: () async {
-                                    await Future<void>.delayed(
-                                        Duration(seconds: 1));
-                                  },
-                                  child: ListView.builder(
-                                    physics: BouncingScrollPhysics(
-                                        parent:
-                                            AlwaysScrollableScrollPhysics()),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        snapshot.data.get('bookmarks').length,
-                                    itemBuilder: (context, index) {
-                                      return _getBookmarkContainer(
-                                          context, snapshot, index);
+  Scaffold _getBookmarkStream(Size size) {
+    return Scaffold(
+      backgroundColor: Color(0xFFf1f3f4),
+      body: Padding(
+          padding: const EdgeInsets.all(8),
+          child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(_currentUser)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(
+                        child: Constants.getCircularProgressBarIndicator());
+                  default:
+                    if (snapshot.data.get('bookmarks').length != 0) {
+                      return Stack(
+                        children: [
+                          _getBookMarkTitle(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _getTapHeading(),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 50, 8, 8),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: RefreshIndicator(
+                                    onRefresh: () async {
+                                      await Future<void>.delayed(
+                                          Duration(seconds: 1));
                                     },
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(
+                                          parent:
+                                              AlwaysScrollableScrollPhysics()),
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          snapshot.data.get('bookmarks').length,
+                                      itemBuilder: (context, index) {
+                                        return _getBookmarkContainer(
+                                            context, snapshot, index);
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return _buildWheBookmarkEmpty(context);
-                  }
-              }
-            }));
+                        ],
+                      );
+                    } else {
+                      return _buildWheBookmarkEmpty(context, size);
+                    }
+                }
+              })),
+    );
   }
 
   GestureDetector _getBookmarkContainer(BuildContext context,
@@ -108,7 +115,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           padding: const EdgeInsets.all(5.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Color(0xFF93c7a1).withOpacity(0.3),
+                color: Color(0xFFbebddf).withOpacity(0.3),
                 borderRadius: BorderRadius.circular(5)),
             // height: 140,
             width: double.infinity,
@@ -159,7 +166,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           child: Text(
             "Tap and hold to delete",
             style: GoogleFonts.sourceSansPro(
-                color: Colors.blueGrey,
+                color: Color(0xFF5555aa),
                 fontSize: 16,
                 fontWeight: FontWeight.w500),
           )),
@@ -174,7 +181,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
           child: Text(
             "Your Bookmarks",
             style: GoogleFonts.sourceSansPro(
-                color: Colors.blueGrey,
+                color: Color(0xFF5555aa),
                 fontSize: 20,
                 fontWeight: FontWeight.w600),
           )),
@@ -183,11 +190,14 @@ class _BookmarkHomeState extends State<BookmarkHome> {
 
   AppBar _getAppBar() {
     return AppBar(
-      iconTheme: IconThemeData(color: Colors.black),
-      backgroundColor: Color(0xFFb1c5c5),
+      iconTheme: IconThemeData(color: Color(0xFF5f5463)),
+      backgroundColor: Color(0xFFf1f3f4),
       title: Text(
         "FinXpress",
-        style: TextStyle(color: Colors.black),
+        style: GoogleFonts.sourceSansPro(
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF5f5463),
+            fontSize: 23),
       ),
     );
   }
@@ -207,7 +217,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
   ElevatedButton _dialogNoButton(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
+          backgroundColor: MaterialStateProperty.all(Color(0xFF8787c4))),
       child: Text("No"),
       onPressed: () {
         Navigator.of(context).pop();
@@ -219,7 +229,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
       int index, BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
+          backgroundColor: MaterialStateProperty.all(Color(0xFF8787c4))),
       child: Text("Yes"),
       onPressed: () {
         _users.doc(_currentUser).update({
@@ -231,28 +241,35 @@ class _BookmarkHomeState extends State<BookmarkHome> {
     );
   }
 
-  Center _buildWheBookmarkEmpty(BuildContext context) {
+  Center _buildWheBookmarkEmpty(BuildContext context, Size size) {
     return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 100.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Home()));
-              },
-              child: Image.asset(
-                "assets/images/image.png",
-                height: 200,
+          SizedBox(
+            height: size.height * .25,
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                "Bookmark your favourite articles",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.sourceSansPro(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF5f5463)),
               ),
             ),
           ),
-          Text(
-            "Keep Investing!!",
-            style: GoogleFonts.sourceSansPro(fontSize: 30),
-          )
+          Container(
+            height: 150,
+            width: 150,
+            decoration: BoxDecoration(
+                color: Color(0xFFf1f3f4),
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                        "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fbookmark1.png?alt=media&token=e9f01d59-f744-4559-990d-eb167e4f8361"))),
+          ),
         ],
       ),
     );

@@ -7,13 +7,16 @@ import 'package:FinXpress/screens/news/news_body.dart';
 import 'package:FinXpress/screens/watchlist/watchlist.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   int pageIndex;
+  static const String home = '/home';
 
   Home({this.pageIndex = 0});
 
@@ -23,6 +26,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   DateTime backbuttonpressedTime;
+  var _currentUser = FirebaseAuth.instance.currentUser != null
+      ? FirebaseAuth.instance.currentUser.uid
+      : null;
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +41,54 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Color(0xFFb1c5c5),
-          title: Text("FinXpress",
-              style: GoogleFonts.sourceSansPro(
-                  fontSize: 23,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87)),
+          leading: Builder(
+              builder: (context) => IconButton(
+                    icon: Container(
+                        decoration: BoxDecoration(color: Color(0xFFf1f3f4)),
+                        child: SvgPicture.asset(
+                          "assets/icons/drawer.svg",
+                          width: 30,
+                          height: 22,
+                        )),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  )),
+          backgroundColor: Color(0xFFf1f3f4),
+          title: Row(
+            children: [
+              SizedBox(
+                width: 40,
+              ),
+              Container(
+                width: 30,
+                height: 30,
+                child: SvgPicture.asset(
+                  "assets/icons/logo_transparent.svg",
+                ),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text("FinXpress",
+                  style: GoogleFonts.sourceSansPro(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF5f5463))),
+            ],
+          ),
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return BookmarkHome();
-                  }));
-                },
-                icon: Icon(
-                  Icons.bookmark,
-                  color: Color(0xFF3c4d47),
-                ))
+            Visibility(
+              visible: _getBookmarkVisibilty(),
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return BookmarkHome();
+                    }));
+                  },
+                  icon: Icon(
+                    Icons.bookmark,
+                    color: Color(0xFF8787c4),
+                  )),
+            )
           ],
         ),
         drawer: Drawer(child: NewsDrawer()),
@@ -63,9 +99,8 @@ class _HomeState extends State<Home> {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          // backgroundColor: Color(0xFFDCDCDC),
-          selectedItemColor: Colors.black87,
-          unselectedItemColor: Color(0xFF6C7180),
+          selectedItemColor: Color(0xFF4d4d99),
+          unselectedItemColor: Color(0xFF7777bb),
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             setState(() {
@@ -88,8 +123,8 @@ class _HomeState extends State<Home> {
                 icon: (Icon(Icons.vpn_key)), label: "Insights"),
             BottomNavigationBarItem(
                 icon: (Icon(CupertinoIcons.lightbulb_fill)), label: "Advice"),
-            BottomNavigationBarItem(
-                icon: (Icon(CupertinoIcons.bell_fill)), label: "WatchList"),
+            // BottomNavigationBarItem(
+            //     icon: (Icon(CupertinoIcons.bell_fill)), label: "WatchList"),
           ],
         ),
       ),
@@ -127,5 +162,13 @@ class _HomeState extends State<Home> {
       return false;
     }
     return true;
+  }
+
+  bool _getBookmarkVisibilty() {
+    if (_currentUser != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

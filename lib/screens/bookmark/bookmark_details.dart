@@ -1,5 +1,6 @@
 import 'package:FinXpress/components/enlarge_image/enlarge_image.dart';
 import 'package:FinXpress/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,15 +35,20 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                 padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
                 child: Row(
                   children: [
-                    Text(
-                      widget.snapshot['tag'],
-                      style: TextStyle(
-                          fontSize: 16,
-                          background: Paint()
-                            ..strokeWidth = 22
-                            ..color = Color(0xFFa7c7b8).withOpacity(.5)
-                            ..style = PaintingStyle.stroke
-                            ..strokeJoin = StrokeJoin.round),
+                    Container(
+                      height: 35,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5.0, right: 5),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              widget.snapshot['tag'],
+                              style: GoogleFonts.sourceSansPro(fontSize: 16),
+                            )),
+                      ),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFbebddf).withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(5)),
                     ),
                     Spacer(),
                     Padding(
@@ -77,7 +83,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                           fontSize: FontSize(16),
                           fontWeight: FontWeight.w500),
                       "a": Style(
-                          color: Colors.blueGrey,
+                          color: Color(0xFF161565).withOpacity(0.8),
                           fontFamily: "SourceSansPro",
                           fontSize: FontSize(17),
                           fontWeight: FontWeight.w600),
@@ -85,7 +91,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,
                         Map<String, String> attributes, element) {
-                      launch(Uri.parse(url).toString());
+                      launch(url.toString(), forceWebView: true);
                     }),
               )
             ],
@@ -109,7 +115,8 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill,
-                image: NetworkImage(widget.snapshot['imageurl']))),
+                image:
+                    CachedNetworkImageProvider(widget.snapshot['imageurl']))),
       ),
     );
   }

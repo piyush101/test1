@@ -7,6 +7,19 @@ class Constants {
   static const primaryColor = Color(0xFF576F7A);
   static const blackLightColor = Color(0xFF383B3B);
 
+  static final kTitleStyle = TextStyle(
+    color: Colors.red,
+    fontFamily: 'CM Sans Serif',
+    fontSize: 26.0,
+    height: 1.5,
+  );
+
+  static final kSubtitleStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 18.0,
+    height: 1.2,
+  );
+
   static CircularProgressIndicator getCircularProgressBarIndicator() {
     return CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(primaryColor));

@@ -18,6 +18,7 @@ class _InsightsHomeState extends State<InsightsHome> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFf1f3f4),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("Insights")
@@ -29,7 +30,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                   return Center(
                       child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black)));
+                          AlwaysStoppedAnimation<Color>(Colors.black)));
                   break;
                 default:
                   return RefreshIndicator(
@@ -52,11 +53,11 @@ class _InsightsHomeState extends State<InsightsHome> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadiusDirectional.circular(15),
+                                      BorderRadiusDirectional.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                         color:
-                                            Color(0xFFecedea).withOpacity(0.4)),
+                                            Color(0xFFbebddf).withOpacity(0.2)),
                                   ],
                                 ),
                                 child: Column(
@@ -69,10 +70,11 @@ class _InsightsHomeState extends State<InsightsHome> {
                                           _shared.getTimeRow(snapshot, index),
                                           Row(
                                             children: [
-                                              _shared.getTag(snapshot, index),
+                                              _getTag(snapshot.data.docs[index]
+                                                  ['tag']),
                                               Spacer(),
                                               _shared.getBookMark(
-                                                  snapshot, index),
+                                                  snapshot, index, context),
                                               SizedBox(
                                                 width: 10,
                                               ),
@@ -87,7 +89,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                     ),
                                     Padding(
                                       padding:
-                                          const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                      const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
@@ -110,6 +112,24 @@ class _InsightsHomeState extends State<InsightsHome> {
               }
             }),
       ),
+    );
+  }
+
+  Container _getTag(String tag) {
+    return Container(
+      height: 35,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5.0, right: 5),
+        child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              tag,
+              style: GoogleFonts.sourceSansPro(fontSize: 16),
+            )),
+      ),
+      decoration: BoxDecoration(
+          color: Color(0xFFbebddf).withOpacity(0.6),
+          borderRadius: BorderRadius.circular(5)),
     );
   }
 }

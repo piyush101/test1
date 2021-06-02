@@ -1,4 +1,6 @@
 import 'package:FinXpress/components/drawer/follow_us_images.dart';
+import 'package:FinXpress/screens/intro/intro_screen.dart';
+import 'package:FinXpress/screens/login/login.dart';
 import 'package:FinXpress/service/authentication/authentication_sign_out.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +22,9 @@ class NewsDrawer extends StatefulWidget {
 
 class _NewsDrawerState extends State<NewsDrawer> {
   bool isSwitched = false;
+  var _currentUser = FirebaseAuth.instance.currentUser != null
+      ? FirebaseAuth.instance.currentUser.uid
+      : null;
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +40,33 @@ class _NewsDrawerState extends State<NewsDrawer> {
             shrinkWrap: true,
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text(
-                  user.displayName,
-                  style: TextStyle(fontSize: 16, color: Colors.black),
-                ),
+                accountName: user != null
+                    ? Text(
+                        user.displayName,
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          Navigator.pushAndRemoveUntil<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) => Login(),
+                              ),
+                              (route) => false);
+                        },
+                        child: Text("Sign In",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700)),
+                      ),
                 accountEmail: null,
-                decoration: BoxDecoration(color: Color(0xFFccced2)),
+                decoration:
+                    BoxDecoration(color: Color(0xFFc1c0e1).withOpacity(0.5)),
               ),
-              Center(
-                child: _getDayNightSwitcherButton(darkThemeProvider, context),
-              ),
+              // Center(
+              //   child: _getDayNightSwitcherButton(darkThemeProvider, context),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
@@ -130,25 +152,28 @@ class _NewsDrawerState extends State<NewsDrawer> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: ListTile(
-                  title: InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return _alertBoxOnLogout(context);
-                          });
-                      // _signOut();
-                    },
-                    child: Text(
-                      "Log Out",
-                      style: GoogleFonts.sourceSansPro(
-                          fontSize: 18, fontWeight: FontWeight.w600),
+                child: Visibility(
+                  visible: _getVisibilty(),
+                  child: ListTile(
+                    title: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return _alertBoxOnLogout(context);
+                            });
+                        // _signOut();
+                      },
+                      child: Text(
+                        "Log Out",
+                        style: GoogleFonts.sourceSansPro(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
                     ),
-                  ),
-                  leading: Icon(
-                    Icons.logout,
-                    color: Colors.black,
+                    leading: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
@@ -273,13 +298,13 @@ class _NewsDrawerState extends State<NewsDrawer> {
         style: TextStyle(
             fontFamily: "SourceSansPro",
             fontSize: 18,
-            color: Color(0xFF6a8078)),
+            color: Color(0xFF5f5463)),
       ),
       actions: [
         Center(
           child: ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFF36b587))),
+                backgroundColor: MaterialStateProperty.all(Color(0xFF8787c4))),
             child: Text(
               "Okay",
               style: TextStyle(fontFamily: "SourceSansPro", fontSize: 18),
@@ -292,10 +317,25 @@ class _NewsDrawerState extends State<NewsDrawer> {
       ],
     );
   }
+
+  _getVisibilty() {
+    if (_currentUser != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
-Future<void> _signOut() async {
+Future<void> _signOut(context) async {
   await AuthenticationSignOut().signOut();
+  Navigator.pushAndRemoveUntil<dynamic>(
+    context,
+    MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) => IntroScreen(),
+    ),
+    (route) => false, //if you want to disable back feature set to false
+  );
 }
 
 AlertDialog _alertBoxOnLogout(BuildContext context) {
@@ -309,7 +349,7 @@ AlertDialog _alertBoxOnLogout(BuildContext context) {
 ElevatedButton _dialogNoButton(BuildContext context) {
   return ElevatedButton(
     style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
+        backgroundColor: MaterialStateProperty.all(Color(0xFF8787c4))),
     child: Text("No"),
     onPressed: () {
       Navigator.of(context).pop();
@@ -320,11 +360,11 @@ ElevatedButton _dialogNoButton(BuildContext context) {
 ElevatedButton _dialogYesButton(BuildContext context) {
   return ElevatedButton(
     style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.blueGrey)),
+        backgroundColor: MaterialStateProperty.all(Color(0xFF8787c4))),
     child: Text("Yes"),
     onPressed: () {
       Navigator.of(context).maybePop();
-      _signOut();
+      _signOut(context);
     },
   );
 }
