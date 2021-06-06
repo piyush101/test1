@@ -62,7 +62,8 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,
                         Map<String, String> attributes, element) {
-                      launch(url.toString(), forceWebView: true);
+                      launch(url.toString(),
+                          forceWebView: true, enableJavaScript: true);
                     }),
               )
             ],

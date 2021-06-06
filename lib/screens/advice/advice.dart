@@ -20,7 +20,7 @@ class _AdviceState extends State<Advice> {
         body: Stack(children: [
           _getStockRecommendationTitle(),
           Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 45),
             child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("Advices")
@@ -40,7 +40,7 @@ class _AdviceState extends State<Advice> {
                             shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 1.2, crossAxisCount: 2),
+                                    childAspectRatio: 1.25, crossAxisCount: 2),
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               return Container(
@@ -59,8 +59,8 @@ class _AdviceState extends State<Advice> {
                                     children: [
                                       Text(
                                         snapshot.data.docs[index]['advice'],
-                                        style: TextStyle(
-                                            fontSize: 18,
+                                        style: GoogleFonts.sourceSansPro(
+                                            fontSize: 19,
                                             fontWeight: FontWeight.bold,
                                             color: _gettextColor(snapshot
                                                 .data.docs[index]['advice'])),
@@ -71,32 +71,32 @@ class _AdviceState extends State<Advice> {
                                         child: Text(
                                           snapshot.data.docs[index]
                                               ["advicefor"],
-                                          style: TextStyle(
+                                          style: GoogleFonts.sourceSansPro(
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 14),
+                                              fontSize: 16),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 3,
+                                        height: 2,
                                       ),
                                       Text(
                                         'Target: ' +
                                             '\u{20B9}' +
                                             ' ' +
                                             snapshot.data.docs[index]['target'],
-                                        style: TextStyle(
-                                            fontSize: 13,
+                                        style: GoogleFonts.sourceSansPro(
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
-                                        height: 3,
+                                        height: 2,
                                       ),
                                       Text(
                                         "By: " +
                                             snapshot.data.docs[index]
                                                 ['adviceby'],
-                                        style: TextStyle(
-                                            fontSize: 13,
+                                        style: GoogleFonts.sourceSansPro(
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w500),
                                       ),
                                       SizedBox(
@@ -105,7 +105,8 @@ class _AdviceState extends State<Advice> {
                                       Text(
                                         timeStampConversion(
                                             snapshot.data.docs[index]['time']),
-                                        style: TextStyle(fontSize: 11),
+                                        style: GoogleFonts.sourceSansPro(
+                                            fontSize: 12),
                                       )
                                     ],
                                   ),
@@ -126,12 +127,26 @@ class _AdviceState extends State<Advice> {
       padding: const EdgeInsets.all(8.0),
       child: Align(
           alignment: Alignment.topLeft,
-          child: Text(
-            "Stock Recommendations",
-            style: GoogleFonts.sourceSansPro(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF5555aa)),
+          child: Row(
+            children: [
+              Text(
+                "Stock Recommendations",
+                style: GoogleFonts.sourceSansPro(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF5555aa)),
+              ),
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return _disclaimerBox();
+                        });
+                  },
+                  icon: Icon(Icons.info_outline),
+                  color: Color(0xFF5555aa))
+            ],
           )),
     );
   }
@@ -153,5 +168,88 @@ class _AdviceState extends State<Advice> {
       default:
         return Colors.grey;
     }
+  }
+
+  AlertDialog _disclaimerBox() {
+    return AlertDialog(
+      title: Center(
+        child: Text(
+          "Stock Recommendations",
+          style: GoogleFonts.sourceSansPro(
+              color: Color(0xFF4f5a6b),
+              fontWeight: FontWeight.w600,
+              fontSize: 20),
+        ),
+      ),
+      content: Container(
+        height: 300,
+        child: Column(
+          children: [
+            Text(
+              "We are providing aggregated stock recommendations from top financial institutions in India.",
+              style: TextStyle(
+                  fontFamily: "SourceSansPro",
+                  fontSize: 18,
+                  color: Color(0xFF5f5463)),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Buy/Sell/Hold: This is the action recommended by institution",
+              style: TextStyle(
+                  fontFamily: "SourceSansPro",
+                  fontSize: 16,
+                  color: Color(0xFF5f5463)),
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Text(
+              "Target: This is price of company's stock at which action can be taken",
+              style: TextStyle(
+                  fontFamily: "SourceSansPro",
+                  fontSize: 16,
+                  color: Color(0xFF5f5463)),
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Text(
+              "By: This is institution name which has recommended this stock",
+              style: TextStyle(
+                  fontFamily: "SourceSansPro",
+                  fontSize: 16,
+                  color: Color(0xFF5f5463)),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Text(
+              "Happy Investing!!",
+              style: GoogleFonts.sourceSansPro(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  color: Color(0xFF5f5463)),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Center(
+          child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFF8787c4))),
+            child: Text(
+              "Okay",
+              style: TextStyle(fontFamily: "SourceSansPro", fontSize: 18),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        )
+      ],
+    );
   }
 }

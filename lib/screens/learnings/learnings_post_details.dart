@@ -69,7 +69,8 @@ class _LearningsPostDetailsState extends State<LearningsPostDetails> {
                     data: widget.snapshot['content'],
                     onLinkTap: (String url, RenderContext context,
                         Map<String, String> attributes, element) {
-                      launch(url.toString(), forceWebView: true);
+                      launch(url.toString(),
+                          forceWebView: true, enableJavaScript: true);
                     }),
               )
             ],

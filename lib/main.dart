@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:FinXpress/route_generator.dart';
+import 'package:FinXpress/screens/home/home.dart';
 import 'package:FinXpress/service/dynamic_link_service/dynamic_link_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,37 +18,6 @@ const bool kReleaseMode =
     bool.fromEnvironment('dart.vm.product', defaultValue: false);
 int initScreen;
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  initScreen = await sharedPreferences.getInt("initScreen");
-  await sharedPreferences.setInt("initScreen", 1);
-  await Firebase.initializeApp();
-
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-  }
-
-  if (kReleaseMode) {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
-
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  return runApp(ChangeNotifierProvider(
-    child: MyApp(),
-    create: (BuildContext context) =>
-        DarkThemeProvider(sharedPreferences.getBool("isDarkTheme") ?? false),
-  ));
-}
-
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
@@ -57,6 +27,38 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  initScreen = await sharedPreferences.getInt("initScreen");
+  await sharedPreferences.setInt("initScreen", 1);
+
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  // if (kReleaseMode) {
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // }
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance
+      .setForegroundNotificationPresentationOptions(alert: true, badge: true);
+  return runApp(ChangeNotifierProvider(
+    child: MyApp(),
+    create: (BuildContext context) =>
+        DarkThemeProvider(sharedPreferences.getBool("isDarkTheme") ?? false),
+  ));
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -92,10 +94,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+      if (message != null) {
+        Navigator.pushNamed(context, Home.home);
+      }
+    });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
+
       if (notification != null && android != null) {
         if (message.data['url'] != null) {
           flutterLocalNotificationsPlugin.initialize(InitializationSettings(),
@@ -110,7 +120,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 channel.id,
                 channel.name,
                 channel.description,
-                icon: '@drawable/launcher_icon',
+                icon: '@drawable/ic_launcher_foreground',
               ),
             ));
       }

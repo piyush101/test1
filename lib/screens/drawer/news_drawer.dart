@@ -256,7 +256,7 @@ class _NewsDrawerState extends State<NewsDrawer> {
                 height: 20,
               ),
               Text(
-                "FinXpress v1.0.2",
+                "FinXpress v1.0.3",
                 style: TextStyle(fontFamily: "SourceSansPro"),
               )
             ],

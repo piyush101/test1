@@ -140,9 +140,12 @@ class _BookmarkHomeState extends State<BookmarkHome> {
         alignment: Alignment.topRight,
         child: Column(
           children: [
-            Text(
-              snapshot.data.get('bookmarks')[index]['title'],
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                snapshot.data.get('bookmarks')[index]['title'],
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
             ),
             SizedBox(
               height: 6,
