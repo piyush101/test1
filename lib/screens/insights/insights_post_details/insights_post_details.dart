@@ -116,7 +116,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
-        height: size.height * 0.35,
+        height: size.height * 0.45,
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,

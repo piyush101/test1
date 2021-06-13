@@ -6,7 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LearningsPostDetails extends StatefulWidget {
   Map snapshot;
-
   LearningsPostDetails(this.snapshot);
 
   @override

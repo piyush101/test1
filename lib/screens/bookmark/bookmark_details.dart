@@ -112,7 +112,7 @@ class _BookmarkDetailsState extends State<BookmarkDetails> {
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
-        height: size.height * 0.3,
+        height: size.height * 0.45,
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill,

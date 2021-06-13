@@ -12,6 +12,7 @@ class NewsBody extends StatefulWidget {
 }
 
 class _NewsBodyState extends State<NewsBody> {
+  Stream stream;
   int index = 0;
   var documents =
       FirebaseFirestore.instance.collection('News').snapshots().length;
@@ -20,6 +21,11 @@ class _NewsBodyState extends State<NewsBody> {
 
   @override
   void initState() {
+    stream = FirebaseFirestore.instance
+        .collection("News")
+        .orderBy("time", descending: true)
+        .limit(100)
+        .snapshots();
     setupLastIndex();
     super.initState();
   }
@@ -60,11 +66,8 @@ class _NewsBodyState extends State<NewsBody> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("News")
-              .orderBy("time", descending: true)
-              .snapshots(),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: stream,
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return Center(child: Constants.getCircularProgressBarIndicator());
@@ -93,10 +96,11 @@ class _NewsBodyState extends State<NewsBody> {
     int count = 0;
     FirebaseFirestore.instance
         .collection('News')
-        .get()
+        .get(GetOptions(source: Source.cache))
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         count = count + 1;
+        print(doc.metadata.isFromCache ? "Cache" : "Network");
       });
     });
     return count;

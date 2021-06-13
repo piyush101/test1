@@ -80,11 +80,11 @@ class Shared {
       children: [
         Icon(
           Icons.watch_later_sharp,
-          color: Color(0xFF5f5463),
+          color: Color(0xFF4B5557),
         ),
         Text(
           datetimeStampConversion(snapshot.data.docs[index]['time']),
-          style: TextStyle(color: Color(0xFF5f5463), fontSize: 13),
+          style: TextStyle(color: Color(0xFF4B5557), fontSize: 13),
         ),
       ],
     );

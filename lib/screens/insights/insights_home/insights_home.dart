@@ -11,6 +11,17 @@ class InsightsHome extends StatefulWidget {
 }
 
 class _InsightsHomeState extends State<InsightsHome> {
+  Stream stream;
+
+  @override
+  void initState() {
+    stream = FirebaseFirestore.instance
+        .collection("Insights")
+        .orderBy("time", descending: true)
+        .snapshots();
+    super.initState();
+  }
+
   Shared _shared = Shared();
 
   @override
@@ -19,96 +30,91 @@ class _InsightsHomeState extends State<InsightsHome> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFf1f3f4),
-        body: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("Insights")
-                .orderBy("time", descending: true)
-                .snapshots(),
+        body: StreamBuilder<QuerySnapshot>(
+            stream: stream,
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(
-                      child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black)));
-                  break;
-                default:
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      await Future<void>.delayed(Duration(seconds: 1));
-                    },
-                    child: ListView.builder(
-                        physics: BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics()),
-                        itemCount: snapshot.data.docs.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => InsightsPostDetails(
-                                        snapshot.data.docs[index])));
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadiusDirectional.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color:
-                                            Color(0xFFbebddf).withOpacity(0.2)),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    _shared.getImage(snapshot, index, size),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Column(
-                                        children: [
-                                          _shared.getTimeRow(snapshot, index),
-                                          Row(
-                                            children: [
-                                              _getTag(snapshot.data.docs[index]
-                                                  ['tag']),
-                                              Spacer(),
-                                              _shared.getBookMark(
-                                                  snapshot, index, context),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              _shared.getShareButton(
-                                                  2,
-                                                  snapshot.data.docs[index]
-                                                      ['title'])
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+              if (!snapshot.hasData) {
+                return Center(
+                    child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.black)));
+              } else {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await Future<void>.delayed(Duration(seconds: 1));
+                  },
+                  child: ListView.builder(
+                      physics: BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => InsightsPostDetails(
+                                      snapshot.data.docs[index])));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          Color(0xFFbebddf).withOpacity(0.2)),
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  _shared.getImage(snapshot, index, size),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      children: [
+                                        _shared.getTimeRow(snapshot, index),
+                                        Row(
+                                          children: [
+                                            _getTag(snapshot.data.docs[index]
+                                                ['tag']),
+                                            Spacer(),
+                                            _shared.getBookMark(
+                                                snapshot, index, context),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            _shared.getShareButton(
+                                                2,
+                                                snapshot.data.docs[index]
+                                                    ['title'])
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                            snapshot.data.docs[index]['title'],
-                                            style: GoogleFonts.sourceSansPro(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600)),
-                                      ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          snapshot.data.docs[index]['title'],
+                                          style: GoogleFonts.sourceSansPro(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600)),
                                     ),
-                                    SizedBox(
-                                      height: 5,
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(
+                                    height: 7,
+                                  )
+                                ],
                               ),
                             ),
-                          );
-                        }),
-                  );
+                          ),
+                        );
+                      }),
+                );
               }
             }),
       ),
