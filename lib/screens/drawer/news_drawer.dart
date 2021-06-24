@@ -1,7 +1,7 @@
 import 'package:FinXpress/components/drawer/follow_us_images.dart';
 import 'package:FinXpress/screens/intro/intro_screen.dart';
 import 'package:FinXpress/screens/login/login.dart';
-import 'package:FinXpress/service/authentication/authentication_sign_out.dart';
+import 'package:FinXpress/utils/authentication/authentication_sign_out.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

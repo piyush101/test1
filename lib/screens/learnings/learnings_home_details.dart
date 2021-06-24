@@ -1,9 +1,11 @@
+import 'package:FinXpress/models/learnings_model.dart';
 import 'package:FinXpress/screens/learnings/learnings_post_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LearningsHomeDetails extends StatefulWidget {
-  List snapshot;
+  List<Datum> snapshot;
+
   LearningsHomeDetails(this.snapshot);
 
   @override
@@ -51,7 +53,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                           Stack(children: [
                             Container(
                               height: 90,
-                              color: Color(widget.snapshot[index]['color'])
+                              color: Color(widget.snapshot[index].color)
                                   .withOpacity(0.5),
                             ),
                             Positioned(
@@ -60,10 +62,10 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Container(
-                                    color:
-                                        Color(widget.snapshot[index]['color']),
+                                    color: Color(widget.snapshot[index].color),
                                     child: Text(
-                                      widget.snapshot[index]['number'],
+                                      widget.snapshot[index].articleNumber
+                                          .toString(),
                                       style: GoogleFonts.sahitya(fontSize: 25),
                                     ),
                                   ),
@@ -74,7 +76,7 @@ class _LearningsHomeDetailsState extends State<LearningsHomeDetails> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                widget.snapshot[index]['title'],
+                                widget.snapshot[index].title,
                                 style: GoogleFonts.sourceSansPro(
                                     fontSize: 18, fontWeight: FontWeight.w600),
                               ),

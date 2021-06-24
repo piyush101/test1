@@ -270,8 +270,7 @@ class _BookmarkHomeState extends State<BookmarkHome> {
             decoration: BoxDecoration(
                 color: Color(0xFFf1f3f4),
                 image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                        "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fbookmark1.png?alt=media&token=e9f01d59-f744-4559-990d-eb167e4f8361"))),
+                    image: AssetImage("assets/images/bookmark.png"))),
           ),
         ],
       ),

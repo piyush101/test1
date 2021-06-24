@@ -141,8 +141,8 @@ class _HomeState extends State<Home> {
         return InsightsHome();
       case 3:
         return Advice();
-      case 4:
-        return Watchlist();
+      // case 4:
+      //   return Watchlist();
       default:
         return NewsBody();
     }
@@ -166,7 +166,7 @@ class _HomeState extends State<Home> {
 
   bool _getBookmarkVisibilty() {
     if (_currentUser != null) {
-      return true;
+      return false; //TODO
     } else {
       return false;
     }

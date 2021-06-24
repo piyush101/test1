@@ -1,14 +1,14 @@
 import 'package:FinXpress/components/enlarge_image/enlarge_image.dart';
+import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/models/insights_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InsightsPostDetails extends StatefulWidget {
-  DocumentSnapshot snapshot;
+  InsightsModel snapshot;
 
   InsightsPostDetails(this.snapshot);
 
@@ -30,7 +30,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
               getTitleContainer(context),
               buildImageContainer(context, size),
               getDateTimeReadRow(),
-              _getTag(widget.snapshot['tag']),
+              _getTag(widget.snapshot.tag),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Align(
@@ -51,15 +51,15 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
                     style: {
                       "body": Style(
                           fontFamily: "SourceSansPro",
-                          fontSize: FontSize(17),
+                          fontSize: FontSize(18),
                           fontWeight: FontWeight.w500),
                       "a": Style(
                           color: Color(0xFF161565).withOpacity(0.8),
                           fontFamily: "SourceSansPro",
-                          fontSize: FontSize(17),
+                          fontSize: FontSize(18),
                           fontWeight: FontWeight.w600),
                     },
-                    data: widget.snapshot['content'],
+                    data: widget.snapshot.content,
                     onLinkTap: (String url, RenderContext context,
                         Map<String, String> attributes, element) {
                       launch(url.toString(),
@@ -80,7 +80,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Row(children: <Widget>[
         backArrow(context),
         Flexible(
-          child: Text(widget.snapshot['title'],
+          child: Text(widget.snapshot.title,
               style: GoogleFonts.sourceSansPro(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -96,11 +96,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Row(
         children: [
           Text(
-            _dateConversion(widget.snapshot['time']),
+            Constants.datetimeStampConversion(widget.snapshot.time),
             style: TextStyle(fontSize: 15),
           ),
           Spacer(),
-          Text(widget.snapshot['readtime'])
+          Text(widget.snapshot.readtime)
         ],
       ),
     );
@@ -110,7 +110,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return EnlargeImage(widget.snapshot['imageurl']);
+          return EnlargeImage(widget.snapshot.imageUrl);
         }));
       },
       child: Container(
@@ -120,8 +120,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image:
-                    CachedNetworkImageProvider(widget.snapshot['imageurl']))),
+                image: CachedNetworkImageProvider(widget.snapshot.imageUrl))),
       ),
     );
   }
@@ -135,12 +134,6 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
         onPressed: () {
           Navigator.of(context).pop();
         });
-  }
-
-  String _dateConversion(Timestamp t) {
-    DateTime dateTime = t.toDate();
-    String formatDate = DateFormat.yMMMMd('en_US').format(dateTime);
-    return formatDate;
   }
 }
 

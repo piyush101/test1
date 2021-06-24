@@ -1,7 +1,7 @@
 import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/models/learnings_model.dart';
+import 'package:FinXpress/services/learnings_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,12 +13,13 @@ class LearningsHome extends StatefulWidget {
 }
 
 class _LearningsHomeState extends State<LearningsHome> {
-  Stream stream;
+  Future<List<LearningsModel>> currentLearningsFuture;
 
   @override
   void initState() {
-    stream = FirebaseFirestore.instance.collection("Learnings").snapshots();
+    // stream = FirebaseFirestore.instance.collection("Learnings").snapshots();
     super.initState();
+    currentLearningsFuture = LearningsService.getLearnings();
   }
 
   @override
@@ -26,9 +27,9 @@ class _LearningsHomeState extends State<LearningsHome> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFFf1f3f4),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: stream,
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      body: FutureBuilder(
+          future: currentLearningsFuture,
+          builder: (context, AsyncSnapshot<List<LearningsModel>> snapshot) {
             if (!snapshot.hasData) {
               return Center(child: Constants.getCircularProgressBarIndicator());
             } else {
@@ -60,8 +61,8 @@ class _LearningsHomeState extends State<LearningsHome> {
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: CachedNetworkImageProvider(
-                                          "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/learnings%2Flearnings-Recoveredpng%20file%20pagal%20ke%20liye-min.png?alt=media&token=b6bd4fd1-ca86-4c27-8135-ff70a8b57891"))),
+                                      image:
+                                          AssetImage("assets/images/kip.jpg"))),
                             )
                           ],
                         ),
@@ -76,19 +77,18 @@ class _LearningsHomeState extends State<LearningsHome> {
                                     (MediaQuery.of(context).size.height / 2.1),
                             crossAxisCount: 2),
                         shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
+                        itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => LearningsHomeDetails(
-                                      snapshot.data.docs[index]['data'])));
+                                      snapshot.data[index].data)));
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color:
-                                      Color(snapshot.data.docs[index]['color'])
-                                          .withOpacity(0.2),
+                                  color: Color(snapshot.data[index].color)
+                                      .withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(5),
                                   boxShadow: [
                                     BoxShadow(
@@ -111,10 +111,9 @@ class _LearningsHomeState extends State<LearningsHome> {
                                             image: DecorationImage(
                                                 image:
                                                     CachedNetworkImageProvider(
-                                                        snapshot.data
-                                                                .docs[index]
-                                                            ['imageurl'])))),
-                                    Text(snapshot.data.docs[index].reference.id,
+                                                        snapshot.data[index]
+                                                            .imageUrl)))),
+                                    Text(snapshot.data[index].category,
                                         style: GoogleFonts.sourceSansPro(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600))
@@ -130,13 +129,5 @@ class _LearningsHomeState extends State<LearningsHome> {
             }
           }),
     );
-  }
-}
-
-class FirebaseStorageService extends ChangeNotifier {
-  FirebaseStorageService();
-
-  static Future<dynamic> loadImage(BuildContext context, String Image) async {
-    return await FirebaseStorage.instance.ref().child(Image).getDownloadURL();
   }
 }

@@ -1,8 +1,11 @@
 import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/models/update_user_model.dart';
+import 'package:FinXpress/models/users_model.dart';
 import 'package:FinXpress/screens/home/home.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:FinXpress/services/user_service.dart';
+import 'package:FinXpress/utils/session_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,8 +20,22 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  SessionManager sessionManager = SessionManager();
+  String device_token = "";
+  UsersModel users = UsersModel();
+  UserService userService = UserService();
+  String userId = '';
   bool isLoading = false;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    sessionManager.getUser() != null
+        ? sessionManager.getUser().then((value) => userId = value.user.id)
+        : userId = null;
+    FirebaseMessaging.instance.getToken().then((token) => device_token = token);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +46,16 @@ class _LoginState extends State<Login> {
             ? Center(
                 child: getWaitWidgetWhileLoading(),
               )
-            : getLoginPageBody(size),
+            : _getLoginPageBody(size),
       ),
     );
   }
 
-  Container getLoginPageBody(Size size) {
+  Container _getLoginPageBody(Size size) {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-        image: CachedNetworkImageProvider(
-            "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fsign_in.png?alt=media&token=4799bd21-bfa1-473f-b04f-0b5182f31d74"),
+        image: AssetImage("assets/images/sign_in.png"),
         fit: BoxFit.cover,
       )),
       child: Padding(
@@ -66,8 +82,8 @@ class _LoginState extends State<Login> {
                   width: 40,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Ffinal_logo-removebg-preview.png?alt=media&token=d529b98f-e496-436d-8f45-f564aa9b5895"))),
+                          image: AssetImage(
+                              "assets/images/logo_transparent.png"))),
                 ),
                 SizedBox(
                   width: 10,
@@ -95,8 +111,8 @@ class _LoginState extends State<Login> {
             Row(children: <Widget>[
               Expanded(
                   child: Divider(
-                thickness: 1.5,
-              )),
+                    thickness: 1.5,
+                  )),
               SizedBox(
                 width: 2,
               ),
@@ -109,8 +125,8 @@ class _LoginState extends State<Login> {
               ),
               Expanded(
                   child: Divider(
-                thickness: 1.5,
-              )),
+                    thickness: 1.5,
+                  )),
             ]),
             SizedBox(height: 20),
             GestureDetector(
@@ -122,6 +138,7 @@ class _LoginState extends State<Login> {
                     color: Color(0xFF5f5463)),
               ),
               onTap: () {
+                userService.createUser(_createUserWhenLogin());
                 Navigator.pushAndRemoveUntil<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
@@ -146,8 +163,8 @@ class _LoginState extends State<Login> {
           style: ElevatedButton.styleFrom(primary: Color(0xFFb2bbf0)),
           onPressed: () {
             _signInWithGoogle(context).then((value) => this.setState(() {
-                  isLoading = false;
-                }));
+              isLoading = false;
+            }));
           },
           child: Row(
             children: [
@@ -182,8 +199,8 @@ class _LoginState extends State<Login> {
           style: ElevatedButton.styleFrom(primary: Color(0xFFb2bbf0)),
           onPressed: () {
             _handleFacebookLogin().then((value) => this.setState(() {
-                  isLoading = false;
-                }));
+              isLoading = false;
+            }));
           },
           child: Row(
             children: [
@@ -231,7 +248,7 @@ class _LoginState extends State<Login> {
     });
     FacebookLogin _facebookLogin = FacebookLogin();
     FacebookLoginResult _facebookLoginResult =
-        await _facebookLogin.logIn(['email']);
+    await _facebookLogin.logIn(['email']);
     switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
         print("Cancelled by user");
@@ -246,7 +263,7 @@ class _LoginState extends State<Login> {
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => Home(),
           ),
-          (route) => false, //if you want to disable back feature set to false
+              (route) => false, //if you want to disable back feature set to false
         );
         break;
     }
@@ -258,7 +275,9 @@ class _LoginState extends State<Login> {
         FacebookAuthProvider.credential(_facebookAccessToken.token);
     var _facebookUser =
         await _firebaseAuth.signInWithCredential(_authCredential);
-    createCurrentUserDocument();
+    userId != null
+        ? userService.updateUser(_updateUser())
+        : userService.createUser(_createUserWhenLogin());
     return _facebookUser.user;
   }
 
@@ -282,7 +301,11 @@ class _LoginState extends State<Login> {
             .catchError((onError) {
           print("credential error $onError");
         });
-        createCurrentUserDocument();
+        userId != null
+            ? userService.updateUser(_updateUser())
+            : userService.createUser(_createUserWhenLogin());
+
+        // createCurrentUserDocument();
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
@@ -298,14 +321,26 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void createCurrentUserDocument() {
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(_firebaseAuth.currentUser.uid)
-        .set({
-      "userID": _firebaseAuth.currentUser.uid,
-      "subscribetopic": [],
-      "bookmarks": []
-    });
+  UsersModel _createUserWhenLogin() {
+    return UsersModel(
+        email: _firebaseAuth.currentUser != null
+            ? _firebaseAuth.currentUser.email
+            : null,
+        name: _firebaseAuth.currentUser != null
+            ? _firebaseAuth.currentUser.displayName
+            : null,
+        emailVerified: _firebaseAuth.currentUser != null ? true : false,
+        deviceToken: device_token,
+        bookmarks: []);
+  }
+
+  UpdateUserModel _updateUser() {
+    return UpdateUserModel(
+      id: userId,
+      email: _firebaseAuth.currentUser.email,
+      name: _firebaseAuth.currentUser.displayName,
+      emailVerified: true,
+      bookmarks: [],
+    );
   }
 }

@@ -6,19 +6,7 @@ class Constants {
   static const primaryLightColor = Color(0xFFCAE0DB);
   static const primaryColor = Color(0xFF576F7A);
   static const blackLightColor = Color(0xFF383B3B);
-
-  static final kTitleStyle = TextStyle(
-    color: Colors.red,
-    fontFamily: 'CM Sans Serif',
-    fontSize: 26.0,
-    height: 1.5,
-  );
-
-  static final kSubtitleStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 18.0,
-    height: 1.2,
-  );
+  static const apiUrl = "https://easyeyes.herokuapp.com";
 
   static CircularProgressIndicator getCircularProgressBarIndicator() {
     return CircularProgressIndicator(
@@ -29,5 +17,13 @@ class Constants {
     DateTime dateTime = t.toDate();
     String formatDate = DateFormat.yMMMMd('en_US').format(dateTime);
     return formatDate;
+  }
+
+  static String datetimeStampConversion(String date) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
+    var inputDate = DateTime.parse(parseDate.toLocal().toString());
+    var outputFormat = DateFormat('dd/MM/yyyy hh:mm a');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate.toString();
   }
 }
