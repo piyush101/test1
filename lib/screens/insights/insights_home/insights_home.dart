@@ -1,6 +1,9 @@
 import 'package:FinXpress/components/shared/shared.dart';
+import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/models/insights_model.dart';
 import 'package:FinXpress/screens/insights/insights_post_details/insights_post_details.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:FinXpress/services/insights_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,18 +14,14 @@ class InsightsHome extends StatefulWidget {
 }
 
 class _InsightsHomeState extends State<InsightsHome> {
-  Stream stream;
+  Future<List<InsightsModel>> currentInsightsFuture;
+  Shared _shared = Shared();
 
   @override
   void initState() {
-    stream = FirebaseFirestore.instance
-        .collection("Insights")
-        .orderBy("time", descending: true)
-        .snapshots();
     super.initState();
+    currentInsightsFuture = InsightsService.getInsights();
   }
-
-  Shared _shared = Shared();
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +29,12 @@ class _InsightsHomeState extends State<InsightsHome> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFf1f3f4),
-        body: StreamBuilder<QuerySnapshot>(
-            stream: stream,
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        body: FutureBuilder(
+            future: currentInsightsFuture,
+            builder: (context, AsyncSnapshot<List<InsightsModel>> snapshot) {
               if (!snapshot.hasData) {
                 return Center(
-                    child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.black)));
+                    child: Constants.getCircularProgressBarIndicator());
               } else {
                 return RefreshIndicator(
                   onRefresh: () async {
@@ -46,7 +43,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                   child: ListView.builder(
                       physics: BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics()),
-                      itemCount: snapshot.data.docs.length,
+                      itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -54,7 +51,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => InsightsPostDetails(
-                                      snapshot.data.docs[index])));
+                                      snapshot.data[index])));
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -68,26 +65,24 @@ class _InsightsHomeState extends State<InsightsHome> {
                               ),
                               child: Column(
                                 children: [
-                                  _shared.getImage(snapshot, index, size),
+                                  _getImage(
+                                      snapshot.data[index].imageUrl, size),
                                   Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Column(
                                       children: [
-                                        _shared.getTimeRow(snapshot, index),
+                                        _getTimeRow(snapshot.data[index].time),
                                         Row(
                                           children: [
-                                            _getTag(snapshot.data.docs[index]
-                                                ['tag']),
+                                            _getTag(snapshot.data[index].tag),
                                             Spacer(),
-                                            _shared.getBookMark(
-                                                snapshot, index, context),
+                                            // _shared.getBookMark(
+                                            //     snapshot, index, context),
                                             SizedBox(
                                               width: 10,
                                             ),
                                             _shared.getShareButton(
-                                                2,
-                                                snapshot.data.docs[index]
-                                                    ['title'])
+                                                2, snapshot.data[index].title)
                                           ],
                                         ),
                                       ],
@@ -98,8 +93,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                         const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                          snapshot.data.docs[index]['title'],
+                                      child: Text(snapshot.data[index].title,
                                           style: GoogleFonts.sourceSansPro(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600)),
@@ -121,6 +115,21 @@ class _InsightsHomeState extends State<InsightsHome> {
     );
   }
 
+  Row _getTimeRow(String time) {
+    return Row(
+      children: [
+        Icon(
+          Icons.watch_later_sharp,
+          color: Color(0xFF4B5557),
+        ),
+        Text(
+          Constants.datetimeStampConversion(time),
+          style: TextStyle(color: Color(0xFF4B5557), fontSize: 13),
+        ),
+      ],
+    );
+  }
+
   Container _getTag(String tag) {
     return Container(
       height: 35,
@@ -136,6 +145,17 @@ class _InsightsHomeState extends State<InsightsHome> {
       decoration: BoxDecoration(
           color: Color(0xFFbebddf).withOpacity(0.6),
           borderRadius: BorderRadius.circular(5)),
+    );
+  }
+
+  Container _getImage(String imageUrl, Size size) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadiusDirectional.circular(15),
+          image: DecorationImage(
+              fit: BoxFit.cover, image: CachedNetworkImageProvider(imageUrl))),
+      height: size.height * 0.21,
+      // margin: EdgeInsets.all(10),
     );
   }
 }

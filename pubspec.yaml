@@ -11,9 +11,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  localstorage: any
+  device_info_plus: ^2.0.1
   cached_network_image: ^3.0.0
   flutter_svg: any
-
+  http: ^0.13.3
+  logger: ^1.0.0
   shared_preferences: ^2.0.5
   provider: ^5.0.0
   cloud_firestore: ^2.0.0
@@ -38,7 +42,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^2.0.0
   colorful_safe_area: ^0.3.0
-  persistent_bottom_nav_bar: ^4.0.2
 
 dev_dependencies:
   flutter_test:
@@ -62,8 +65,13 @@ flutter:
     - assets/icons/telegram.svg
     - assets/icons/twitter.svg
     - assets/icons/play_store.svg
-    - assets/images/image.png
+    - assets/images/intro1.png
+    - assets/images/bookmark.png
+    - assets/images/intro2.png
+    - assets/images/intro3.png
     - assets/images/logo_transparent.png
+    - assets/images/kip.jpg
+    - assets/images/sign_in.png
     - assets/icons/drawer.svg
     - assets/icons/timer.svg
     - assets/icons/logo_transparent.svg

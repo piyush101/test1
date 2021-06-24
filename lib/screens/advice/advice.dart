@@ -1,4 +1,6 @@
 import 'package:FinXpress/constants.dart';
+import 'package:FinXpress/models/advice_model.dart';
+import 'package:FinXpress/services/advice_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +13,12 @@ class Advice extends StatefulWidget {
 }
 
 class _AdviceState extends State<Advice> {
-  Stream stream;
+  Future<List<AdviceModel>> currentAdviceFuture;
 
   @override
   void initState() {
-    stream = FirebaseFirestore.instance
-        .collection("Advices")
-        .orderBy("time", descending: true)
-        .snapshots();
     super.initState();
+    currentAdviceFuture = AdviceService.getAdvices();
   }
 
   @override
@@ -32,9 +31,9 @@ class _AdviceState extends State<Advice> {
           _getStockRecommendationTitle(),
           Padding(
             padding: const EdgeInsets.only(top: 45),
-            child: StreamBuilder<QuerySnapshot>(
-                stream: stream,
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            child: FutureBuilder(
+                future: currentAdviceFuture,
+                builder: (context, AsyncSnapshot<List<AdviceModel>> snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
                         child: Constants.getCircularProgressBarIndicator());
@@ -48,7 +47,7 @@ class _AdviceState extends State<Advice> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   childAspectRatio: 1.21, crossAxisCount: 2),
-                          itemCount: snapshot.data.docs.length,
+                          itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             return Container(
                               margin: EdgeInsets.all(8),
@@ -64,17 +63,17 @@ class _AdviceState extends State<Advice> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      snapshot.data.docs[index]['advice'],
+                                      snapshot.data[index].advice,
                                       style: GoogleFonts.sourceSansPro(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
-                                          color: _gettextColor(snapshot
-                                              .data.docs[index]['advice'])),
+                                          color: _gettextColor(
+                                              snapshot.data[index].advice)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 3.0),
                                       child: Text(
-                                        snapshot.data.docs[index]["advicefor"],
+                                        snapshot.data[index].advicefor,
                                         style: GoogleFonts.sourceSansPro(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16),
@@ -87,7 +86,7 @@ class _AdviceState extends State<Advice> {
                                       'Target: ' +
                                           '\u{20B9}' +
                                           ' ' +
-                                          snapshot.data.docs[index]['target'],
+                                          snapshot.data[index].target,
                                       style: GoogleFonts.sourceSansPro(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
@@ -96,8 +95,7 @@ class _AdviceState extends State<Advice> {
                                       height: 2,
                                     ),
                                     Text(
-                                      "By: " +
-                                          snapshot.data.docs[index]['adviceby'],
+                                      "By: " + snapshot.data[index].adviceby,
                                       style: GoogleFonts.sourceSansPro(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
@@ -106,8 +104,8 @@ class _AdviceState extends State<Advice> {
                                       height: 2,
                                     ),
                                     Text(
-                                      timeStampConversion(
-                                          snapshot.data.docs[index]['time']),
+                                      Constants.datetimeStampConversion(
+                                          snapshot.data[index].time),
                                       style: GoogleFonts.sourceSansPro(
                                           fontSize: 12),
                                     )

@@ -65,17 +65,17 @@ class _IntroScreenState extends State<IntroScreen> {
                         children: <Widget>[
                           _getIntro(
                               size,
-                              "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fintro1.png?alt=media&token=4dd3f9b7-6a59-44f7-96be-9dc28c78d66b",
+                              "assets/images/intro1.png",
                               "Bored with financial news?",
                               "We curate financial and business news in 60 words or less from trusted resources in plain english"),
                           _getIntro(
                               size,
-                              "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fintro2.png?alt=media&token=a346da95-39c8-4eed-90bb-d339aa8508ad",
+                              "assets/images/intro2.png",
                               "Learnings and Real Insights",
                               "Learn everything about financial instruments visually and get real insights on mundane stories"),
                           _getIntro(
                               size,
-                              "https://firebasestorage.googleapis.com/v0/b/finbox-55d7a.appspot.com/o/intro%2Fintro3.png?alt=media&token=6cbc80bd-19c3-4142-8be6-e2918f65ffb8",
+                              "assets/images/intro3.png",
                               "Stock Recommendations",
                               "Get stock recommendations from India's top broker at one place"),
                         ],
@@ -164,8 +164,8 @@ class _IntroScreenState extends State<IntroScreen> {
           // width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadiusDirectional.circular(5),
-            image: DecorationImage(
-                fit: BoxFit.cover, image: CachedNetworkImageProvider(imageurl)),
+            image:
+                DecorationImage(fit: BoxFit.cover, image: AssetImage(imageurl)),
           ),
         ),
         SizedBox(height: 20.0),
