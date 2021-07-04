@@ -59,7 +59,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius:
-                                BorderRadiusDirectional.circular(10),
+                                    BorderRadiusDirectional.circular(10),
                                 boxShadow: [
                                   BoxShadow(color: Color(0xFFffffff)),
                                 ],
@@ -91,7 +91,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                   ),
                                   Padding(
                                     padding:
-                                    const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                        const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(snapshot.data[index].title,

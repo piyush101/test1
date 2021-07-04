@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:FinXpress/notifiers/article_id_notifier.dart';
 import 'package:FinXpress/route_generator.dart';
 import 'package:FinXpress/screens/home/home.dart';
+import 'package:FinXpress/screens/intro/intro_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -170,10 +171,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       }
     } else {
-      Navigator.pushAndRemoveUntil(
-          navigatorKey.currentState.context,
-          MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-          (route) => false);
+      if (initScreen == 0 || initScreen == null) {
+        Navigator.push(navigatorKey.currentState.context,
+            MaterialPageRoute(builder: (context) => IntroScreen()));
+      } else {
+        Navigator.push(navigatorKey.currentState.context,
+            MaterialPageRoute(builder: (context) => Home(pageIndex: 0)));
+      }
     }
 
     FirebaseDynamicLinks.instance.onLink(
