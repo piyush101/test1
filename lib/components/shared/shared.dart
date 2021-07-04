@@ -8,9 +8,9 @@ import 'package:share/share.dart';
 
 class Shared {
   BookmarkShared _bookmarkShared = BookmarkShared();
-  DynamicLinkService _dynamicLinkService = DynamicLinkService();
+  DynamicLinksService _dynamicLinkService = DynamicLinksService();
 
-  IconButton getShareButton(pageIndex, snapShot) {
+  IconButton getShareButton(String page, articleId) {
     return IconButton(
         icon: Icon(
           Icons.share_rounded,
@@ -19,7 +19,8 @@ class Shared {
         color: Color(0xFF4B5557),
         onPressed: () async {
           Share.share(
-              await _dynamicLinkService.createDynamicLink(pageIndex, snapShot));
+              "Get realtime financial market updates in less than 60 words. Download FinXpress\n" +
+                  await _dynamicLinkService.createDynamicLink(page, articleId));
         });
   }
 

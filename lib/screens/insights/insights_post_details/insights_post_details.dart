@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class InsightsPostDetails extends StatefulWidget {
   InsightsModel snapshot;
-
   InsightsPostDetails(this.snapshot);
 
   @override
@@ -24,7 +23,6 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Scaffold(
           body: SingleChildScrollView(
         child: Container(
-          // decoration: BoxDecoration(color: Color(0xFFedfcf8)),
           child: Wrap(
             children: [
               getTitleContainer(context),
@@ -96,7 +94,7 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Row(
         children: [
           Text(
-            Constants.datetimeStampConversion(widget.snapshot.time),
+            Constants.dateConversion(widget.snapshot.time),
             style: TextStyle(fontSize: 15),
           ),
           Spacer(),
@@ -116,10 +114,11 @@ class _InsightsPostDetailsState extends State<InsightsPostDetails> {
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
-        height: size.height * 0.45,
+        width: double.infinity,
+        height: size.height * 0.50,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 image: CachedNetworkImageProvider(widget.snapshot.imageUrl))),
       ),
     );

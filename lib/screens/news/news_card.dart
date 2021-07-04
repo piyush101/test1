@@ -8,6 +8,10 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:html/parser.dart';
+import 'package:html_unescape/html_unescape.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,101 +25,114 @@ class NewsCard extends StatefulWidget {
 }
 
 class _NewsCardState extends State<NewsCard> {
-  DynamicLinkService _dynamicLinkService = DynamicLinkService();
+  var unescape = HtmlUnescape();
+  DynamicLinksService _dynamicLinkService = DynamicLinksService();
   BookmarkShared _bookmarkShared = BookmarkShared();
+  final _screenshotController = ScreenshotController();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        Container(
-          height: size.height * .30,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: CachedNetworkImageProvider(widget.snapshot.imageUrl))),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _getTag(widget.snapshot.tags),
-                  Spacer(),
-                  Row(
-                    children: [
-                      // _getBookMark(
-                      //   widget.snapshot.sId,
-                      // ),
-                      _getShareButton(0, widget.snapshot.title)
-                    ],
-                  ),
-                ],
+    return Screenshot(
+      controller: _screenshotController,
+      child: Stack(
+        children: [
+          Container(
+            height: size.height * .30,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image:
+                        CachedNetworkImageProvider(widget.snapshot.imageUrl))),
+            child: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 32, horizontal: 15),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _getTag(widget.snapshot.tags),
+                    Spacer(),
+                    Row(
+                      children: [
+                        // _getBookMark(
+                        //   widget.snapshot.sId,
+                        // ),
+                        _getShareButton("news", widget.snapshot.sId)
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getTimeRow(widget.snapshot.time),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                child: Container(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(widget.snapshot.title,
-                        style: GoogleFonts.sourceSansPro(
-                            fontSize: 18, fontWeight: FontWeight.w600)),
+          Container(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _getTimeRow(widget.snapshot.time),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Container(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          parse(widget.snapshot.title)
+                              .documentElement
+                              .text
+                              .replaceAll("#39;", "'"),
+                          style: GoogleFonts.sourceSansPro(
+                              fontSize: 18, fontWeight: FontWeight.w600)),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 15),
-                child: Container(
-                  child: Html(
-                      style: {
-                        "body": Style(
-                            textAlign: TextAlign.left,
-                            fontFamily: "SourceSansPro",
-                            fontSize: FontSize(17),
-                            fontWeight: FontWeight.w500),
-                        "a": Style(
-                            color: Color(0xFF161565).withOpacity(0.8),
-                            fontFamily: "SourceSansPro",
-                            fontSize: FontSize(17),
-                            fontWeight: FontWeight.w600),
-                      },
-                      data: widget.snapshot.content,
-                      onLinkTap: (String url, RenderContext context,
-                          Map<String, String> attributes, element) {
-                        launch(url.toString(),
-                            forceWebView: true, enableJavaScript: true);
-                      }),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 15),
+                  child: Container(
+                    child: Html(
+                        style: {
+                          "body": Style(
+                              textAlign: TextAlign.left,
+                              fontFamily: "SourceSansPro",
+                              fontSize: FontSize(17),
+                              fontWeight: FontWeight.w500),
+                          "a": Style(
+                              color: Color(0xFF161565).withOpacity(0.8),
+                              fontFamily: "SourceSansPro",
+                              fontSize: FontSize(17),
+                              fontWeight: FontWeight.w600),
+                        },
+                        data: unescape.convert(
+                            widget.snapshot.content.replaceAll("#39;", "'")),
+                        onLinkTap: (String url, RenderContext context,
+                            Map<String, String> attributes, element) {
+                          launch(url.toString(),
+                              forceWebView: true, enableJavaScript: true);
+                        }),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Swipe up for more news",
-                      style: GoogleFonts.sourceSansPro(
-                          fontWeight: FontWeight.w300),
-                    )),
-              )
-            ],
-          ),
-          margin: EdgeInsets.only(top: size.height * .275),
-          decoration: BoxDecoration(
-              color: Color(0xFFf1f3f4),
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32), topRight: Radius.circular(32))),
-        )
-      ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Swipe up for more news",
+                        style: GoogleFonts.sourceSansPro(
+                            fontWeight: FontWeight.w300),
+                      )),
+                )
+              ],
+            ),
+            margin: EdgeInsets.only(top: size.height * .275),
+            decoration: BoxDecoration(
+                color: Color(0xFFf1f3f4),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32))),
+          )
+        ],
+      ),
     );
   }
 
@@ -164,7 +181,7 @@ class _NewsCardState extends State<NewsCard> {
   //   );
   // }
 
-  Padding _getShareButton(pageIndex, snapShot) {
+  Padding _getShareButton(String page, String articleId) {
     return Padding(
       padding: const EdgeInsets.only(right: 0),
       child: Container(
@@ -182,8 +199,7 @@ class _NewsCardState extends State<NewsCard> {
               ),
               color: Color(0xFF4B5557),
               onPressed: () async {
-                Share.share(await _dynamicLinkService.createDynamicLink(
-                    pageIndex, snapShot));
+                takeScreenshot(page, articleId);
               }),
         ),
       ),
@@ -202,7 +218,7 @@ class _NewsCardState extends State<NewsCard> {
               width: 20,
               height: 25,
             ),
-              )),
+          )),
           Text(
             Constants.datetimeStampConversion(time),
             style: TextStyle(
@@ -215,11 +231,19 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-// String datetimeStampConversion(String date) {
-//   DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
-//   var inputDate = DateTime.parse(parseDate.toLocal().toString());
-//   var outputFormat = DateFormat('dd/MM/yyyy hh:mm a');
-//   var outputDate = outputFormat.format(inputDate);
-//   return outputDate.toString();
-// }
+  void takeScreenshot(String page, String articleId) async {
+    final directory = (await getApplicationDocumentsDirectory())
+        .path; //from path_provide package
+    String fileName = "screenshot" +
+        DateTime.now().millisecondsSinceEpoch.toString() +
+        ".jpg";
+    var path = '$directory';
+    _screenshotController.captureAndSave(
+        path, //set path where screenshot will be saved
+        fileName: fileName);
+    Share.shareFiles([path + "/" + fileName],
+        text:
+            "Get realtime financial market updates in less than 60 words. Download FinXpress\n" +
+                await _dynamicLinkService.createDynamicLink(page, articleId));
+  }
 }

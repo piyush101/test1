@@ -8,12 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class Advice extends StatefulWidget {
+  Advice({Key key}) : super(key: key);
+
   @override
   _AdviceState createState() => _AdviceState();
 }
 
 class _AdviceState extends State<Advice> {
   Future<List<AdviceModel>> currentAdviceFuture;
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -23,7 +27,6 @@ class _AdviceState extends State<Advice> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFf1f3f4),
@@ -39,14 +42,14 @@ class _AdviceState extends State<Advice> {
                         child: Constants.getCircularProgressBarIndicator());
                   } else {
                     return RefreshIndicator(
-                      onRefresh: () async {
-                        await Future<void>.delayed(Duration(seconds: 1));
-                      },
+                      key: _refreshIndicatorKey,
+                      color: Color(0xFFa6b0e7),
+                      onRefresh: _refreshAdviceList,
                       child: GridView.builder(
                           shrinkWrap: true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 1.21, crossAxisCount: 2),
+                                  childAspectRatio: 1.18, crossAxisCount: 2),
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             return Container(
@@ -123,6 +126,14 @@ class _AdviceState extends State<Advice> {
     );
   }
 
+  Future<void> _refreshAdviceList() async {
+    _refreshIndicatorKey.currentState?.show();
+    final Future<List<AdviceModel>> adviceList = AdviceService.getAdvices();
+    setState(() {
+      currentAdviceFuture = adviceList;
+    });
+  }
+
   Padding _getStockRecommendationTitle() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -166,6 +177,10 @@ class _AdviceState extends State<Advice> {
         return Color(0xFFc92634);
       case "Hold":
         return Color(0xFF8a6d6d);
+      case "Accumulate":
+        return Color(0xFF468750);
+      case "Reduce":
+        return Color(0xFFc92634);
       default:
         return Colors.grey;
     }
@@ -197,34 +212,34 @@ class _AdviceState extends State<Advice> {
               height: 10,
             ),
             Text(
-              "Buy/Sell/Hold: This is the action recommended by institution",
+              "Buy/Sell/Hold/Accumulate/Reduce: These are the actions recommended by institution",
               style: TextStyle(
                   fontFamily: "SourceSansPro",
                   fontSize: 16,
                   color: Color(0xFF5f5463)),
             ),
             SizedBox(
-              height: 4,
+              height: 10,
             ),
             Text(
-              "Target: This is price of company's stock at which action can be taken",
+              "Target: This is the price of company's stock at which action can be taken",
               style: TextStyle(
                   fontFamily: "SourceSansPro",
                   fontSize: 16,
                   color: Color(0xFF5f5463)),
             ),
             SizedBox(
-              height: 4,
+              height: 10,
             ),
             Text(
-              "By: This is institution name which has recommended this stock",
+              "By: This is the institution's name which has recommended this stock",
               style: TextStyle(
                   fontFamily: "SourceSansPro",
                   fontSize: 16,
                   color: Color(0xFF5f5463)),
             ),
             SizedBox(
-              height: 8,
+              height: 12,
             ),
             Text(
               "Happy Investing!!",

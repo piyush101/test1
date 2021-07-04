@@ -10,7 +10,10 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => Home());
+        return MaterialPageRoute(
+            builder: (_) => Home(
+                  pageIndex: 0,
+                ));
       case 'Intro':
         return MaterialPageRoute(builder: (_) => IntroScreen());
       case BookmarkHome.bookmark_home:

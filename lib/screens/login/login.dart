@@ -24,16 +24,13 @@ class _LoginState extends State<Login> {
   String device_token = "";
   UsersModel users = UsersModel();
   UserService userService = UserService();
-  String userId = '';
+  String userId;
   bool isLoading = false;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
-    sessionManager.getUser() != null
-        ? sessionManager.getUser().then((value) => userId = value.user.id)
-        : userId = null;
     FirebaseMessaging.instance.getToken().then((token) => device_token = token);
   }
 
@@ -111,8 +108,8 @@ class _LoginState extends State<Login> {
             Row(children: <Widget>[
               Expanded(
                   child: Divider(
-                    thickness: 1.5,
-                  )),
+                thickness: 1.5,
+              )),
               SizedBox(
                 width: 2,
               ),
@@ -125,8 +122,8 @@ class _LoginState extends State<Login> {
               ),
               Expanded(
                   child: Divider(
-                    thickness: 1.5,
-                  )),
+                thickness: 1.5,
+              )),
             ]),
             SizedBox(height: 20),
             GestureDetector(
@@ -163,8 +160,8 @@ class _LoginState extends State<Login> {
           style: ElevatedButton.styleFrom(primary: Color(0xFFb2bbf0)),
           onPressed: () {
             _signInWithGoogle(context).then((value) => this.setState(() {
-              isLoading = false;
-            }));
+                  isLoading = false;
+                }));
           },
           child: Row(
             children: [
@@ -199,8 +196,8 @@ class _LoginState extends State<Login> {
           style: ElevatedButton.styleFrom(primary: Color(0xFFb2bbf0)),
           onPressed: () {
             _handleFacebookLogin().then((value) => this.setState(() {
-              isLoading = false;
-            }));
+                  isLoading = false;
+                }));
           },
           child: Row(
             children: [
@@ -248,7 +245,7 @@ class _LoginState extends State<Login> {
     });
     FacebookLogin _facebookLogin = FacebookLogin();
     FacebookLoginResult _facebookLoginResult =
-    await _facebookLogin.logIn(['email']);
+        await _facebookLogin.logIn(['email']);
     switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
         print("Cancelled by user");
@@ -263,7 +260,7 @@ class _LoginState extends State<Login> {
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => Home(),
           ),
-              (route) => false, //if you want to disable back feature set to false
+          (route) => false, //if you want to disable back feature set to false
         );
         break;
     }
@@ -275,9 +272,16 @@ class _LoginState extends State<Login> {
         FacebookAuthProvider.credential(_facebookAccessToken.token);
     var _facebookUser =
         await _firebaseAuth.signInWithCredential(_authCredential);
-    userId != null
-        ? userService.updateUser(_updateUser())
-        : userService.createUser(_createUserWhenLogin());
+    sessionManager.getUser() != null
+        ? sessionManager.getUser().then((value) {
+            setState(() {
+              userId = value.user.id;
+            });
+          })
+        : userId = null;
+    userId == null
+        ? userService.createUser(_createUserWhenLogin())
+        : userService.updateUser(_updateUser());
     return _facebookUser.user;
   }
 
@@ -301,11 +305,17 @@ class _LoginState extends State<Login> {
             .catchError((onError) {
           print("credential error $onError");
         });
-        userId != null
-            ? userService.updateUser(_updateUser())
-            : userService.createUser(_createUserWhenLogin());
+        sessionManager.getUser() != null
+            ? sessionManager.getUser().then((value) {
+                setState(() {
+                  userId = value.user.id;
+                });
+              })
+            : userId = null;
+        userId == null
+            ? userService.createUser(_createUserWhenLogin())
+            : userService.updateUser(_updateUser());
 
-        // createCurrentUserDocument();
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(

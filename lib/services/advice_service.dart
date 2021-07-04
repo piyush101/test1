@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:FinXpress/constants.dart';
 import 'package:FinXpress/models/advice_model.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ class AdviceService {
     try {
       http.Response response =
           await http.get(Uri.parse(Constants.apiUrl + "/advices/all"));
+      // await http.get(Uri.parse("http://192.168.0.6:3000/advices/all"));
       String body = response.body;
       List<dynamic> collection = json.decode(body)['data']['advices'];
       List<AdviceModel> advices =

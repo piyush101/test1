@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LearningsHomeDetails extends StatefulWidget {
   List<Datum> snapshot;
-
   LearningsHomeDetails(this.snapshot);
 
   @override

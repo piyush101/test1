@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'learnings_home_details.dart';
 
 class LearningsHome extends StatefulWidget {
+  LearningsHome({Key key}) : super(key: key);
+
   @override
   _LearningsHomeState createState() => _LearningsHomeState();
 }
@@ -17,7 +19,6 @@ class _LearningsHomeState extends State<LearningsHome> {
 
   @override
   void initState() {
-    // stream = FirebaseFirestore.instance.collection("Learnings").snapshots();
     super.initState();
     currentLearningsFuture = LearningsService.getLearnings();
   }

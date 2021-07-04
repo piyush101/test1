@@ -12,6 +12,7 @@ class ArticleService {
     try {
       http.Response response =
           await http.get(Uri.parse(Constants.apiUrl + "/article/all"));
+      // await http.get(Uri.parse("http://192.168.0.6:3000/article/all"));
       String body = response.body;
       List<dynamic> collection = json.decode(body)['data']['articles'];
       List<ArticleModel> articles =

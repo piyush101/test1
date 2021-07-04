@@ -9,11 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class InsightsHome extends StatefulWidget {
+  InsightsHome({Key key}) : super(key: key);
+
   @override
   _InsightsHomeState createState() => _InsightsHomeState();
 }
 
 class _InsightsHomeState extends State<InsightsHome> {
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
   Future<List<InsightsModel>> currentInsightsFuture;
   Shared _shared = Shared();
 
@@ -37,12 +42,10 @@ class _InsightsHomeState extends State<InsightsHome> {
                     child: Constants.getCircularProgressBarIndicator());
               } else {
                 return RefreshIndicator(
-                  onRefresh: () async {
-                    await Future<void>.delayed(Duration(seconds: 1));
-                  },
+                  key: _refreshIndicatorKey,
+                  color: Color(0xFFa6b0e7),
+                  onRefresh: _refreshInsightsList,
                   child: ListView.builder(
-                      physics: BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -56,11 +59,9 @@ class _InsightsHomeState extends State<InsightsHome> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadiusDirectional.circular(10),
+                                BorderRadiusDirectional.circular(10),
                                 boxShadow: [
-                                  BoxShadow(
-                                      color:
-                                          Color(0xFFbebddf).withOpacity(0.2)),
+                                  BoxShadow(color: Color(0xFFffffff)),
                                 ],
                               ),
                               child: Column(
@@ -81,8 +82,8 @@ class _InsightsHomeState extends State<InsightsHome> {
                                             SizedBox(
                                               width: 10,
                                             ),
-                                            _shared.getShareButton(
-                                                2, snapshot.data[index].title)
+                                            _shared.getShareButton("insights",
+                                                snapshot.data[index].id)
                                           ],
                                         ),
                                       ],
@@ -90,7 +91,7 @@ class _InsightsHomeState extends State<InsightsHome> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                    const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(snapshot.data[index].title,
@@ -115,6 +116,15 @@ class _InsightsHomeState extends State<InsightsHome> {
     );
   }
 
+  Future<void> _refreshInsightsList() async {
+    _refreshIndicatorKey.currentState?.show();
+    final Future<List<InsightsModel>> adviceList =
+        InsightsService.getInsights();
+    setState(() {
+      currentInsightsFuture = adviceList;
+    });
+  }
+
   Row _getTimeRow(String time) {
     return Row(
       children: [
@@ -122,8 +132,11 @@ class _InsightsHomeState extends State<InsightsHome> {
           Icons.watch_later_sharp,
           color: Color(0xFF4B5557),
         ),
+        SizedBox(
+          width: 8,
+        ),
         Text(
-          Constants.datetimeStampConversion(time),
+          Constants.dateConversion(time),
           style: TextStyle(color: Color(0xFF4B5557), fontSize: 13),
         ),
       ],
