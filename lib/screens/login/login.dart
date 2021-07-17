@@ -135,7 +135,7 @@ class _LoginState extends State<Login> {
                     color: Color(0xFF5f5463)),
               ),
               onTap: () {
-                userService.createUser(_createUserWhenLogin());
+                userService.createUser(_createUserAsGuest());
                 Navigator.pushAndRemoveUntil<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
@@ -333,13 +333,18 @@ class _LoginState extends State<Login> {
 
   UsersModel _createUserWhenLogin() {
     return UsersModel(
-        email: _firebaseAuth.currentUser != null
-            ? _firebaseAuth.currentUser.email
-            : null,
-        name: _firebaseAuth.currentUser != null
-            ? _firebaseAuth.currentUser.displayName
-            : null,
-        emailVerified: _firebaseAuth.currentUser != null ? true : false,
+        email: _firebaseAuth.currentUser.email,
+        name: _firebaseAuth.currentUser.displayName,
+        emailVerified: true,
+        deviceToken: device_token,
+        bookmarks: []);
+  }
+
+  UsersModel _createUserAsGuest() {
+    return UsersModel(
+        email: null,
+        name: null,
+        emailVerified: false,
         deviceToken: device_token,
         bookmarks: []);
   }

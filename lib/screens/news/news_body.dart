@@ -2,6 +2,7 @@ import 'package:FinXpress/models/article_model.dart';
 import 'package:FinXpress/notifiers/article_id_notifier.dart';
 import 'package:FinXpress/screens/news/news_card.dart';
 import 'package:FinXpress/services/article_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class _NewsBodyState extends State<NewsBody> {
   @override
   void initState() {
     currentArticleFuture = ArticleService.getArticles();
+    FirebaseAnalytics().setCurrentScreen(screenName: 'News');
     super.initState();
   }
 

@@ -4,6 +4,8 @@ import 'package:FinXpress/notifiers/article_id_notifier.dart';
 import 'package:FinXpress/route_generator.dart';
 import 'package:FinXpress/screens/home/home.dart';
 import 'package:FinXpress/screens/intro/intro_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -69,6 +71,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   @override
   void initState() {
     super.initState();
@@ -113,38 +117,43 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         if (message.data["page"] == "/news") {
           String _articleId = message.data['articleId'];
           context.read<ArticleIdNotifier>().updateId(_articleId);
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-              (route) => false);
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+              MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
+              // (route) => false);
         } else if (message.data["page"] == "/learnings") {
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 1)),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 1));
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 1)),
+          //     (route) => false);
         } else if (message.data["page"] == "/insights") {
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 2)),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 2)),
+          //     (route) => false);
         } else if (message.data["page"] == "/advice") {
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 3)),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 3)),
+          //     (route) => false);
         } else {
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
+          //     (route) => false);
         }
       }
-    } else {
-      Navigator.pushAndRemoveUntil(
-          navigatorKey.currentState.context,
-          MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-          (route) => false);
     }
+    // else {
+    //   Navigator.pushAndRemoveUntil(
+    //       navigatorKey.currentState.context,
+    //       MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
+    //       (route) => false);
+    // }
   }
 
   void initDynamicLinks() async {
@@ -159,26 +168,29 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         String articleId = queryParams["articleId"];
         if (page == "news") {
           context.read<ArticleIdNotifier>().updateId(articleId);
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
+          //     (route) => false);
         } else if (page == "insights") {
-          Navigator.pushAndRemoveUntil(
-              navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 2)),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 2));
+          // Navigator.pushAndRemoveUntil(
+          //     navigatorKey.currentState.context,
+          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 2)),
+          //     (route) => false);
         }
       }
-    } else {
-      if (initScreen == 0 || initScreen == null) {
-        Navigator.push(navigatorKey.currentState.context,
-            MaterialPageRoute(builder: (context) => IntroScreen()));
-      } else {
-        Navigator.push(navigatorKey.currentState.context,
-            MaterialPageRoute(builder: (context) => Home(pageIndex: 0)));
-      }
     }
+    // else {
+    //   if (initScreen == 0 || initScreen == null) {
+    //     Navigator.push(navigatorKey.currentState.context,
+    //         MaterialPageRoute(builder: (context) => IntroScreen()));
+    //   } else {
+    //     Navigator.push(navigatorKey.currentState.context,
+    //         MaterialPageRoute(builder: (context) => Home(pageIndex: 0)));
+    //   }
+    // }
 
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData dynamicLink) async {
@@ -199,6 +211,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           StreamProvider.value(value: FirebaseAuth.instance.authStateChanges())
         ],
         child: MaterialApp(
+          navigatorObservers: <NavigatorObserver>[observer],
+
           navigatorKey: navigatorKey,
           theme: darkThemeProvider.getTheme,
           debugShowCheckedModeBanner: false,

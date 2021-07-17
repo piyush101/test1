@@ -1,13 +1,15 @@
+
 import 'package:FinXpress/screens/advice/advice.dart';
 import 'package:FinXpress/screens/drawer/news_drawer.dart';
 import 'package:FinXpress/screens/insights/insights_home/insights_home.dart';
 import 'package:FinXpress/screens/learnings/learnings_home.dart';
 import 'package:FinXpress/screens/news/news_body.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
@@ -15,19 +17,32 @@ class Home extends StatefulWidget {
   Home({this.pageIndex = 0});
   static const String home = '/home';
 
+  // FirebaseAnalyticsObserver observer;
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  DateTime currentBackPressTime;
   List<Widget> _children = [
     NewsBody(),
     LearningsHome(),
     InsightsHome(),
     Advice()
   ];
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   widget.observer.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  // }
 
+  // @override
+  // void dispose() {
+  //   widget.observer.unsubscribe(this);
+  //   super.dispose();
+  // }
   @override
   void initState() {
     super.initState();
@@ -79,7 +94,10 @@ class _HomeState extends State<Home> {
           selectedItemColor: Color(0xFF4d4d99),
           unselectedItemColor: Color(0xFF7777bb),
           type: BottomNavigationBarType.fixed,
-          onTap: (int index) => setState(() => widget.pageIndex = index),
+          onTap: (int index) => setState(() {
+            widget.pageIndex = index;
+            // _sendCurrentTabToAnalytics(widget.pageIndex);
+          }),
           currentIndex: widget.pageIndex,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -100,15 +118,29 @@ class _HomeState extends State<Home> {
             //     icon: (Icon(CupertinoIcons.bell_fill)), label: "WatchList"),
           ],
         ),
-        body: DoubleBackToCloseApp(
-            snackBar: const SnackBar(
-              content: Text('Tap back again to Leave'),
-            ),
-            child: IndexedStack(index: widget.pageIndex, children: _children)),
+        body: WillPopScope(
+          child: IndexedStack(index: widget.pageIndex, children: _children),
+          onWillPop: onWillPop,
+        ),
       ),
     );
   }
-
+  //
+  // @override
+  // void didPush() {
+  //   _sendCurrentTabToAnalytics(widget.pageIndex);
+  // }
+  //
+  // @override
+  // void didPopNext() {
+  //   _sendCurrentTabToAnalytics(widget.pageIndex);
+  // }
+  //
+  // void _sendCurrentTabToAnalytics(index) {
+  //   widget.observer.analytics.setCurrentScreen(
+  //     screenName: '/home$widget.pageIndex',
+  //   );
+  // }
   _getPage(int pageIndex) {
     switch (pageIndex) {
       case 0:
@@ -124,5 +156,16 @@ class _HomeState extends State<Home> {
       default:
         return NewsBody();
     }
+  }
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(msg: "Tap back again to leave");
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 }

@@ -12,7 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_spinkit: "^4.1.2"
+  firebase_analytics: ^8.2.0
+  flutter_spinkit: ^4.1.2
   html_unescape: ^2.0.0
   localstorage: any
   cached_network_image: ^3.0.0
@@ -32,7 +33,6 @@ dependencies:
   firebase_messaging: ^10.0.1
   platform_device_id: ^1.0.1
   flutter_local_notifications: ^6.0.0
-  firebase_analytics: ^8.0.0
   material_floating_search_bar: ^0.3.4
   share: ^2.0.1
   day_night_switcher: ^0.2.0+1

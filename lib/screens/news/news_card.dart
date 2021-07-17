@@ -88,7 +88,7 @@ class _NewsCardState extends State<NewsCard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 15),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Container(
                     child: Html(
                         style: {
@@ -98,6 +98,7 @@ class _NewsCardState extends State<NewsCard> {
                               fontSize: FontSize(17),
                               fontWeight: FontWeight.w500),
                           "a": Style(
+                              textDecoration: TextDecoration.none,
                               color: Color(0xFF161565).withOpacity(0.8),
                               fontFamily: "SourceSansPro",
                               fontSize: FontSize(17),
