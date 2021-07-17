@@ -27,7 +27,8 @@ class _NewsBodyState extends State<NewsBody> {
   @override
   void initState() {
     currentArticleFuture = ArticleService.getArticles();
-    FirebaseAnalytics().setCurrentScreen(screenName: 'News');
+    Constants.analytics.setCurrentScreen(screenName: "News");
+    // FirebaseAnalytics().setCurrentScreen(screenName: 'News');
     super.initState();
   }
 

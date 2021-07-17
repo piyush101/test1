@@ -19,8 +19,9 @@ class _LearningsHomeState extends State<LearningsHome> {
 
   @override
   void initState() {
-    super.initState();
     currentLearningsFuture = LearningsService.getLearnings();
+    Constants.analytics.setCurrentScreen(screenName: "Learnings");
+    super.initState();
   }
 
   @override

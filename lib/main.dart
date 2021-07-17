@@ -72,7 +72,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
   @override
   void initState() {
     super.initState();
@@ -117,43 +118,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         if (message.data["page"] == "/news") {
           String _articleId = message.data['articleId'];
           context.read<ArticleIdNotifier>().updateId(_articleId);
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-              MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
-              // (route) => false);
+          MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
         } else if (message.data["page"] == "/learnings") {
           MaterialPageRoute(builder: (context) => Home(pageIndex: 1));
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 1)),
-          //     (route) => false);
         } else if (message.data["page"] == "/insights") {
           MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 2)),
-          //     (route) => false);
         } else if (message.data["page"] == "/advice") {
           MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 3)),
-          //     (route) => false);
         } else {
           MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-          //     (route) => false);
         }
       }
     }
-    // else {
-    //   Navigator.pushAndRemoveUntil(
-    //       navigatorKey.currentState.context,
-    //       MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-    //       (route) => false);
-    // }
   }
 
   void initDynamicLinks() async {
@@ -169,28 +145,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         if (page == "news") {
           context.read<ArticleIdNotifier>().updateId(articleId);
           MaterialPageRoute(builder: (context) => Home(pageIndex: 0));
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 0)),
-          //     (route) => false);
         } else if (page == "insights") {
           MaterialPageRoute(builder: (context) => Home(pageIndex: 2));
-          // Navigator.pushAndRemoveUntil(
-          //     navigatorKey.currentState.context,
-          //     MaterialPageRoute(builder: (context) => Home(pageIndex: 2)),
-          //     (route) => false);
         }
       }
     }
-    // else {
-    //   if (initScreen == 0 || initScreen == null) {
-    //     Navigator.push(navigatorKey.currentState.context,
-    //         MaterialPageRoute(builder: (context) => IntroScreen()));
-    //   } else {
-    //     Navigator.push(navigatorKey.currentState.context,
-    //         MaterialPageRoute(builder: (context) => Home(pageIndex: 0)));
-    //   }
-    // }
 
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData dynamicLink) async {
@@ -212,11 +171,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ],
         child: MaterialApp(
           navigatorObservers: <NavigatorObserver>[observer],
-
           navigatorKey: navigatorKey,
           theme: darkThemeProvider.getTheme,
           debugShowCheckedModeBanner: false,
-          initialRoute: initScreen == 0 || initScreen == null ? "Intro" : '/',
+          initialRoute:
+              initScreen == 0 || initScreen == null ? "MarketWatch" : '/',
           onGenerateRoute: RouteGenerator.generateRoute,
         ),
       );

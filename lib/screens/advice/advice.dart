@@ -23,6 +23,7 @@ class _AdviceState extends State<Advice> {
   void initState() {
     super.initState();
     currentAdviceFuture = AdviceService.getAdvices();
+    Constants.analytics.setCurrentScreen(screenName: "Advice");
   }
 
   @override

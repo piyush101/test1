@@ -24,8 +24,9 @@ class _InsightsHomeState extends State<InsightsHome> {
 
   @override
   void initState() {
-    super.initState();
     currentInsightsFuture = InsightsService.getInsights();
+    Constants.analytics.setCurrentScreen(screenName: "Insights");
+    super.initState();
   }
 
   @override

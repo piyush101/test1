@@ -27,6 +27,12 @@ class _NewsDrawerState extends State<NewsDrawer> {
       : null;
 
   @override
+  void initState() {
+    Constants.analytics.setCurrentScreen(screenName: "Drawer");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     DarkThemeProvider darkThemeProvider =
